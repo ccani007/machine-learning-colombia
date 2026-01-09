@@ -1,0 +1,198 @@
+/* =========================================================
+   Tipografía base
+   ========================================================= */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Source+Serif+4:wght@400;600&display=swap');
+
+:root {
+  --bg-main: #ffffff;
+  --text-main: #1f2933;
+  --text-muted: #6b7280;
+  --accent: #2563eb;      /* azul elegante */
+  --accent-soft: #e0e7ff;
+  --code-bg: #f8fafc;
+  --border-light: #e5e7eb;
+}
+
+/* =========================================================
+   Fondo y texto
+   ========================================================= */
+.reveal {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 30px;
+  line-height: 1.35;
+}
+
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal h4 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #111827;
+}
+
+.reveal h1 {
+  font-size: 2.2em;
+}
+
+.reveal h2 {
+  font-size: 1.7em;
+  margin-bottom: 0.6em;
+}
+
+.reveal h3 {
+  font-size: 1.3em;
+}
+
+/* =========================================================
+   Texto y listas
+   ========================================================= */
+.reveal p {
+  margin: 0.6em 0;
+}
+
+.reveal ul,
+.reveal ol {
+  margin-left: 1.2em;
+}
+
+.reveal li {
+  margin-bottom: 0.4em;
+}
+
+.reveal strong {
+  font-weight: 600;
+  color: #111827;
+}
+
+/* Incremental */
+.reveal .fragment {
+  opacity: 0.25;
+}
+
+.reveal .fragment.visible {
+  opacity: 1;
+}
+
+/* =========================================================
+   Enlaces
+   ========================================================= */
+.reveal a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.reveal a:hover {
+  text-decoration: underline;
+}
+
+/* =========================================================
+   Código
+   ========================================================= */
+.reveal pre {
+  background: var(--code-bg);
+  border-radius: 10px;
+  padding: 1em;
+  font-size: 0.75em;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+}
+
+.reveal code {
+  background: #eef2ff;
+  color: #1e40af;
+  padding: 0.15em 0.35em;
+  border-radius: 6px;
+  font-size: 0.85em;
+}
+
+/* =========================================================
+   Tablas
+   ========================================================= */
+.reveal table {
+  border-collapse: collapse;
+  font-size: 0.8em;
+}
+
+.reveal th {
+  border-bottom: 2px solid var(--border-light);
+  font-weight: 600;
+  padding: 0.4em 0.6em;
+}
+
+.reveal td {
+  border-bottom: 1px solid var(--border-light);
+  padding: 0.4em 0.6em;
+}
+
+/* =========================================================
+   Bloques tipo quote / nota
+   ========================================================= */
+.reveal blockquote {
+  border-left: 6px solid var(--accent);
+  padding-left: 1em;
+  color: #374151;
+  font-style: italic;
+  background: #f9fafb;
+  border-radius: 6px;
+}
+
+/* =========================================================
+   Footer
+   ========================================================= */
+.reveal .footer {
+  position: absolute;
+  bottom: 20px;
+  left: 40px;
+  font-size: 0.55em;
+  color: var(--text-muted);
+}
+
+.reveal .footer a {
+  color: var(--text-muted);
+}
+
+/* =========================================================
+   Imágenes
+   ========================================================= */
+.reveal img {
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* =========================================================
+   Panel tabs (Quarto)
+   ========================================================= */
+.reveal .panel-tabset > .nav-tabs {
+  border-bottom: none;
+}
+
+.reveal .panel-tabset .nav-tabs > li > a {
+  font-size: 0.6em;
+  padding: 0.4em 0.8em;
+  border-radius: 8px;
+  margin-right: 0.3em;
+  background: var(--accent-soft);
+  color: #1e3a8a;
+}
+
+.reveal .panel-tabset .nav-tabs > li.active > a {
+  background: var(--accent);
+  color: #ffffff;
+}
+
+/* =========================================================
+   Math
+   ========================================================= */
+.reveal .math {
+  font-size: 0.9em;
+}
+
+/* =========================================================
+   Slides "pequeños"
+   ========================================================= */
+.reveal section.smaller {
+  font-size: 0.85em;
+}

@@ -1,0 +1,684 @@
+---
+title: "Decision Trees using `tidymodels`"
+author: "Catalina Cañizares, Ph.D. and Raymond Balise Ph.D."
+format:
+  revealjs:
+    scrollable: true
+    slide-number: true
+    transition: "fade"
+    auto-play-media: true
+    auto-stretch: true
+    css: style-copy.css
+    theme: default
+    highlight-style: github
+editor_options: 
+  chunk_output_type: console
+---
+> Decision Trees using `tidymodels`© 2024 by Catalina Canizares and Raymond Balise is licensed under Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International 
+
+This material is freely available under the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License. 
+
+For more information on this license, please visit: [Creative Commons License](https://creativecommons.org/licenses/by-nc-nd/4.0/)
+
+
+
+
+## Agenda 🌲
+```{r}
+library(tidyverse)
+library(tidymodels)
+library(skimr)
+library(MLearnYRBSS)
+```
+
+🌲 Decision Trees
+
+🌲 Basic concepts (Root, Feature, Leaf)
+
+🌲 View and understand the splits
+
+🌲 Entropy and Information Gain
+
+🌲 Early stopping and Pruning
+
+🌲 A tree in `tidymodels` 
+
+
+
+## Trees
+:::: {.columns}
+::: {.column width="50%"}
+
+🌲 Decision Trees are widely used algorithms for supervised machine learning.
+
+🌲 They provide interpretable models for making predictions in both regression and classification tasks.
+:::
+::: {.column width="50%"}
+
+![](img/tree_example.png)
+
+:::
+:::
+
+
+## How it works 
+🌲 Consists of a series of sequential decisions on some data set's features. 
+
+![](img/1_tree.png)
+
+:::footer
+[Tune better models](https://tmv.netlify.app/site/slides/rmed03-tune.html#25)
+:::
+
+
+## How it works 
+![](img/2_tree.png)
+
+:::footer
+[Tune better models](https://tmv.netlify.app/site/slides/rmed03-tune.html#25)
+:::
+
+## How it works 
+![](img/3_tree.png)
+
+:::footer
+[Tune better models](https://tmv.netlify.app/site/slides/rmed03-tune.html#25)
+:::
+
+## How it works 
+
+![](img/4_tree.png)
+
+:::footer
+[Tune better models](https://tmv.netlify.app/site/slides/rmed03-tune.html#25)
+:::
+
+## How it works 
+![](img/5_tree.png)
+
+:::footer
+[Tune better models](https://tmv.netlify.app/site/slides/rmed03-tune.html#25)
+:::
+
+## How it works 
+
+![](img/6_tree.png)
+
+:::footer
+[Tune better models](https://tmv.netlify.app/site/slides/rmed03-tune.html#25)
+:::
+
+## What the Splits Look Like
+
+![](img/depth_1.png){fig-align="center"}
+
+:::footer
+[Tune better models](https://tmv.netlify.app/site/slides/rmed03-tune.html#25)
+:::
+
+## What the Splits Look Like
+
+![](img/depth_2.png){fig-align="center"}
+
+:::footer
+[Tune better models](https://tmv.netlify.app/site/slides/rmed03-tune.html#25)
+:::
+
+## What the Splits Look Like
+
+![](img/depth_3.png){fig-align="center"}
+
+:::footer
+[Tune better models](https://tmv.netlify.app/site/slides/rmed03-tune.html#25)
+:::
+
+## What the Splits Look Like
+![](img/depth_7.png){fig-align="center"}
+
+:::footer
+[Tune better models](https://tmv.netlify.app/site/slides/rmed03-tune.html#25)
+:::
+
+## What the Splits Look Like
+![](img/depth_8.png){fig-align="center"}
+
+:::footer
+[Tune better models](https://tmv.netlify.app/site/slides/rmed03-tune.html#25)
+:::
+
+## What the Splits Look Like
+![](img/depth_9.png){fig-align="center"}
+
+:::footer
+[Tune better models](https://tmv.netlify.app/site/slides/rmed03-tune.html#25)
+:::
+
+## What the Splits Look Like
+![](img/depth_10.png)
+
+
+:::footer
+[Tune better models](https://tmv.netlify.app/site/slides/rmed03-tune.html#25)
+:::
+
+## How does the algorithm determine where to partition the data?  
+
+🌲 Instead of minimizing the Sum of Squared Errors, you can minimize entropy....
+
+🌲 **Entropy** =  measures the amount of information of some variable or event.
+
+🌲 We'll make use of it to identify regions consisting of  
+
+   - A large number of similar (pure) or 
+   
+   -  Dissimilar (impure) elements.
+
+
+## Information Gain - The logic to train  
+
+🌲 Measures the quality of a split
+
+🌲 The core algorithm to calculate information gain is called ID3.
+
+🌲 It is calculated for a split by subtracting the weighted entropies of each branch from the original entropy. 
+🌲When training a Decision Tree using these metrics, the best split is chosen by maximizing Information Gain.
+
+🌲 Select the split that yields the largest reduction in entropy, or, the largest increase in information.
+
+
+## Information Gain
+[Click here to see the animation](https://mlu-explain.github.io/decision-tree/)
+
+```{=html}
+<iframe width="1000" height="700" src="https://mlu-explain.github.io/decision-tree/" title="Webpage example"></iframe>
+```
+
+
+## Information Gain 
+
+If you are intersted in the math: 
+[A Simple Explanation of Information Gain and Entropy](https://victorzhou.com/blog/information-gain/) 
+
+## Classification trees
+
+🌲 One of the questions that arises in a decision tree algorithm is: **what is the optimal size of the final tree**
+
+🌲 A tree that is **too large** risks over-fitting the training data and poorly generalizing to new samples.
+
+🌲 A **small tree** might not capture important structural information about the sample space.
+
+🌲 However, it **is hard to tell** when a tree algorithm should stop!
+
+# Early Stopping
+
+## tree_depth
+
+🌲 Cap the maximum tree depth.
+
+🌲 A method to stop the tree early.
+
+🌲 Used to prevent overfitting.
+
+## tree_depth  
+
+![](img/tree_depth1.png)
+
+:::footer
+[Tune better models](https://tmv.netlify.app/site/slides/rmed03-tune.html#25)
+:::
+
+## tree_depth 
+
+![](img/tree_depth2.png)
+
+
+:::footer
+[Tune better models](https://tmv.netlify.app/site/slides/rmed03-tune.html#25)
+:::
+
+## min_n
+
+🌲 An integer for the minimum number of data points in a node that are required for the node to be split further.
+
+🌲 Set minimum n to split at any node.
+
+🌲 Another early stopping method.
+
+🌲 Used to prevent overfitting.
+
+🌲 min_n = 1 would lead to the most overfit tree.
+
+:::footer
+[Tune better models](https://tmv.netlify.app/site/slides/rmed03-tune.html#25)
+:::
+
+# Pruning 
+
+## cost_complexity - tree pruning
+
+🌲 Adds a cost or penalty to error rates of more complex trees
+ 
+🌲 Used to prevent overfitting.
+
+🌲 Closer to zero ➡️ larger trees.
+
+🌲 Higher penalty ➡️ smaller trees.
+
+:::footer
+[Tune better models](https://tmv.netlify.app/site/slides/rmed03-tune.html#25)
+:::
+
+
+
+## cost_complexity
+
+$$
+R_\alpha(T) = R(T) + \alpha|\widetilde{T}|
+$$
+🌲 $R(T)$ misclassification rate 
+
+🌲 For any subtree $T<T_{max}$  we will define its complexity as  $|\widetilde{T}|$
+
+🌲 $|\widetilde{T}|$ = the number of terminal or leaf nodes in T. 
+
+🌲 $\alpha ≤0$  be a real number called the complexity parameter. 
+
+🌲 If $\alpha$ = 0 then the biggest tree will be chosen because the complexity penalty term is essentially dropped.
+
+🌲 As $\alpha$ approaches infinity, the tree of size 1, will be selected.
+
+:::footer
+[Applied Data Mining and Statistical Learning](https://online.stat.psu.edu/stat508/lesson/11/11.8/11.8.2)
+:::
+
+## cost_complexity
+
+![](img/cost_complex1.png)
+
+:::footer
+[Tune better models](https://tmv.netlify.app/site/slides/rmed03-tune.html#25)
+:::
+
+## cost_complexity
+
+![](img/cost_complex2.png)
+
+:::footer
+[Tune better models](https://tmv.netlify.app/site/slides/rmed03-tune.html#25)
+:::
+
+## Recap 
+
+![](img/recap_cp.png)
+
+:::footer
+[Tune better models](https://tmv.netlify.app/site/slides/rmed03-tune.html#25)
+:::
+
+# Classification Tree with `tidymodels`   
+
+![](https://media.giphy.com/media/F9hQLAVhWnL56/giphy.gif){fig-align="center"}
+
+
+
+## Task
+
+Predict whether an adolescent has consumed alcohol or not based on a set of various risk behaviors. 
+
+![](https://media.giphy.com/media/JzujPK0id34qI/giphy.gif){fig-align="center"}
+
+
+## Data Cleaning
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|3|4|5|6|7|9|10|11|12|13"
+
+data("riskyBehaviors")
+
+riskyBehaviors_analysis <- 
+  riskyBehaviors |> 
+  mutate(UsedAlcohol = case_when(
+    AgeFirstAlcohol == 1 ~ 0, 
+    AgeFirstAlcohol %in% c(2, 3, 5, 6, 4, 7) ~ 1, 
+    TRUE ~ NA
+    )) |> 
+  mutate(UsedAlcohol = factor(UsedAlcohol)) |> 
+  drop_na(UsedAlcohol) |> 
+  select(- c(AgeFirstAlcohol, DaysAlcohol, BingeDrinking, LargestNumberOfDrinks, SourceAlcohol, SourceAlcohol))
+
+```
+
+
+## Splitting the data 
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|3|4|6|7|9"
+#| output-location: fragment
+
+set.seed(2023)
+
+alcohol_split <- initial_split(riskyBehaviors_analysis, 
+                               strata = UsedAlcohol)
+
+alcohol_train <- training(alcohol_split)
+alcohol_test <- testing(alcohol_split)
+
+alcohol_split
+```
+
+
+## Lets Check Our Work
+
+```{r}
+library(janitor)
+```
+
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|4"
+#| output-location: fragment
+
+alcohol_train |> 
+  tabyl(UsedAlcohol)  |> 
+  adorn_pct_formatting(0) |> 
+  adorn_totals()
+
+
+
+```
+
+:::
+
+::: {.column width="50%"}
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|4"
+#| output-location: fragment
+
+alcohol_test |>  
+  tabyl(UsedAlcohol)  |> 
+  adorn_pct_formatting(0) |> 
+  adorn_totals()
+```
+
+:::
+:::
+
+## Creating the Resampling Object 
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|3|4|5"
+#| output-location: fragment
+
+
+set.seed(2023)
+
+cv_alcohol <- rsample::vfold_cv(alcohol_train, 
+                                strata = UsedAlcohol)
+cv_alcohol
+```
+
+
+
+## The Recipe
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|4"
+#| output-location: fragment
+
+alcohol_recipe <- 
+  recipe(formula = UsedAlcohol ~ ., data = alcohol_train) |>
+  step_impute_mode(all_nominal_predictors()) |>
+  step_impute_mean(all_numeric_predictors())
+
+
+```
+
+## The Specification
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|4|5|6|7|9"
+#| output-location: fragment
+
+cart_spec <- 
+  decision_tree(
+   cost_complexity = tune(),
+   tree_depth = tune(),
+   min_n = tune()) |>  
+  set_engine("rpart") |> 
+  set_mode("classification")
+
+cart_spec 
+```
+
+
+## The Workflow
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|4|6"
+#| output-location: fragment
+
+cart_workflow <- 
+  workflow() |> 
+  add_recipe(alcohol_recipe) |> 
+  add_model(cart_spec)
+
+cart_workflow
+```
+
+## Tuning for the tree - The Grid
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|4|5|6"
+#| output-location: fragment
+
+tree_grid <- 
+  grid_regular(cost_complexity(),
+               tree_depth(c(2, 5)),
+               min_n(), 
+               levels = 4)
+tree_grid
+ 
+```
+
+## Tuning for the tree
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-line-numbers: "1|3|5|6|7|8|10"
+#| output-location: fragment
+
+doParallel::registerDoParallel()  
+
+cart_tune <- 
+  cart_workflow %>% 
+  tune_grid(resamples = cv_alcohol,
+            grid = tree_grid, 
+            metrics = metric_set(roc_auc),
+            control = control_grid(save_pred = TRUE)
+  )
+
+doParallel::stopImplicitCluster()  
+```
+
+
+```{r}
+#| echo: false
+
+# saveRDS(cart_tune, "outputs/cart_tune.rds")
+cart_tune <- readRDS("outputs/cart_tune.rds")
+```
+
+## Choosing the best CP
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1"
+#| output-location: fragment
+
+show_best(cart_tune, metric = "roc_auc")
+```
+
+## Choosing the best hyperparameters
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|5"
+#| output-location: fragment
+
+bestPlot_cart <- 
+  autoplot(cart_tune)
+
+bestPlot_cart
+```
+
+## Choosing the best CP
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|4"
+#| output-location: fragment
+
+best_cart <- select_best(
+  cart_tune, 
+  metric = "roc_auc")
+
+best_cart
+```
+
+## Finalizing Workflow
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2"
+#| output-location: fragment
+
+cart_final_wf <- finalize_workflow(cart_workflow, best_cart)
+cart_final_wf
+```
+
+## Fit the tree
+
+:::: {.columns}
+::: {.column width="60%"}
+
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|5"
+#| output-location: fragment
+
+cart_fit <- fit(
+  cart_final_wf, 
+  alcohol_train)
+
+cart_fit
+```
+
+:::
+
+::: {.column width="40%"}
+
+
+![](https://media.giphy.com/media/Cv1j2hKet0OamdSVFg/giphy.gif)
+:::
+:::
+
+## Review fit on the training data
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|5"
+#| output-location: fragment
+
+tree_pred <- 
+  augment(cart_fit, alcohol_train) |> 
+  select(UsedAlcohol, .pred_class, .pred_1, .pred_0)
+
+tree_pred
+
+```
+
+## Review fit on the training data
+
+:::: {.columns}
+::: {.column width="50%"}
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|4|5|6|8"
+#| output-location: fragment
+
+roc_tree <- 
+  tree_pred |> 
+  roc_curve(truth = UsedAlcohol, 
+           .pred_1, 
+           event_level = "second") |> 
+  autoplot()
+
+roc_tree
+
+```
+:::
+
+::: {.column width="50%"}
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|4"
+#| output-location: fragment
+
+tree_pred |> 
+  roc_auc(truth = UsedAlcohol, 
+           .pred_1, 
+           event_level = "second")
+
+```
+:::
+:::
+
+## Review on Resamples
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3"
+#| output-location: fragment
+fit_resamples(cart_final_wf, resamples = cv_alcohol) |> 
+  collect_metrics()
+```
+
+
+## The tree
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3"
+#| output-location: fragment
+
+cart_fit |> 
+  extract_fit_engine() |> 
+  rpart.plot::rpart.plot(roundint=FALSE)
+```
+
+## To be continued... 
+
+:::: {.columns}
+::: {.column width="60%"} 
+
+This model has not been tested yet, as we are planning to conduct an additional analysis. In the next presentation, we will utilize the same training data with the Random Forest algorithm, followed by evaluating its performance using the testing set.
+:::
+::: {.column width="40%"} 
+
+![](https://media.giphy.com/media/3o7budMRwZvNGJ3pyE/giphy.gif)
+:::
+:::

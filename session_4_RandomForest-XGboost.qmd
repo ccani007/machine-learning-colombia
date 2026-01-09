@@ -1,0 +1,851 @@
+---
+title: "Random Forest using `tidymodels`"
+author: "Catalina Canizares"
+format:
+  revealjs:
+    scrollable: true
+    slide-number: true
+    transition: "fade"
+    auto-play-media: true
+    auto-stretch: true
+editor_options: 
+  chunk_output_type: console
+---
+
+
+## Agenda 
+```{r}
+library(tidyverse)
+library(tidymodels)
+library(skimr)
+library(MLearnYRBSS)
+```
+
+🌲 Developing the intuition
+
+🌲 Random Forest
+
+🌲 Bagging 
+
+🌲 Random forest in `tidymodels` 
+
+🌲 It gets better with XGboost
+
+🌲 Comparing and choosing a model
+
+🌲 Final fit 
+
+
+## Instructions
+
+1. Listen carefully to the group you will be assigned to 
+
+2. DO NOT look for the correct answer 
+  - No google 👀
+  - No friend 👀
+  - No neighbor 👀
+  
+  
+  
+## Developing the intuition
+
+:::: {.columns}
+::: {.column width="50%"}
+
+**INDIVIDUALLY**
+
+How many people attended the last Taylor Swift concert at Pittsburgh stadium during Eras Tour concert?
+
+![](img/game.png){.absolute width=200 height=200}
+
+
+
+
+:::
+::: {.column width="50%"}
+![](https://media.giphy.com/media/cInyFHymgymsKA3jHi/giphy.gif)
+[app](https://huggingface.co/spaces/focardozom/aggregation_game)
+
+:::
+:::
+
+--- 
+
+![](img/taylor.png)
+
+
+## The Condorcet Jury Theorem
+
+🌳 If each person is more than 50% correct, then adding more people to vote increases the probability that the majority is correct.
+
+🌳 The theorem suggests that the probability of the majority vote being correct can go up as we add more and more models
+
+## Random Forest 🌳🌲🌴
+
+🌳 Random Forest is just a bunch of Decision Trees bundled together. 
+
+🌳 The idea is if we have a "weak" algorithm like a decision tree, if we make a lot of different models using this weak algorithm and average the result of their prediction, then the final result will be much better. 
+
+🌳 This is called **Ensemble Learning**
+
+## Ensemble Predictions 
+
+🌴 Bagging. Building multiple models (typically of the same type) from different subsamples of the training dataset.
+
+🌳 Boosting. Building multiple models (typically of the same type) each of **which learns to fix** the prediction errors of a prior model in the chain.
+
+🌲 Stacking. Building multiple models (*typically of differing types*) and supervisor model that learns how to best combine the predictions of the primary models.
+
+## Bagging
+
+🌲 One way to produce multiple models that are different is to train each model using a different training set. 
+
+🌲 The Bagging (Bootstrap Aggregating) method randomly draws a fixed number of samples from the training set with replacement. 
+
+🌲 The algorithm randomly samples people to build a tree and it also will randomly select variables to check when making a new node.
+ 
+## The process 🌳🌲🌴: 
+
+1. Select random samples from a given training set. 
+2. The algorithm will construct a decision tree for every training data
+3. Voting will take place by averaging the decision tree
+
+4. Select the most voted prediction result as the final model
+- The total contribution to purity 
+- How often a variable is selected as a node across all the trees 
+- How high (close to the root) it shows up across the trees 
+
+## An example
+
+We will build a random forest model to classify if a road sign is a pedestrian crossing sign or not. 
+
+Our features are:  Size, number of sides, number of colors used, and if the sign has text or symbol.
+
+[Click here](https://mlu-explain.github.io/random-forest/)
+
+![](https://media.giphy.com/media/YP1ZhScBxEJL6z3d6J/giphy.gif)
+
+
+# Random Forest with `tidymodels`
+
+![](https://media.giphy.com/media/OWCZPRwFgK7x994E1f/giphy.gif)
+
+## Task
+
+Predict whether an adolescent has consumed alcohol or not based on a set of various risk behaviors. 
+
+![](https://media.giphy.com/media/JzujPK0id34qI/giphy.gif)
+
+
+## Data Cleaning
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|3|4|5|6|7|9|10|11|12|13"
+
+data("riskyBehaviors")
+
+riskyBehaviors_analysis <- 
+  riskyBehaviors |> 
+  mutate(UsedAlcohol = case_when(
+    AgeFirstAlcohol == 1 ~ 0, 
+    AgeFirstAlcohol %in% c(2, 3, 5, 6, 4, 7) ~ 1, 
+    TRUE ~ NA
+    )) |> 
+  mutate(UsedAlcohol = factor(UsedAlcohol)) |> 
+  drop_na(UsedAlcohol) |> 
+  select(- c(AgeFirstAlcohol, DaysAlcohol, BingeDrinking, LargestNumberOfDrinks, SourceAlcohol, SourceAlcohol))
+
+```
+
+
+## Splitting the data 
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|3|4|6|7|9"
+#| output-location: fragment
+
+set.seed(2023)
+
+alcohol_split <- initial_split(riskyBehaviors_analysis, 
+                               strata = UsedAlcohol)
+
+alcohol_train <- training(alcohol_split)
+alcohol_test <- testing(alcohol_split)
+
+alcohol_split
+```
+
+
+## Lets Check Our Work
+
+```{r}
+library(janitor)
+```
+
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|4"
+#| output-location: fragment
+
+alcohol_train |> 
+  tabyl(UsedAlcohol)  |> 
+  adorn_pct_formatting(0) |> 
+  adorn_totals()
+
+
+
+```
+
+:::
+
+::: {.column width="50%"}
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|4"
+#| output-location: fragment
+
+alcohol_test |>  
+  tabyl(UsedAlcohol)  |> 
+  adorn_pct_formatting(0) |> 
+  adorn_totals()
+```
+
+:::
+:::
+
+## Creating the Resampling Object 
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|3|4|5"
+#| output-location: fragment
+
+
+set.seed(2023)
+
+cv_alcohol <- rsample::vfold_cv(alcohol_train, 
+                                v= 5,
+                                strata = UsedAlcohol)
+cv_alcohol
+```
+
+
+
+## The Recipe
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|4"
+#| output-location: fragment
+
+alcohol_recipe <- 
+  recipe(formula = UsedAlcohol ~ ., data = alcohol_train) |>
+  step_impute_mode(all_nominal_predictors()) |>
+  step_impute_mean(all_numeric_predictors()) |> 
+  step_dummy(all_nominal_predictors())
+
+
+```
+
+
+
+## The Specification
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|4|5|6|7|8|9|10|11|12"
+#| output-location: fragment
+
+ranger_spec <- 
+  rand_forest(
+    # the number of predictors to sample at each split
+    mtry = tune(), 
+    # the number of observations needed to keep splitting nodes
+    min_n = tune(),
+    trees = 100) |>  
+  set_mode("classification") |>  
+  set_engine("ranger", 
+             # This is essential for vip()
+             importance = "permutation") 
+
+ranger_spec
+
+```
+
+## The Workflow
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|4|6"
+#| output-location: fragment
+
+ranger_workflow <- 
+  workflow() |> 
+  add_recipe(alcohol_recipe) |>  
+  add_model(ranger_spec) 
+
+ranger_workflow
+```
+
+## Tuning
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-line-numbers: "1|3|5|6|7|8|9|12"
+#| output-location: fragment
+
+doParallel::registerDoParallel()
+  
+set.seed(46257)
+  
+ranger_tune <-
+  tune_grid(
+    ranger_workflow,
+    resamples = cv_alcohol,
+# grid = 11 says to choose 11 parameter sets automatically 
+    grid = 11)
+
+doParallel::stopImplicitCluster()
+
+
+
+```
+
+```{r}
+#| echo: false
+
+# saveRDS(ranger_tune, "outputs/ranger_tune.rds")
+ranger_tune <- readRDS("outputs/ranger_tune.rds")
+
+```
+
+## Collect the tunning Metrics
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1"
+#| output-location: fragment
+
+collect_metrics(ranger_tune)
+```
+
+## Visualize the Metrics
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1"
+#| output-location: fragment
+
+autoplot(ranger_tune)
+```
+
+## Select best hyperparameters
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2"
+#| output-location: fragment
+
+best <- select_best(ranger_tune, metric = "roc_auc")
+best
+```
+
+## Finalize the Workflow
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1"
+#| output-location: fragment
+
+final_wf <- finalize_workflow(ranger_workflow, best)
+final_wf
+```
+
+## Fit the model in the training set
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-line-numbers: "1|2"
+#| output-location: fragment
+
+alcohol_fit <- fit(final_wf, alcohol_train)
+alcohol_fit
+```
+
+```{r}
+#| echo: false
+# saveRDS(alcohol_fit, "outputs/alcohol_fit.rds")
+alcohol_fit <- readRDS("outputs/alcohol_fit.rds")
+
+```
+
+![](https://media.giphy.com/media/WSC0dW3uLXbMs/giphy.gif)
+
+## Checking predictions in the training set
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|5"
+#| output-location: fragment
+
+alcohol_pred <- 
+  augment(alcohol_fit, alcohol_train) |> 
+  select(UsedAlcohol, .pred_class, .pred_1, .pred_0)
+
+alcohol_pred
+  
+```
+
+## Check the Performance
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|4|5|6"
+#| output-location: fragment
+
+roc_plot <- 
+  alcohol_pred |> 
+  roc_curve(truth = UsedAlcohol, 
+           .pred_1, 
+           event_level = "second") |> 
+  autoplot()
+
+roc_plot
+
+```
+:::
+
+::: {.column width="50%"}
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|4"
+#| output-location: fragment
+
+alcohol_pred |> 
+  roc_auc(truth = UsedAlcohol, 
+           .pred_1, 
+           event_level = "second")
+```
+:::
+:::
+
+
+# Can it get better?
+![](https://media.giphy.com/media/B9XXtlIKF8wec/giphy.gif)
+
+
+## XGBoost
+
+- short for "Extreme Gradient Boosting,"
+- It belongs to the family of boosting algorithms, which means it combines multiple weaker models.
+- Works by iteratively building decision trees and then combining them in a smart way.  
+- It focuses on reducing errors by analyzing the residuals (the differences between predicted and actual values) at each iteration and adjusting subsequent trees accordingly. 
+
+
+
+## The Specification
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|4|5|6|7|8|9|11"
+#| output-location: fragment
+
+xgb_spec <- boost_tree(
+  trees = 100,
+  tree_depth = tune(), min_n = tune(),
+  loss_reduction = tune(),                     
+  sample_size = tune(), mtry = tune(),        
+  learn_rate = tune()                          
+ ) |> 
+  set_engine("xgboost") |> 
+  set_mode("classification")
+
+xgb_spec
+```
+
+## The Workflow
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|4|6"
+#| output-location: fragment
+
+xgb_wf <- 
+  workflow() |> 
+  add_recipe(alcohol_recipe) |>  
+  add_model(xgb_spec) 
+
+xgb_wf
+```
+
+## Tuning
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-line-numbers: "1|3|5|6|7|8|9|11"
+#| output-location: fragment
+
+doParallel::registerDoParallel()
+
+set.seed(234)
+xgb_res <- tune_grid(
+  xgb_wf,
+  resamples = cv_alcohol,
+  grid = 11,
+  control = control_grid(save_pred = TRUE)
+)
+
+doParallel::stopImplicitCluster()
+
+xgb_res
+
+```
+
+```{r}
+#| echo: false
+
+# saveRDS(xgb_res, "outputs/xgb_res.rds")
+xgb_res <- readRDS("outputs/xgb_res.rds")
+
+```
+
+## Collect the tunning Metrics
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1"
+#| output-location: fragment
+
+collect_metrics(xgb_res)
+```
+
+## Visualize the Metrics
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1"
+#| output-location: fragment
+
+autoplot(xgb_res)
+```
+
+## Select best hyperparameters
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2"
+#| output-location: fragment
+
+best_xg <- select_best(xgb_res, metric = "roc_auc")
+best_xg
+```
+
+## Finalize the Workflow
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1"
+#| output-location: fragment
+
+final_wf_xg <- finalize_workflow(xgb_wf, best_xg)
+final_wf_xg
+```
+
+## Fit the model in the training set
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-line-numbers: "1|2"
+#| output-location: fragment
+
+alcohol_fit_xg <- fit(final_wf_xg, alcohol_train)
+alcohol_fit_xg
+```
+
+![](https://media.giphy.com/media/o2aNcKCB2VNcs/giphy.gif)
+
+```{r}
+#| echo: false
+# saveRDS(alcohol_fit_xg, "outputs/alcohol_fit_xg.rds")
+alcohol_fit_xg<- readRDS("outputs/alcohol_fit_xg.rds")
+
+```
+
+
+## Checking predictions in the training set
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|5"
+#| output-location: fragment
+
+alcohol_pred_xg <- 
+  augment(alcohol_fit_xg, alcohol_train) |> 
+  select(UsedAlcohol, .pred_class, .pred_1, .pred_0)
+
+alcohol_pred_xg
+  
+```
+
+## Check the Performance
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|4|5|6"
+#| output-location: fragment
+
+roc_plot_xg <- 
+  alcohol_pred_xg |> 
+  roc_curve(truth = UsedAlcohol, 
+           .pred_1, 
+           event_level = "second") |> 
+  autoplot()
+
+roc_plot_xg
+
+```
+:::
+
+::: {.column width="50%"}
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|4"
+#| output-location: fragment
+
+alcohol_pred_xg |> 
+  roc_auc(truth = UsedAlcohol, 
+           .pred_1, 
+           event_level = "second")
+```
+:::
+:::
+
+## Let's compare the perfomance 
+
+```{r}
+roc_tree <- readRDS("outputs/roc_tree.rds")
+tree <- roc_tree$data |> 
+  mutate(model = "Tree")
+rf <- roc_plot$data |> 
+  mutate(model = "Random Forest")
+xg <- roc_plot_xg $data |> 
+  mutate(model = "Xgboost")
+
+compare_roc <- 
+  bind_rows(
+    tree, rf, xg
+  ) |> 
+  ggplot(
+    aes(x = 1 - specificity, y = sensitivity, col = model)
+  ) +
+  geom_path(lwd = 0.5, alpha = 1) +
+  geom_abline(lty = 2) +
+  coord_equal()
+compare_roc
+
+```
+
+## Last fit in Random Forest
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-line-numbers: "1|2|3|4|6"
+#| output-location: fragment
+
+alcohol_last_fit <- 
+  last_fit(final_wf, 
+           split = alcohol_split, 
+           metrics = metric_set(kap, roc_auc, sens, spec))
+
+
+alcohol_last_fit
+```
+
+```{r}
+# saveRDS(alcohol_last_fit, "outputs/alcohol_last_fit.rds")
+#| echo:false
+
+alcohol_last_fit <- readRDS("outputs/alcohol_last_fit.rds")
+```
+
+## Metrics for Random Forest in Testing Data 
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1"
+#| output-location: fragment
+
+collect_metrics(alcohol_last_fit)
+```
+
+## Predictions in the testing set
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|5"
+#| output-location: fragment
+
+predictions_testing <- 
+  alcohol_last_fit |> 
+  collect_predictions() |> 
+  select(-.config, -.row)
+
+predictions_testing
+```
+
+## Confusion Matrix in the testing set
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|4|5"
+#| output-location: fragment
+
+conf_mat_test <- 
+predictions_testing |> 
+  conf_mat(UsedAlcohol, .pred_class) |> 
+  autoplot(type = "heatmap")
+conf_mat_test
+```
+
+## Make sure your metrics are interpretable 
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```{r}
+conf_mat_test
+```
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1"
+#| output-location: fragment
+
+collect_metrics(alcohol_last_fit) |> 
+  select(-.estimator, -.config)
+```
+
+:::
+::: {.column width="50%"}
+![/www.medcalc.org](img/calculator1.png)
+:::
+:::
+
+## Make sure your metrics are interpretable 
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```{r}
+conf_mat_test
+```
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1"
+#| output-location: fragment
+
+collect_metrics(alcohol_last_fit) |> 
+  select(-.estimator, -.config)
+```
+
+:::
+
+::: {.column width="50%"}
+![http://araw.mede.uic.edu/cgi-bin/testcalc.pl](img/calculator2.png)
+:::
+:::
+
+
+## Make sure your metrics are interpretable
+```{r}
+#| echo: true
+#| code-line-numbers: "1|3|4|5|6"
+#| output-location: fragment
+
+multi_metric <- metric_set(sens, spec, accuracy, kap)
+
+multi_metric(predictions_testing, 
+             truth = UsedAlcohol, 
+             estimate = .pred_class, 
+             event_level = "second")
+```
+
+## Compare ROC-AUC in training and testing 
+
+```{r}
+rf <- roc_plot$data |> 
+  mutate(model = "Training")
+
+
+rf_test <- 
+  predictions_testing |> 
+  roc_curve(truth = UsedAlcohol, 
+           .pred_1, 
+           event_level = "second") |> 
+  autoplot()
+
+
+rf_test_roc <- rf_test$data |> 
+  mutate(model = "Testing")
+
+
+compare_roc_test <- 
+  bind_rows(
+    rf_test_roc, rf
+  ) |> 
+  ggplot(
+    aes(x = 1 - specificity, y = sensitivity, col = model)
+  ) +
+  geom_path(lwd = 0.5, alpha = 1) +
+  geom_abline(lty = 2) +
+  coord_equal()
+compare_roc_test
+
+```
+
+
+## Variable Importance Plot 
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|3|4|5|6|7|8|9"
+#| output-location: fragment
+
+library(vip)
+
+alcohol_last_fit |> 
+  extract_fit_parsnip() |> 
+  vi()  |> 
+  slice_max(Importance, n = 10) |> 
+  ggplot(aes(Importance, fct_reorder(Variable, Importance))) +
+  geom_col() +
+  labs(y = NULL) +
+  theme(legend.position = "none")
+  
+
+```
+
+## We did it!
+
+![](https://media.giphy.com/media/xUjSOWCndCdECCyOEY/giphy.gif)
+
+

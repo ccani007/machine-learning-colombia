@@ -1,0 +1,818 @@
+---
+title: "Regularization Techniques: Ridge, Lasso, and Elastic Net Using `tidymodels`"
+author: "Catalina Cañizares, Ph.D. and Raymond Balise Ph.D."
+format:
+  revealjs:
+    scrollable: true
+    slide-number: true
+    transition: "fade"
+    auto-play-media: true
+    auto-stretch: true
+editor_options: 
+  chunk_output_type: console
+---
+
+## About This Material
+
+> Regularization Techniques: Ridge, Lasso, and Elastic Net Using `tidymodels` © 2024 by Catalina Canizares and Raymond Balise is licensed under Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International 
+
+This material is freely available under the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License. 
+
+For more information on this license, please visit: [Creative Commons License](https://creativecommons.org/licenses/by-nc-nd/4.0/)
+
+
+
+
+
+## Review of what we have covered
+
+```{r}
+library(tidyverse)
+library(tidymodels)
+library(skimr)
+
+```
+
+
+:::: {.columns}
+::: {.column width="50%"}
+[I click here...you wait...](https://play.kahoot.it/v2/?quizId=090bbc1e-c963-4f36-9cfb-45f81949c1f3)
+
+:::
+::: {.column width="50%"}
+![](https://media.giphy.com/media/kDCargqZQ88Jq/giphy.gif?cid=ecf05e47cql4isfzdq2udvl3cqfh225u0ab93sm4u87alq33&ep=v1_gifs_search&rid=giphy.gif&ct=g)
+:::
+:::
+
+
+## Shrinkage
+- Shrinkage is a technique that "shrinks" or reduces the coefficients of predictor variables towards zero.
+- Shrinkage methods strike a balance between capturing the relationships in the data and avoiding overfitting.
+- Shrinking the coefficient estimates can significantly reduce variance.
+- The two best-known techniques for shrinking the regression coefficients towards zero are ridge regression and the lasso.
+
+:::footer
+[ISLRv2](https://hastie.su.domains/ISLR2/ISLRv2_website.pdf)
+:::
+
+## Residual Sum of Squares (RSS)
+
+:::: {.columns}
+::: {.column width="50%"}
+
+The RSS measures the amount of error remaining between the regression function and the data set after the model has been run.   
+A smaller RSS represents a regression function that is well-fit to the data.
+
+
+$$
+\text{RSS} = \sum_{i=1}^n\bigg( y_i - \beta_0 - \sum_{j=1}^p \beta_j x_{ij}\bigg)^2
+$$
+
+
+:::
+::: {.column width="50%"}
+
+![](img/rss.png)
+
+:::
+:::
+:::footer
+[ISLRv2](https://hastie.su.domains/ISLR2/ISLRv2_website.pdf)
+:::
+
+# Ridge Regression
+
+## Ridge
+- Ridge regression is a regularization technique that adds a penalty term ($\lambda$) to the RSS.
+
+- It shrinks the regression coefficients towards zero, reducing their impact on the model.
+
+- It is also known as the L2 regularization
+
+- The formula for Ridge regression is:
+$$
+\sum_{i=1}^n\bigg( y_i - \beta_0 - \sum_{j=1}^p \beta_j x_{ij}\bigg)^2 + \lambda \sum_{j=1}^p \beta_j^2 
+$$
+
+:::footer
+[ISLRv2](https://hastie.su.domains/ISLR2/ISLRv2_website.pdf)
+:::
+
+## Ridge 
+
+:::: {.columns}
+::: {.column width="50%"}
+![](img/ridge_graph.png)
+
+:::
+::: {.column width="50%"}
+When $\lambda$ is extremely large, then all of the ridge coefficient estimates
+are basically zero; this corresponds to the null model that contains no predictors. 
+:::
+:::
+
+:::footer
+[ISLRv2](https://hastie.su.domains/ISLR2/ISLRv2_website.pdf)
+:::
+
+# Lasso
+
+## Lasso
+
+- Lasso (Least Absolute Shrinkage and Selection Operator) is another regularization technique that adds a penalty term ($\lambda$) to the RSS
+
+- It has a built-in feature selection property, as it can shrink coefficients to exactly zero.
+
+- It is also known as the L1 regularization
+
+
+$$
+\sum_{i=1}^n\bigg( y_i - \beta_0 - \sum_{j=1}^p \beta_j x_{ij}\bigg)^2 + \lambda \sum_{j=1}^p | \beta_j| 
+$$
+
+:::footer
+[ISLRv2](https://hastie.su.domains/ISLR2/ISLRv2_website.pdf)
+:::
+
+## Lasso
+
+:::: {.columns}
+::: {.column width="50%"}
+![](img/lasso_graph.png)
+
+:::
+::: {.column width="50%"}
+When λ = 0, then the lasso simply gives the least squares fit, and when $\lambda$ becomes sufficiently
+large, the lasso gives the null model in which all coefficient estimates equal
+zero. 
+:::
+:::
+
+:::footer
+[ISLRv2](https://hastie.su.domains/ISLR2/ISLRv2_website.pdf)
+:::
+
+## Compare Ridge vs. Lasso
+
+:::: {.columns}
+::: {.column width="50%"}
+![](img/lasso_graph.png)
+
+Depending on the value of $\lambda$, the lasso can produce a model involving any number of variables.
+
+:::
+::: {.column width="50%"}
+![](img/ridge_graph.png)
+Ridge will always include all of the variables in the model, although the magnitude of the coefficient estimates will depend on $\lambda$
+:::
+:::
+
+:::footer
+[ISLRv2](https://hastie.su.domains/ISLR2/ISLRv2_website.pdf)
+:::
+
+## The Variable Selection Property of the Lasso
+
+![](img/Contours .png)
+
+-The fact that some lasso coefficients are shrunken entirely to zero explains why the lasso performs feature selection
+
+::: {.notes}
+The least square estimate is marked as beta hat,
+The restrictive regions are in grey, the diamond region is for the lasso, the circle region is for the ridge.
+The ellipses centered around βˆ represents a contour of RSS
+As the ellipses expand, the RSS increases.
+The lasso and ridge estimates are the first points at which an ellipse contracts the grey region.
+:::
+
+:::footer
+[ISLRv2](https://hastie.su.domains/ISLR2/ISLRv2_website.pdf)
+:::
+
+## Elastic Net
+
+- Is a generalization of lasso and ridge regression
+- It combines the two penalties. 
+- The formula for Elastic Net:
+
+$$
+\sum_{i=1}^n\bigg( y_i - \beta_0 - \sum_{j=1}^p \beta_j x_{ij}\bigg)^2 + \lambda \sum_{j=1}^p \beta_j^2  + \lambda \sum_{j=1}^p | \beta_j| 
+$$
+
+:::footer
+[ISLRv2](https://hastie.su.domains/ISLR2/ISLRv2_website.pdf)
+:::
+
+## Elastic Net
+
+The advantage of the elastic net is that it **keeps the feature selection** quality from the lasso penalty as well as the **effectiveness of the ridge penalty**. 
+
+:::footer
+[Practitioner’s Guide to Data Science](https://scientistcafe.com/ids/elastic-net.html)
+:::
+
+## How do we choose the best $\lambda$?
+
+1. Using resampling methods
+ - Check the perfomance using RMSE or ROC- AUC
+2. We can check from no shrinkage to so much that we don't have predictors left (lasso)
+
+# Lasso with `tidymodels`
+![](img/woody_amazed.gif)
+
+## Task 
+
+:::: {.columns}
+::: {.column width="50%"}
+
+Determine the key predictors from a comprehensive set of 42 risky behaviors, encompassing alcohol and drug use, as well as reckless activities, with the primary objective of accurately predicting the probability of engaging in **texting and driving**. 
+
+:::
+::: {.column width="50%"}
+::: {.fragment}
+
+![](https://media.giphy.com/media/eGyJz0UnrEy3K/giphy.gif?cid=ecf05e470l48hi14w34gpqwhaddfljk9xuwn2xir0rn52323&ep=v1_gifs_search&rid=giphy.gif&ct=g)
+
+:::
+:::
+:::
+
+## The Data - `riskyBehaviors`
+
+```{r}
+#| echo: true
+library(MLearnYRBSS)
+data("riskyBehaviors")
+
+```
+
+## Data Cleaning
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|4|5|6|7|8|9|10|11|12"
+riskyBehaviors_analysis <- 
+riskyBehaviors |> 
+  mutate(
+    TextingDriving = case_when(
+      TextingDriving == 1 ~ 0, 
+      TextingDriving %in% c(2, 3, 4, 5) ~ 1, 
+      TRUE ~ NA
+  )) |> 
+  mutate(TextingDriving = factor(TextingDriving)) |> 
+  drop_na(TextingDriving) |> 
+  select(-SourceVaping, -SourceAlcohol, -SexOrientation, -DrivingDrinking,
+         -SexualAbuse, -SexualAbuseByPartner, -Grade, -Age) 
+
+```
+
+
+## Split Training - Testing 
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|3|4|6|7|9"
+#| output-location: fragment
+
+
+set.seed(1990)
+
+analysis_split <- initial_split(riskyBehaviors_analysis,
+                                stratum = TextingDriving)
+
+analysis_train <- training(analysis_split)
+analysis_test <- testing(analysis_split)
+
+analysis_split
+
+```
+
+## Lets Check Our Work
+
+```{r}
+library(janitor)
+```
+
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|4"
+#| output-location: fragment
+
+
+analysis_train |> 
+  tabyl(TextingDriving)  |> 
+  adorn_pct_formatting(0) |> 
+  adorn_totals()
+
+
+
+```
+
+:::
+
+::: {.column width="50%"}
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|4"
+#| output-location: fragment
+
+analysis_test |>  
+  tabyl(TextingDriving)  |> 
+  adorn_pct_formatting(0) |> 
+  adorn_totals()
+```
+
+:::
+:::
+
+
+## Crossvalidation 
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|3|5"
+#| output-location: fragment
+
+set.seed(1990)
+
+analysis_folds <- vfold_cv(analysis_train, v = 5) 
+analysis_folds
+```
+
+
+## Recipe
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|4|5|6|7|9"
+#| output-location: fragment
+
+texting_rec <- 
+  recipe(TextingDriving ~ ., data = analysis_train) |> 
+  step_zv(all_predictors()) |> 
+  step_impute_mode(all_nominal_predictors()) |> 
+  step_impute_mean(all_numeric_predictors()) |> 
+  step_normalize(all_numeric_predictors()) |> 
+  step_dummy(all_nominal_predictors()) 
+
+texting_rec 
+
+```
+
+## Specification
+
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|4|5|6|7|8|10"
+#| output-location: fragment
+
+texting_spec <-
+  logistic_reg(penalty = tune(), 
+               mixture = 1) |> 
+# mixture = 1 specifies a pure lasso model,
+# mixture = 0 specifies a ridge regression model, and
+# 0 < mixture < 1 specifies an elastic net model, interpolating lasso and ridge.
+# https://parsnip.tidymodels.org/reference/glmnet-details.html
+  set_engine('glmnet')
+
+texting_spec
+
+```
+
+
+
+## Workflow
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|4|6"
+#| output-location: fragment
+texting_wf <- 
+  workflow() |> 
+  add_recipe(texting_rec) |> 
+  add_model(texting_spec)
+
+texting_wf
+```
+
+
+## The Grid
+
+
+:::{.columns}
+:::{.column width="50%"} 
+
+- A Grid search systematically explores different penalty values (e.g., 0.001, 0.01, 0.1, 1, 10).
+- Model performance is evaluated for each combination of penalty values.
+:::
+
+:::{.column width="50%"}
+![](img/grid.gif)
+:::
+:::
+
+
+## The Grid
+![](https://dials.tidymodels.org/logo.png){.absolute top=0 right=0 width=80 height=90}
+
+::: panel-tabset 
+
+### 1
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3"
+#| output-location: fragment
+# Used for Dr. Balise Class
+glmnet_grid <- data.frame(penalty = 10^seq(-6, -1, length.out = 20))
+glmnet_grid
+
+```
+
+### 2
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3"
+#| output-location: fragment
+# I made it up
+penalty_grid <- grid_regular(penalty(range = c(-4, 4)), levels = 50)
+penalty_grid
+```
+
+### 3
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3"
+#| output-location: fragment
+# What I would recommend 
+lambda_grid <- grid_regular(penalty(), levels = 50)
+lambda_grid
+```
+:::
+
+## How to determine the grid?
+
+![](img/grid_search_3.png){.absolute}
+
+:::footer
+[Link to Article](https://pubmed.ncbi.nlm.nih.gov/20808728/)
+:::
+
+## How to determine the grid?
+
+![](img/grid_search_2.png){.absolute}
+
+:::footer
+[ISLR tidymodels labs](https://emilhvitfeldt.github.io/ISLR-tidymodels-labs/06-regularization.html)
+:::
+
+## Tune the Grid Using the Workflow 
+![](https://tune.tidymodels.org/logo.png){.absolute top=0 right=0 width=80 height=90}
+<br>
+<br>
+```{r}
+#| echo: true
+#| code-line-numbers: "1|3|5|6|7|8|9|10|11|12"
+#| output-location: fragment
+
+doParallel::registerDoParallel()
+
+set.seed(2023)
+
+lasso_tune <- 
+  tune_grid(
+  object = texting_wf, 
+  resamples = analysis_folds,
+  grid = lambda_grid, 
+  control = control_resamples(event_level = "second")
+)
+
+doParallel::stopImplicitCluster()
+```
+
+## Collect the Metrics
+![](https://tune.tidymodels.org/logo.png){.absolute top=0 right=0 width=80 height=90}
+<br>
+<br>
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2"
+#| output-location: fragment
+
+
+lasso_tune |> 
+  collect_metrics()
+```
+
+## Visualize the Metrics
+
+::: panel-tabset 
+
+### autoplot
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1"
+#| output-location: fragment
+autoplot(lasso_tune)
+```
+
+### ggplot
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|4|5|6"
+#| output-location: fragment
+
+lasso_tune |> 
+  collect_metrics() |> 
+  ggplot(aes(penalty, mean, color = .metric)) +
+  geom_line(linewidth = 1.5) +
+  facet_wrap(~.metric, scales = "free", nrow = 2) +
+  theme(legend.position = "none")
+```
+
+:::
+
+## Choosing our final parameter
+![](https://tune.tidymodels.org/logo.png){.absolute top=0 right=0 width=80 height=90}
+<br>
+<br>
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|4"
+#| output-location: fragment
+
+best <- lasso_tune |> 
+  select_best("roc_auc")
+
+best
+
+```
+
+## Finalize the Workflow
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|3"
+#| output-location: fragment
+
+
+final_wf <- finalize_workflow(texting_wf, best)
+
+final_wf
+```
+
+## Lets Fit!!
+
+:::{.columns}
+:::{.column width="70%"} 
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|4"
+#| output-location: fragment
+texting_fit <- 
+  fit(final_wf, data = analysis_train)
+
+texting_fit
+
+```
+
+:::
+
+:::{.column width="30%"} 
+![](img/woddy_fit.gif)
+:::
+:::
+
+## Review fit on the training data
+
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|4|6"
+#| output-location: fragment
+texting_pred <- 
+  augment(texting_fit, analysis_train) |> 
+  select(TextingDriving, .pred_class, .pred_1, .pred_0)
+
+texting_pred
+
+```
+
+## ROC plot and AUC value
+
+:::{.columns}
+:::{.column width="50%"} 
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|4|5|7"
+#| output-location: fragment
+
+roc_plot_training <- 
+  texting_pred |> 
+  roc_curve(truth = TextingDriving, .pred_1, event_level = "second") |> 
+  autoplot()
+
+roc_plot_training 
+
+```
+:::
+
+:::{.column width="50%"} 
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2"
+#| output-location: fragment
+texting_pred |> 
+  roc_auc(truth = TextingDriving,.pred_1, event_level = "second") 
+
+```
+:::
+:::
+
+## Ckeck the estimates 
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3"
+#| output-location: fragment
+
+texting_fit |> 
+  extract_fit_parsnip() |> 
+  tidy()
+
+```
+
+
+## Lets look the metrics on the resamples
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|4"
+#| output-location: fragment
+texting_fit_resamples <- 
+  fit_resamples(final_wf, resamples = analysis_folds)
+
+texting_fit_resamples
+
+```
+
+
+## Exploring the results
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|4"
+#| output-location: fragment
+collect_metrics(texting_fit_resamples)
+```
+
+
+## Lets fit on the **TEST** Data 
+
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|4|5|6|8"
+#| output-location: fragment
+
+texting_last_fit <- 
+  last_fit(final_wf,
+           split = analysis_split,
+           metrics = metric_set(accuracy, kap, roc_auc))
+
+texting_last_fit
+
+```
+
+
+## Collect the Metrics
+![](https://tune.tidymodels.org/logo.png){.absolute top=0 right=0 width=80 height=90}
+<br>
+<br>
+```{r}
+#| echo: true
+#| code-line-numbers: "1"
+#| output-location: fragment
+
+collect_metrics(texting_last_fit)
+
+```
+
+## Review Prediction on the Test Data with `yardstick`
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|5"
+#| output-location: fragment
+
+the_prediction <-  
+  texting_last_fit |> 
+  collect_predictions() |> 
+  select(-.config, -.row)
+  
+
+the_prediction 
+
+```
+
+## Review Prediction on the Test Data with `yardstick`
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|3|4|5|6"
+#| output-location: fragment
+multi_metric <- metric_set(sens, spec, accuracy, kap)
+
+multi_metric(the_prediction, 
+             truth = TextingDriving, 
+             estimate = .pred_class, 
+             event_level = "second")
+```
+
+
+## Confusion Matrix on the Test Data
+```{r}
+the_prediction %>% 
+  conf_mat(TextingDriving, .pred_class) |> 
+  autoplot(type = "heatmap")
+```
+
+## ROC curve on the Test Data
+```{r}
+
+the_prediction |> 
+  roc_curve(truth = TextingDriving, .pred_1, event_level = "second") |> 
+  autoplot()
+
+```
+
+
+## Variable Importance Plot 
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|3|4|4|5|6|7|8|9|10|11|12|13"
+#| output-location: fragment
+library(vip)
+
+texting_last_fit |> 
+  extract_fit_engine() |> 
+  vi() |> 
+  group_by(Sign) |> 
+  slice_max(Importance, n = 5) |> 
+  ungroup() |> 
+  ggplot(aes(Importance, fct_reorder(Variable, Importance), fill = Sign)) + 
+  geom_col() +
+  facet_wrap(vars(Sign), scales = "free_y") +
+  labs(y = NULL) +
+  theme(legend.position = "none")
+```
+
+## We did it! 
+
+![](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMTh3aWhnbWl5c3RkYm54OHlidjdsd2dsdnhtZDh0YzFrbjV2enBybiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/nVXzt7FSJlX7W/giphy.gif)
+
+## Review Questions
+
+::: {.fragment}
+1. Is the Residual Sum of Squares a relevant concept for L1 and L2 penalties? why?
+:::
+
+::: {.fragment}
+2. L2 regularization would be better of if we called it the squared regularization?
+:::
+
+::: {.fragment}
+3. If I want to reduce the dimensionality of a dataset I would use the _______ penalty?
+:::
+
+::: {.fragment}
+4. If I want `tidymodels` to perform a ridge regression what should I change in this code?
+
+```{r}
+#| echo: true
+review_spec <-
+  logistic_reg(penalty = tune(), 
+               mixture = tune()) |> 
+  set_engine('glmnet')
+
+```
+:::
+
+::: {.fragment}
+5. BONUS: stepwise vs. lasso 
+:::
+
+

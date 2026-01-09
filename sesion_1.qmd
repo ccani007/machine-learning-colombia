@@ -1,0 +1,948 @@
+---
+title: "Introducción a R y Quarto"
+author: "Catalina Cañizares, Ph.D. and Francisco Cardozo Ph.D."
+date: today
+format: 
+  revealjs:
+    scrollable: true
+    incremental: true
+    slide-number: true
+    width: 1600
+    height: 900
+    theme: "simple"
+    echo: true
+    chalkboard: true
+    highlight-style: github
+    code-tools: true
+    css: style-copy.css
+editor_options: 
+  chunk_output_type: console
+bibliography: ref.bib
+---
+
+> Del análisis al Reporte: Ciencia de Datos con R y Quarto© 2025 por Catalina Canizares y Francisco Cardozo está licenciado bajo Creative Commons Atribución–NoComercial–SinDerivadas 4.0 Internacional
+
+Este material está disponible gratuitamente bajo la licencia Creative Commons Atribución–NoComercial–SinDerivadas 4.0 Internacional.
+
+Para más información sobre esta licencia, visita: [Licencia Creative Commons](https://creativecommons.org/licenses/by-nc-nd/4.0/)
+
+
+
+# ¡Bienvenidos! 👋
+
+# Nosotros somos...
+
+::::{.columns}
+:::: {.column width="50%"}
+
+```{=html}
+<iframe width="1000" height="700" src="https://focardozom.github.io/" title="Webpage example"></iframe>
+```
+
+
+
+::::
+:::: {.column width="50%"}
+```{=html}
+<iframe width="1000" height="700" src="https://ccani007.github.io/ccani_website/" title="Webpage example"></iframe>
+```
+
+::::
+::::
+
+
+
+# Agenda de hoy 📋
+
+::::{.incremental}
+- Qué es un modelo predictivo? 
+- Repaso de cómo usar R y RStudio
+- Creación de nuestro primer documento en Quarto
+- Trabajo con datos en R
+- Introducción del paquete `tidyverse` y `tidymodels`
+::::
+
+## Durante los próximos 4 días vamos a: 🚀
+
+- 📊 Repasar cómo usar R y RStudio
+- 📝 Aprender a usar Quarto
+- 🔧 Aprender a usar `tidyverse` para manipulación de datos
+- 🤖 Aprender a usar `tidymodels` para machine learning
+    - Aprenderemos los siguientes modelos de Machine Learning SUPERVISADO:
+        - Regresión logística
+        - Regresión LASSO
+        - Modelos basados en árboles
+          - Random Forest
+          - XGBoost
+
+## ¿Cómo? 💡
+
+:::: {.fragment}
+::::{.incremental}
+- Este taller será principalmente práctico: ustedes seguirán mis presentaciones y programarán conmigo.
+
+- ¡Vamos a usar datos de la vida real! 📈
+
+
+::::
+::::
+
+:::: {.fragment}
+**Encuesta rápida:** ¿Qué tan familiarizado(a) estás con R?
+
+- Principiante absoluto
+
+- Algo de experiencia
+
+- Intermedio
+
+- Avanzado
+::::
+
+## Antes de empezar... ⚡
+
+Algunas aclaraciones sobre el código de conducta:
+**¡Iremos tan rápido como la persona más lenta en la sala!** 🐢
+
+- Esto significa: si no estás siguiendo, ¡por favor pregunta! 🙋‍♀️
+
+- Voy a interrumpir la clase para ayudarles a solucionar problemas en sus computadores; lo haremos hablando los pasos, así si alguien está en la misma situación podrá aprender a solucionarlo.
+
+- Si sabes cómo ayudar a tu vecino(a), ¡hazlo! 🤝
+
+- Todas las preguntas son bienvenidas, válidas, y TODAS las personas respetarán tu voz. 💫
+
+- No se permitirá ni tolerará troleo, bullying, ni ningún comportamiento irrespetuoso. ❌
+
+
+## Proyecto del módulo
+:::: {.fragment}
+::::{.incremental}
+Crear un documento html usando Quarto para analizar los datos de la Youth Risk Behavior Survey (YRBS) 2023 que incluya:
+
+1. Una breve introducción al proyecto.
+2. Una sección de resultados que muestre el desempeño del modelo y una visualización de las predicciones del modelo.
+
+
+::::
+::::
+
+
+## Objetivos de hoy
+::::{.incremental}
+- Modelos predictivos vs. descriptivos vs. diferenciales vs. inferenciales
+- Reconocer la importancia de trabajar dentro de proyectos e iniciar un nuevo proyecto en RStudio (localmente).
+- Crear el primer documento en Quarto y entender sus componentes.
+- Aprender a importar datos desde distintas fuentes al archivo Quarto.
+- Explorar un conjunto de datos e identificar diferentes tipos de variables.
+- Aprender a usar `tidyverse` para manipulación de datos
+- Intoducir `tidymodels` para machine learning
+::::
+
+
+# Tipos de modelos
+::: panel-tabset
+
+### Descriptivo
+
+- Describe o ilustra características de algunos datos.
+- Sin otro propósito que enfatizar visualmente alguna tendencia o patrón en los datos.
+
+:::footer
+[Tidy Modeling With R](https://www.tmwr.org/software-modeling.html)
+:::
+### Inferencial
+
+- Explora una hipótesis específica: se utilizan pruebas estadísticas.
+
+Un modelo inferencial parte de una conjetura o idea predefinida sobre una población y produce una conclusión estadística, como un intervalo de estimación o el rechazo de una hipótesis.
+
+- Por ejemplo, el objetivo de un ensayo clínico podría ser confirmar que una nueva terapia hace un mejor trabajo prolongando la vida.
+
+:::footer
+[Tidy Modeling With R](https://www.tmwr.org/software-modeling.html)
+:::
+### Predictivo
+
+- Produce la predicción más precisa posible.
+- Los valores predichos buscan la mayor fidelidad posible al valor real en los datos nuevos.
+
+:::footer
+[Tidy Modeling With R](https://www.tmwr.org/software-modeling.html)
+:::
+:::
+
+
+## ¿Inteligencia artificial? ¿Machine Learning? ¿Qué?
+::: {.incremental}
+:::: {.columns}
+::: {.column width="50%"}
+![](img/Aintelligence.png)
+:::
+
+
+::: {.column width="50%"}
+- **Inteligencia artificial** es el nombre de todo un campo de conocimiento.  
+
+- **Machine Learning** es una parte de la inteligencia artificial.  
+
+- **Redes neuronales** son uno de los tipos de machine learning.
+
+:::footer
+[Machine Learning for Everyone](https://vas3k.com/blog/machine_learning/)
+:::
+:::
+:::
+:::: 
+
+
+# Introducción a R y RStudio
+
+## Cómo se siente aprender R
+
+![](img/learning_r.png)
+
+
+## El mejor consejo...
+::::{.incremental}
+- El mejor consejo para trabajar en R es organizar tu trabajo dentro de proyectos.
+
+- **¿Por qué?**
+- Reproducibilidad
+- Organización
+- Más razones [aquí](https://www.tidyverse.org/blog/2017/12/workflow-vs-script/)
+::::
+
+## Pasos para crear el proyecto
+
+:::: {.fragment}
+:::: {.r-stack}
+
+![](img/1.png){.fragment fig-align="center"}
+
+![](img/2.png){.fragment fig-align="center"}
+::::
+::::
+
+## Pasos para crear el proyecto
+![](img/3.png)
+
+
+## Pasos para crear el proyecto
+
+:::: {.r-stack}
+![](img/4.png){.fragment}
+
+![](img/5.png){.fragment}
+
+::::
+
+## Pasos para crear el proyecto
+
+![](img/6.png)
+
+
+## Ahora que tenemos un proyecto
+
+- Vamos a crear un script y explorar el IDE
+
+> (Entorno de Desarrollo Integrado)
+
+:::: {.fragment}
+![](https://media.giphy.com/media/lYjA4tfvCc8UAju1Op/giphy.gif?cid=790b76114ceilsw854km4k6b0tkgvdqv0xy5sb6e5n7rratd&ep=v1_gifs_search&rid=giphy.gif&ct=g){fig-align="center"}
+::::
+
+## Creando el script
+
+:::: {.fragment}
+:::: {.r-stack}
+![](img/8.png){.fragment fig-align="center" width="60%"}
+
+![](img/9.png){.fragment fig-align="center" width="40%"}
+
+
+![](img/10.png){.fragment fig-align="center" width="70%"}
+
+::::
+::::
+
+## El IDE de RStudio
+
+![](img/11.png)
+
+## Tomemos un descanso
+
+![](https://media.giphy.com/media/jWcZAS6PyQyRJn634G/giphy.gif?cid=790b76113eswejr4wbrnqrxna9owuqa5ddd949pl2k0a79gu&ep=v1_gifs_search&rid=giphy.gif&ct=g){fig-align="center"}
+
+```{r}
+#| echo: false
+library(countdown)
+
+
+countdown(minutes = 5)
+```
+
+
+
+
+# Archivos Quarto
+
+## Inspeccionando el archivo
+
+![](img/Rmd_disect.png)
+
+
+
+# YAML{background-color="black"}
+
+# El encabezado de metadatos: <mark>YAML</mark>
+
++ Las primeras líneas del documento son el encabezado del documento.  
++ Estas líneas le dicen a R información crucial sobre cómo construir tu reporte.   
++ Todo el encabezado y todas las opciones del documento dentro de él están delimitados por las tres líneas horizontales <mark> - - - </mark> arriba y abajo.  
+
+# El encabezado de metadatos: <mark>YAML</mark>
+
+:::: columns
+:::: {.column width="50%"}
+
+![](img/YAML.png)
+::::
+:::: {.column width="50%"}
+**Actualmente nuestro encabezado es bastante básico. Incluye:**
+
+  + El título del documento; title: "Hello Quarto"
+  + Quién lo escribió: author: "Catalina Canizares"
+  + La fecha de hoy: "2024-05-30"
+  + El tipo de salida: format --> html
+  + Bibliografía
+  + Tipo y formato de citación
+::::
+::::
+
+## Diferentes ejemplos de YAML{.scrollable}
+
+:::: {.absolute}
+![](img/word.png){.fragment}
+
+![](img/ppt.png){.fragment}
+
+![](img/simple_html.png){.fragment}
+![](img/vitae.png){.fragment}
+::::
+
+# Bloques de código{background-color="black"}
+
+## Anatomía de un chunk
+
+![](img/chunk.png)
+ 
+## Opciones de chunk
+![](img/chunk_options.png){fig-align="center"}
+ 
+ *Fuente:* [Code Chunks](https://quarto.org/docs/computations/execution-options.html)
+
+## Más sobre chunks
+
+**Crea chunks como un(a) `pro`**  
+![](img/key_board.png){.fragment}
+
+## Más sobre chunks
+
+**Nombra tus chunks como un(a) `pro` usando <mark>kebab-case</mark>**
+
+![](img/coding_cases.png){width="50%"}
+
+## Ejemplo de chunk de código
+
+![](img/chunk_penguin.png)
+
+
+# Texto en Markdown{background-color="black"}
+
+## Texto en Markdown
+
+
+Ahora que tenemos un reporte con un encabezado y algo de código, necesitamos explicar qué está haciendo el código y por qué.  
+
++ Aquí entra el texto plano.
+
++ Fuera de un bloque de código, escribe lo que quieras. Incluso puedes incluir imágenes y tablas.
+
+![](img/text_penguin.png)
+
+## Texto en Markdown
+:::: columns
+:::: {.column width="50%"}
+
+![](img/text_penguin.png)
+::::
+
+:::: {.column width="50%"}
+![](img/result_text_penguin.png)
+::::
+::::
+
+## Referencias cruzadas
+:::: columns
+:::: {.column width="50%"}
+### Tablas
+
+- Siempre empiezan con <mark>`tbl-`<mark/>
+
+![](img/tbl.png){.fragment}
+
+::::
+:::: {.column width="50%"}
+### Figuras
+
+- Siempre empiezan con <mark>`fig-`<mark/>
+
+![](img/fig.png){.fragment}
+::::
+::::
+
+## Formato de texto
+
+![](img/text.png)
+
+*Fuente* [Get Started with Quarto](https://rstudio-conf-2022.github.io/get-started-quarto/materials/01-intro-quarto.html#/quarto-more-internals)
+
+## Encabezados de texto
+![](img/headings.png)
+*Fuente* [Get Started with Quarto](https://rstudio-conf-2022.github.io/get-started-quarto/materials/01-intro-quarto.html#/quarto-more-internals)
+
+
+## Pausa corta
+
+![](https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExNWplbW5tcnF0dTVzbTc5NnMyMW9qZG1mOTExYjIzMTJ2ZW45aGJzbyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/k74OUg6bPJKy2JmyoS/giphy.gif){fig-align="center"}
+
+```{r}
+#| echo: false
+library(countdown)
+
+
+countdown(minutes = 5)
+```
+
+
+
+
+## Ejercicio
+
+![](img/palmer.png)
+
+## Ejercicio
+:::: incremental
++ Vamos al proyecto que creamos
+
++ Modifica el YAML con tu información y nombra tu archivo
+
++ Revisa el YAML para que podamos ver el código y los resultados.
+::::
+
+## Ejercicio
++ Crea un chunk y escribe:
+
+```{r}
+#| eval: false
+#| code-copy: true
+
+install.packages("palmerpenguins")
+install.packages("table1")
+
+library(palmerpenguins)
+library(table1)
+
+
+```
+
+
+## Ejercicio
+
+**¿Hay diferencias entre las especies de pingüinos con respecto a la longitud de sus aletas?**
+
+
++ Crea un chunk y carga los datos de palmerpenguins
+```{r}
+#| code-copy: true
+data("penguins")
+```
+
++ Crea otro chunk, ponle nombre, y explora los datos de la longitud de aleta
+para los diferentes tipos de pingüinos con este código:
+
+```{r}
+#| eval: false
+#| code-copy: true
+table1(~ flipper_length_mm | species, data = penguins)
+```
+
++ Describe lo que ves en la tabla.
+
+## Visualicemos nuestros hallazgos
+
++ Crea otro chunk, y revisemos:
+
+```{r}
+#| eval: false
+#| code-copy: true
+
+ ggplot(
+  data = penguins,
+  aes(x = species, y = flipper_length_mm)) +
+  geom_boxplot(aes(color = species), 
+               width = 0.3,
+               show.legend = FALSE) +
+  geom_jitter(aes(color = species),
+              alpha = 0.5, 
+              show.legend = FALSE, 
+              position = position_jitter(
+                width = 0.2, seed = 0)) +
+  scale_color_manual(values = c("darkorange", "purple", "cyan4")) +
+  labs(
+    x = "Species",
+    y = "Flipper length (mm)"
+  )
+```
+
+## Estamos listos para renderizar nuestro reporte
+
+Guarda tu reporte y...
+
+![](img/knit.png)
+
+
+# Mira tu consola mientras se renderiza
+
+![](img/console.png)
+
+![](img/report.png)
+
+
+## Un poco más de esa magia reproducible
+
+```{r}
+#| echo: false
+library(palmerpenguins)
+data("penguins")
+```
+
+Dentro del texto puedes incluir código ejecutable con la sintaxis:
+
+![](img/inline.png)
+
+Por ejemplo:
+
+Hay `r nrow(penguins)` filas en el conjunto de datos `penguins`.
+
+**La verdad:**  
+![](img/inlinepenguins.png)
+
+
+## Más recursos
+
+[Sitio web de Quarto](https://quarto.org/)
+
+[R Markdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/)
+
+![](img/logo_quarto.jpeg)
+
+
+## Tomemos otro descanso
+
+![](https://media.giphy.com/media/RiWZUGcZPEKdQgrQ96/giphy.gif?cid=790b76113eswejr4wbrnqrxna9owuqa5ddd949pl2k0a79gu&ep=v1_gifs_search&rid=giphy.gif&ct=g)
+
+
+
+## Resumen
+
+- Exploramos los conceptos fundamentales de la ciencia de datos.
+- Profundizamos en la historia y evolución de R.
+- Aprendimos a crear y gestionar proyectos en RStudio.
+- Ganamos práctica trabajando con archivos Quarto.
+
+
+## Leyendo datos en nuestros archivos Quarto
+
+::::{.incremental}
+
+- R puede leer datos desde una variedad de formatos, incluyendo:
+  - Excel (por ejemplo, CSV, XLSX, TXT)
+  - SAS
+  - Stata
+  - SPSS
+  - Otros paquetes estadísticos
+
+::::
+
+## Consigamos los datos
+
+1. Desde [Excel](https://github.com/ccani007/fau_module/blob/main/data/yrbs_2021.xlsx)
+2. Desde [.csv](https://github.com/ccani007/fau_module/blob/main/data/yrbs_2021.csv)
+3. Desde [.sav](https://github.com/ccani007/fau_module/blob/main/data/yrbs_2021.sav)
+3. Desde R
+
+## Paquete `rio`: una navaja suiza para datos
+<br/>
+
+:::: {.columns}
+:::: {.column width="50%"}
+:::: {.fragment}
+
+```{r}
+#| eval: false
+#| code-copy: true
+install.packages("rio")
+```
+
+```{r}
+#| code-copy: true
+library(rio)
+```
+
+::::
+::::
+
+
+
+:::: {.column width="50%"}
+:::: {.fragment}
+
+```{r}
+#| code-copy: true
+#| eval: false
+yrbs_2021_df <- import("data/yrbs_2021.csv")
+```
+
+
+![](img/enviorment.png)
+::::
+::::
+::::
+
+
+## Paquete `rio`: una navaja suiza para datos
+
+<br/>
+
+:::: {.columns}
+:::: {.column width="50%"}
+:::: {.fragment}
+
+```{r}
+#| code-copy: true
+#| eval: false
+yrbs_2021_xlsx <- import("data/yrbs_2021.xlsx")
+```
+
+::::
+::::
+
+:::: {.column width="50%"}
+:::: {.fragment}
+
+![](img/enviorment_2.png)
+
+::::
+::::
+::::
+
+
+## Paquete `rio`: una navaja suiza para datos
+
+<br/>
+
+:::: {.columns}
+:::: {.column width="50%"}
+:::: {.fragment}
+
+```{r}
+#| code-copy: true
+#| eval: false
+yrbs_2021_sav <- import("data/yrbs_2021.sav")
+```
+
+::::
+::::
+
+:::: {.column width="50%"}
+:::: {.fragment}
+
+![](img/enviorment_3.png)
+
+::::
+::::
+::::
+
+## Exportar datos desde un paquete{.scrollable}
+
+1.
+```{r}
+#| code-copy: true
+#| eval: false
+
+install.packages("devtools")
+
+```
+
+2.
+```{r}
+#| code-copy: true
+#| eval: false
+library(devtools)
+
+install_github("ccani007/dissertationData")
+
+```
+
+3.
+```{r}
+#| code-copy: true
+
+library(dissertationData)
+
+data("clean_yrbs_2023")
+
+```
+
+:::: {.fragment}
+![](img/enviorment_4.png){fig-align="center"}
+::::
+
+## Explora el conjunto de datos
+
+- Veamos <mark>dos</mark> formas de explorar conjuntos de datos en R:
+
+:::: {.fragment}
+1. La forma más simple y tradicional:
+
+
+```{r}
+glimpse(clean_yrbs_2023)
+```
+
+::::
+
+## Explora el conjunto de datos {.scrollable}
+
+2. La forma más detallada (*en mi opinión personal*):
+
+```{r}
+# install.packages("skimr")
+library(skimr)
+skim(clean_yrbs_2023)
+```
+
+
+## Tipos de variables
+
+![](img/types_of_variables.drawio.svg)
+
+
+
+
+## ¿Cómo verlo en los datos?
+
+![](img/glimpse_types.png)
+
+## ¡Ahora te toca a ti!
+:::: {.columns}
+:::: {.column width="50%"}
+:::: {.fragment}
+En tus proyectos:
+
+1. ¡Abramos Posit Cloud y creemos nuestros proyectos!
+::::
+::::
+
+:::: {.column width="50%"}
+:::: {.fragment}
+![](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYnppYXN1M3VwZGR2dWwwaWVwN2l0b3VueWdrNDFoY2h2MDhtMjk2ciZlcD12MV9naWZzX3NlYXJjaCZjdD1n/XIqCQx02E1U9W/giphy.gif)
+::::
+::::
+::::
+
+# Introducción a `tidyverse`
+
+## ![](img/tidyverse.png){width="5%" fig-align="center"} Tidyverse 
+
+
+- Una colección de paquetes de R 📦s desarrollados por H. Wickham y colaboradores en Posit.
+
+![](img/wickham.png){fig-align="center"}
+
+
+# **Tidyverse** es una colección de paquetes de R 📦
+
+* [`ggplot2` - visualización](https://ggplot2.tidyverse.org/)
+
+* [`dplyr`, `tidyr` - manipulación de datos](https://dplyr.tidyverse.org/)
+
+* `purrr` - programación avanzada (funciones y "loops")
+
+* [`readr` - importar datos](https://readr.tidyverse.org/)
+
+* [`tibble` - formato mejorado de `data.frame`](https://tibble.tidyverse.org/)
+
+* [`forcats` - trabajar con factores](https://forcats.tidyverse.org/)
+
+* [`stringr` - trabajar con cadenas de caracteres](https://stringr.tidyverse.org/)
+
+## **Tidyverse**
+
+:::{.incremental}
+
+* Un marco para gestionar datos que busca hacer mucho más fáciles los pasos de limpieza y preparación
+
+* Características principales de un conjunto de datos “tidy”:
+    - Cada variable es una columna
+    - Cada observación es una fila
+    - Cada valor está en una celda distinta
+    
+:::
+
+## Tidy Data
+
+![](img/tidydata.png){fig-align="center"}
+
+
+
+## ¿Cuándo limpiamos los datos?
+
+![](img/data-science-workflow.png){fig-align="center"}
+
+## Flujo de trabajo en ciencia de datos con **Tidyverse**
+
+![](img/data-sciencie-workflow-packages.png){fig-align="center"}
+
+
+## El operador pipe %>% *(y luego)*
+
+![](img/pipe_1.png)
+
+## El operador pipe %>% *(y luego)*
+
+![](img/pipe_2.png)
+
+## El operador pipe %>% *(y luego)*
+
+![](img/pipe_3.png)
+
+## El operador pipe %>% *(y luego)*
+
+![](img/pipe_4.png)
+
+## El operador pipe %>% *(y luego)*
+
+::: columns
+::: {.column width="60%"}
+- Este `|>` también es un pipe
+
+-Atajo de teclado:
+
+- En Mac: command + shift + m
+- En Windows: ctrl + shift + m
+
+:::
+::: {.column width="40%"}
+![](img/pipe.png)
+
+:::
+:::
+
+## Dato curioso
+:::{.incremental}
+
+
+- El `%>%` viene de un paquete llamado `magrittr`
+- Una referencia clara al famoso cuadro “The Treachery of Images” del pintor belga René Magritte.
+
+
+::: {.r-stack}
+![](img/the-pipe.png){.fragment width="50%" fig-align="center" }
+
+:::
+:::
+
+## Diferencia entre R base y `tidyverse`
+
+- Datos de Star Wars del paquete `dplyr`
+
+::: {.fragment}
+![](https://media.giphy.com/media/dzWhPd9Zfry79cwBhn/giphy.gif?cid=ecf05e474nhidaye4mx2l8spp8ufuuwbpcy8anedf33yz50d&ep=v1_gifs_related&rid=giphy.gif&ct=g){fig-align="center" width=80%}
+
+:::
+
+## Explorando el conjunto de datos de Star Wars{.scrollable}
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1"
+#| output-location: fragment
+
+starwars
+
+```
+
+
+::: {.fragment}
+```{r}
+#| echo: true
+#| code-line-numbers: "1"
+#| output-location: fragment
+skim(starwars)
+```
+
+:::
+
+## Diferencia entre R base y `tidyverse`
+
+Calculemos el IMC (índice de masa corporal) para cada personaje del conjunto de datos
+
+::: columns
+::: {.column width="50%"}
+
+### R base 🤢
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1"
+#| output-location: fragment
+starwars$bmi <- starwars$mass/(starwars$height/100)^2
+```
+
+
+:::
+
+::: {.column width="50%"}
+
+### tidyverse 😎
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|4"
+starwars_bmi <- 
+  starwars %>% 
+  mutate(bmi = mass/((height/100)^2)) %>% 
+  select(bmi, everything()) # To see the created variable first
+```
+
+:::
+:::
+::: {.fragment}
+
+```{r}
+starwars_bmi
+```
+
+:::
+
+## ¡Nos vemos la próxima!
+
+![](https://media.giphy.com/media/jUr8EBC1eLq1oFbcBF/giphy.gif?cid=ecf05e47sepiwsspevvk5rf5cdz1wa7imclkeexbjghm0wdc&ep=v1_gifs_search&rid=giphy.gif&ct=g)
+
+
+## Referencias
+
+

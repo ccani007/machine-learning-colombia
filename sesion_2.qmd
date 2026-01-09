@@ -1,0 +1,1275 @@
+---
+title: "Introducción al Aprendizaje Automático"
+author: "Catalina Cañizares, Ph.D. and Francisco Cardozo Ph.D."
+date: today
+format: 
+  revealjs:
+    scrollable: true
+    incremental: true
+    slide-number: true
+    width: 1600
+    height: 900
+    theme: "simple"
+    echo: true
+    chalkboard: true
+    highlight-style: github
+    code-tools: true
+    css: design-1.css
+editor_options: 
+  chunk_output_type: console
+bibliography: ref.bib
+---
+
+## Sobre este material
+
+> Introducción al Aprendizaje Automático © 2024 por Catalina Canizares y Francisco Cardozo tiene licencia Creative Commons Atribución-NoComercial-SinDerivadas 4.0 Internacional
+
+Este material está disponible gratuitamente bajo la Licencia Creative Commons Atribución-NoComercial-SinDerivadas 4.0 Internacional.
+
+Para más información sobre esta licencia, visita: [Creative Commons License](https://creativecommons.org/licenses/by-nc-nd/4.0/)
+
+
+## Objetivos para la sesión 2
+
+::: {.incremental}
+- Reconocer las implicaciones (trade-offs) de las decisiones en el entrenamiento y prueba de modelos.
+- Aprender buenas prácticas para la partición y asignación de datos en el proceso de modelado.
+- Descubrir el propósito y la estructura de tidymodels.
+- Aplicar tidymodels mediante ejemplos prácticos.
+- Entender los componentes fundamentales de tidymodels.
+:::
+
+
+## Un poco de historia
+
+![](img/Story.png)
+
+:::footer
+[History, current status, and future directions of artificial intelligence](https://www.sciencedirect.com/science/article/pii/B9780128202395000024)
+:::
+
+## Aprendizaje supervisado vs no supervisado
+
+:::footer
+[Machine Learning for Everyone](https://vas3k.com/blog/machine_learning/)
+:::
+
+::: panel-tabset
+
+### Aprendizaje automático
+
+![](img/machine_learning.png){width=60\%}
+
+
+
+### No supervisado
+
+:::: {.columns}
+::: {.column width="70%"}
+
+**Algoritmos para analizar y agrupar (clusterizar) conjuntos de datos sin etiquetas**
+
+- *Clustering*: agrupa datos sin etiquetas según sus similitudes o diferencias
+
+- *Reducción de dimensionalidad:* análisis de componentes principales
+
+:::
+::: {.column width="30%"}
+![](img/unsupervised.png)
+:::
+::::
+
+### Supervisado
+
+:::: {.columns}
+::: {.column width="70%"}
+
+**Uso de conjuntos de datos etiquetados para entrenar algoritmos que clasifican datos o predicen resultados con precisión**
+
+*Hay una variable "y" o variable de resultado (outcome)*.
+
+
+Algoritmos populares:
+
+- Naive Bayes. 
+- Árboles de decisión.
+- Regresión logística.
+:::
+::: {.column width="30%"}
+![](img/supervised.png)
+
+:::
+:::: 
+:::
+
+## ¿Cómo se usa en nuestra vida diaria?
+
+:::footer
+[Machine Learning for Everyone](https://vas3k.com/blog/machine_learning/)
+:::
+
+::: panel-tabset
+
+### Ejemplo 1
+
+![](img/example_1.png)
+
+### Ejemplo 2
+![](img/example_2.png)
+
+
+### Ejemplo 3
+![](img/example_3.png)
+
+
+:::
+
+## ¿Aprendizaje automático vs. "estadística tradicional"?
+
+::: panel-tabset
+
+### Estadísticos/as
+- Se preocupan por la variabilidad.
+- Se preocupan por definir el rango de valores normales a través de muestras (el error estándar).
+- Se enfocan en estimar betas
+$$
+{y} = \alpha + \beta_1x_1 + \beta_2x_2 + \dots + \beta_nx_n + \epsilon
+$$
+
+### Personas de Machine Learning
+
+- Se preocupan por la predicción.
+
+- Se enfocan en estimar y-hat.
+  
+$$
+\hat{y} = \hat{f}(x_1)
+$$
+
+$\hat{y}$ representa la predicción resultante para $Y$.
+
+
+[Introduction to Statistical Learning](https://www.statlearning.com/)
+
+:::
+
+## Aprendizaje automático vs. "estadística tradicional"
+
+::: panel-tabset
+
+
+### Estadística
+
+![](img/output_statistics.png)
+
+
+### Aprendizaje automático
+
+![](img/ml_output.png)
+
+### Entrenamiento y prueba
+
+![](img/whole_process.png)
+
+:::
+
+## Balance (trade-off) entre sesgo y varianza
+
+- "Cuando hablamos de modelos de predicción, los errores de predicción se pueden descomponer en dos subcomponentes principales que nos importan: **error debido al \"sesgo\"** y **error debido a la \"varianza\"**." ([Fortman-Roe, 2012](http://scott.fortmann-roe.com/docs/BiasVariance.html)) 
+
+- "Existe un balance (trade-off) entre la capacidad de un modelo para minimizar el sesgo y la varianza." ([Fortman-Roe, 2012](http://scott.fortmann-roe.com/docs/BiasVariance.html))
+
+
+:::footer
+[Fortman-Roe, 2012](http://scott.fortmann-roe.com/docs/BiasVariance.html)
+:::
+
+## Balance (trade-off) entre sesgo y varianza
+
+:::: {.columns}
+::: {.column width="50%"}
+::: fragment
+
+### Sesgo
+El error debido al sesgo se entiende como la **diferencia** entre la predicción **esperada** (o promedio) de nuestro modelo y el valor **correcto** que intentamos predecir.
+
+:::
+:::
+::: {.column width="50%"}
+::: fragment
+### Varianza
+El error debido a la varianza se entiende como la variabilidad de la predicción del modelo para un punto de datos dado.
+- La varianza es cuánto varían las predicciones para un mismo punto entre distintas realizaciones del modelo.
+:::
+:::
+::::
+
+
+
+## Representación gráfica del compromiso (trade-off)
+
+![](img/bullseye.png)
+
+
+:::footer
+[Fortman-Roe, 2012](http://scott.fortmann-roe.com/docs/BiasVariance.html)
+:::
+
+## 
+
+[click here](https://mlu-explain.github.io/bias-variance/)
+
+```{=html}
+<iframe width="1000" height="700" src="https://mlu-explain.github.io/bias-variance/" title="Webpage example"></iframe>
+```
+
+
+## Comentarios finales sobre sesgo/varianza
+
+![](img/bias-variance.png)
+
+:::footer
+[Understanding the Bias-Variance Tradeoff](https://towardsdatascience.com/understanding-the-bias-variance-tradeoff-165e6942b229)
+:::
+
+## ¿Cuáles son los diferentes modelos?
+
+![](img/types.png){.absolute}
+
+:::footer
+[Machine Learning for Everyone](https://vas3k.com/blog/machine_learning/)
+:::
+
+## Entonces, ¿por dónde empezamos?
+
+:::: {.columns}
+::: {.column width="50%"}
+::: fragment
+![](img/data-science-model.svg)
+[R for Data Science](https://r4ds.had.co.nz/explore-intro.html)
+
+:::
+:::
+
+:::  {.column width="50%"}
+::: fragment
+
+![](img/tunning_process.png)
+[Explanatory Model Analysis](https://ema.drwhy.ai/modelDevelopmentProcess.html)
+:::
+
+:::
+::::
+
+## ¿Cómo usamos nuestros datos?
+
+![](https://media.tenor.com/EWRvErYGzPUAAAAM/bugs-bunny-looney-tunes.gif)
+
+## ¿Cómo usamos nuestros datos?
+
+En aprendizaje automático, dividimos los datos en conjuntos de entrenamiento y prueba:
+
+1. El conjunto de **entrenamiento** se usa para estimar los parámetros del modelo.
+
+2. El conjunto de **prueba** se usa para obtener una evaluación independiente del desempeño del modelo.
+
+🚫 PRECAUCIÓN:
+No uses el conjunto de prueba durante el entrenamiento.
+
+:::footer
+[Machine Learning with Tidymodels](https://workshops.tidymodels.org/)
+:::
+
+
+## 🤓
+![](img/validation.png)
+
+:::footer
+[Machine Learning with Tidymodels](https://workshops.tidymodels.org/)
+:::
+
+
+## 
+
+```{=html}
+<iframe width="1000" height="700" src="https://mlu-explain.github.io/train-test-validation/" title="Webpage example"></iframe>
+```
+
+
+## Métodos de remuestreo
+
+Son una herramienta que consiste en extraer muestras repetidamente de un conjunto de datos y calcular estadísticas y métricas en cada una de esas muestras.
+
+![](img/rsamples.png)
+
+:::footer
+[rsample](https://rsample.tidymodels.org/reference/index.html)
+:::
+
+
+## Validación cruzada
+Este enfoque consiste en dividir aleatoriamente el conjunto de observaciones en \(k\) pliegues (folds) de tamaño casi igual. Un pliegue se trata como conjunto de validación y el modelo se ajusta con los pliegues restantes.
+![](img/cv.png)
+
+:::footer
+[Cross-Validation: K-Fold vs. Leave-One-Out](https://www.baeldung.com/cs/cross-validation-k-fold-loo)
+:::
+
+
+## Dejar-uno-afuera (LOO)
+Se usa una sola observación para validación y el resto para ajustar el modelo.
+![](img/loocv.png)
+
+:::footer
+[Cross-Validation: K-Fold vs. Leave-One-Out](https://www.baeldung.com/cs/cross-validation-k-fold-loo)
+:::
+
+## Bootstrap
+
+![](img/boostrap.png)
+
+:::footer
+[Bootstrapping – A Powerful Resampling Method in Statistics](https://yashuseth.wordpress.com/2017/12/02/bootstrapping-a-resampling-method-in-statistics/)
+:::
+
+
+## Ajuste (tuning) de hiperparámetros
+
+| Método        | Hiperparámetro    | Descripción                                                               |
+| ------------- | ----------------- | ------------------------------------------------------------------------- |
+| Lasso         | lambda            | Fuerza de regularización                                                  |
+| KNN           | n_neighbors       | Número de vecinos a considerar                                            |
+| KNN           | weights           | Función de pesos usada en la predicción: "uniform" o "distance"           |
+| Trees         | max_depth         | Profundidad máxima del árbol                                              |
+| Trees         | min_samples_split | Número mínimo de muestras necesarias para dividir un nodo interno         |
+| Trees         | min_samples_leaf  | Número mínimo de muestras necesarias para estar en un nodo hoja           |
+| Trees         | max_features      | Número de variables a considerar al buscar la mejor división              |
+| Random Forest | n_estimators      | Número de árboles de decisión en el bosque                                |
+| Random Forest | max_depth         | Profundidad máxima de los árboles de decisión                             |
+| Random Forest | min_samples_split | Número mínimo de muestras necesarias para dividir un nodo interno         |
+| Random Forest | min_samples_leaf  | Número mínimo de muestras necesarias para estar en un nodo hoja           |
+| Random Forest | max_features      | Número de variables a considerar al buscar la mejor división              |
+
+
+## El proceso real: {.smaller}
+
+1. Recolectar datos
+
+2. Exploración y preparación de datos.
+
+3. Entrenamiento del modelo
+
+4. Evaluación del modelo: Revisar RMSE o estadísticas de tablas de contingencia (exactitud/accuracy, sensibilidad, especificidad, etc.)
+
+5. Mejora del modelo: Ajustar la preparación, reparametrizar un método o usar un método diferente
+
+6. Usar los datos de prueba para evaluar el modelo final.
+
+7. Compartir/publicar resultados
+
+## El proceso real - como imagen
+
+![](img/theprocess.svg)
+
+:::footer
+[Machine Learning with tidymodels](https://workshops.tidymodels.org/)
+:::
+
+## ¿Cómo implementar todo esto?
+
+![](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOTMxdWJnMnV4dWkyaGhxY3FlaWtidXBpdXp2dml5ZzFsN2h6Y2lnayZlcD12MV9naWZzX3NlYXJjaCZjdD1n/CjmvTCZf2U3p09Cn0h/giphy.gif)
+
+# Usando tidymodels!!
+
+ 
+## ¿Qué es [`tidymodels`](https://tidymodels.tidymodels.org/index.html)?
+
+`tidymodels` es un “meta-paquete” para modelado y análisis estadístico que comparte la filosofía de diseño, la gramática y las estructuras de datos del `tidyverse`.
+
+
+**Desarrollado por**
+
+:::: {.columns}
+::: {.column width="50%"}
+![](img/kuhn.png){.small width=50%}
+
+Max Kuhn
+
+:::
+ 
+::: {.column width="50%"}
+![](img/julia.png){.small width=50%}
+ 
+ Julia Silge 
+ 
+:::
+::::
+
+## ¿Cuándo podemos empezar a jugar con `tidymodels`?
+
+![](img/tidymodels.png)
+
+
+
+## Instalación de tidymodels
+
+```{r}
+#| eval: false
+#| echo: true
+install.packages("tidymodels")
+```
+
+```{r}
+#| echo: true
+library(tidymodels)
+```
+
+Al cargar el paquete, se muestran las versiones y los conflictos:
+
+![](img/loading-tidymodels.png)
+
+## El ecosistema
+
+![](img/ecosystem.png)
+
+:::footer
+[Tidymodels Ecosystem Tutorial](https://rpubs.com/chenx/tidymodels_tutorial)
+:::
+
+
+## ¿Por qué vale la pena?
+
+1. Siguen la sintaxis y los principios de diseño del tidyverse
+2. Automatizan tareas como la partición de datos, la validación cruzada y el ajuste de parámetros
+3. Son el resultado de un esfuerzo monumental de más de quince años e incorporan [doscientos treinta y ocho](https://topepo.github.io/caret/available-models.html) modelos predictivos en un marco común
+
+:::footer
+[Reference: The case for tidymodels](https://rviews.rstudio.com/2020/04/21/the-case-for-tidymodels/)
+:::
+
+## ¿Cuál es el “gran asunto” con los 238 modelos?
+
+ Yo ❤️ R pero...
+ 
+ Me 🤯 la sintaxis idiosincrática desarrollada para distintos algoritmos de modelado.
+ 
+```{r}
+#| eval: false
+#| echo: true
+
+lm_lm <- lm(x ~ . data = df)
+lm_glm <- glm(x ~ . data = df, family = gaussian)
+lm_caret <- train(x ~ . data = df, method = lm)
+```
+
+## Más inconsistencia 🤢
+
+![](img/inconsistency)
+
+:::footer
+Dr. Raymond Balise Slides for BST 692-2022
+:::
+
+
+## Más inconsistencia 🤢
+**Mismo modelo, diferentes paquetes**
+
+El mismo problema persiste si intentas implementar el mismo modelo usando paquetes alternativos.
+
+::: panel-tabset 
+
+:::{.footer}
+[ML with Tidymodels](https://simonschoe.github.io/ml-with-tidymodels/#1 )
+:::
+
+### `randomForest`
+- **Number of predictors:** mtry
+- **Number of trees:** ntree
+- **Number of split points:** nodesize
+
+### `ranger`
+- **Number of predictors:** mtry
+- **Number of trees:** num.trees
+- **Number of split points:** min.node.size
+
+### `sparklyr`
+- **Number of predictors:** feature_subset_strategy
+- **Number of trees:** num_trees
+- **Number of split points:** min_instances_per_node
+
+:::
+
+## Consistencia con `tidymodels` 😎
+
+:::: {.columns}
+::: {.column width="70%"}
+
+Con el paquete `parsnip` tenemos un marco que ahorra tiempo para explorar múltiples modelos.
+
+Ejemplo:
+
+```{r}
+#| eval: false
+#| echo: true
+
+# Logistic Regression
+logistic_reg_glm_spec <-
+  logistic_reg() %>%
+  set_engine('glm') %>%
+  set_mode('classification')
+
+# Decision Tree
+decision_tree_rpart_spec <-
+  decision_tree(
+    tree_depth = tune(),
+    min_n = tune(),
+    cost_complexity = tune()
+  ) %>%
+  set_engine("rpart") %>%
+  set_mode("classification")
+
+# Bagged MARS Model 
+bag_mars_earth_spec <-
+  bag_mars() %>%
+  set_engine('earth') %>%
+  set_mode('classification')
+
+# Naive Bayes
+naive_Bayes_naivebayes_spec <-
+  naive_Bayes(smoothness = tune(), Laplace = tune()) %>%
+  set_engine('naivebayes') %>%
+  set_mode('classification')
+
+# Random Forest
+rand_forest_randomForest_spec <-
+  rand_forest(mtry = tune(), min_n = tune()) %>%
+  set_engine('randomForest') %>%
+  set_mode('classification')
+```
+:::
+
+::: {.column width="30%"}
+![](https://parsnip.tidymodels.org/logo.png)
+:::
+::::
+
+## Si todavía no te he convencido
+
+:::: {.columns}
+::: {.column width="70%"}
+
+El verdadero poder de `tidymodels` está en el paquete `recipes`.
+
+
+![](https://recipes.tidymodels.org/logo.png)
+
+
+:::
+::: {.column width="30%"}
+
+![](https://media.tenor.com/9axwaN_W9_8AAAAC/baking-cake.gif)
+:::
+::::
+
+## ![](https://recipes.tidymodels.org/logo.png)
+
+
+1. Vincula una secuencia de pasos de preprocesamiento a un conjunto de datos de entrenamiento.
+
+2. Define los roles que las variables van a desempeñar en la matriz de diseño.
+
+3. Especifica qué limpieza de datos debe ocurrir y qué ingeniería de características (feature engineering) se debe realizar.
+
+
+## Un Resumen
+
+:::: {.columns}
+::: {.column width="70%"}
+
+1. Sabemos qué es `tidymodels`
+2. Entendemos su importancia
+3. Empecemos a programar...
+:::
+
+
+::: {.column width="30%"}
+
+![](https://media2.giphy.com/media/13GIgrGdslD9oQ/giphy.gif)
+
+:::
+::::
+
+
+## Repaso de regresión logística
+
+::: fragment
+**La regresión logística...**
+
+- es un algoritmo de aprendizaje supervisado que puede usarse para *clasificar datos* en categorías o clases, **prediciendo la probabilidad** de que una observación pertenezca a una clase particular según sus características.
+- se usa con frecuencia para clasificación binaria; es decir, determinar a cuál de dos grupos pertenece un punto de datos.
+
+:::
+
+
+## 
+
+```{=html}
+<iframe width="1000" height="700" src="https://mlu-explain.github.io/logistic-regression/" title="Webpage example"></iframe>
+```
+
+# Un ejemplo real... no tan real
+
+## Pregunta de investigación
+
+¿Los comportamientos saludables (como dieta, sueño, actividad física y horas jugando videojuegos) se asocian con niveles altos de concentración en adolescentes?
+
+- Resultado (outcome): dificultad para concentrarse
+- Predictores: comportamientos saludables
+
+
+## Datos
+
+2019 Youth Risk Behavioral Surveillance System 
+
+
+![](img/ml-package.png)
+
+
+
+## Cargar librerías
+
+```{r}
+#| echo: true
+
+library(MLearnYRBSS)
+library(gt)
+suppressPackageStartupMessages(library(gtsummary))
+library(skimr)
+suppressPackageStartupMessages(library(tidyverse))
+```
+
+### Cargar los datos
+
+```{r}
+#| echo: true
+data("healthyBehaviors")
+```
+
+```{r}
+healthyBehaviors_df <-
+  healthyBehaviors |> 
+  select(
+    Sex, Grade, SexOrientation, DifficultyConcentrating, DrinkFruitJuice, EatFruit, EatSalad,
+    EatPotatoes, EatCarrots, EatOtherVeggies, DrinkSoda,
+    DrinkMilk, EatBreakfast, PhysicalActivity, HoursTV,
+    HoursVideoGames, HoursSleep, SportsDrinks, DrinksWater,
+    ConcussionSports
+  )
+```
+
+## Análisis exploratorio de datos (EDA)
+
+```{r}
+#| echo: true
+#| eval: false
+skim(healthyBehaviors_df)
+```
+
+## Análisis exploratorio de datos (EDA)
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24"
+#| output-location: fragment
+#| warning: false
+#| error: false
+
+healthyBehaviors_df |>
+  select(
+    Sex, Grade, SexOrientation, DifficultyConcentrating
+  ) |>
+  filter(!is.na(DifficultyConcentrating)) |>
+  mutate(
+    DifficultyConcentrating = case_when(
+      DifficultyConcentrating == 0 ~ "No",
+      DifficultyConcentrating == 1 ~ "Yes"
+    )
+  ) |>
+  tbl_summary(
+    by = DifficultyConcentrating, 
+    percent = "row"
+  ) |>
+  modify_header(label ~ "**Variable**") |>
+  modify_caption(
+    "**Table 1. Demographic Characteristics by Difficulty Concentrating**"
+  ) |>
+  add_p(pvalue_fun = ~ style_pvalue(.x, digits = 2)) |>
+  as_gt() |>
+  tab_source_note(
+  gt::md("*Data source: MLearnYRBSS::healthyBehaviors*")
+  )
+```
+
+## Análisis exploratorio de datos (EDA)
+
+Exploremos la relación entre la dificultad para concentrarse, la dieta, el sueño, la actividad física y las horas jugando videojuegos.
+
+```{r}
+#| echo: true
+#| output-location: fragment
+#| warning: false
+#| error: false
+
+healthyBehaviors |>
+  filter(!is.na(DifficultyConcentrating)) |>
+  mutate(
+    DifficultyConcentrating = case_when(
+      DifficultyConcentrating == 0 ~ "No",
+      DifficultyConcentrating == 1 ~ "Sí"
+    )
+  ) |>
+  group_by(DifficultyConcentrating) |>
+  summarise(across(
+    c(
+      DrinkFruitJuice, EatFruit, EatSalad,
+      EatPotatoes, EatCarrots, EatOtherVeggies, DrinkSoda,
+      DrinkMilk, EatBreakfast, PhysicalActivity, HoursTV,
+      HoursVideoGames, HoursSleep, SportsDrinks, DrinksWater,
+      ConcussionSports
+    ), mean,
+    na.rm = TRUE
+  )) |>
+  pivot_longer(-DifficultyConcentrating) |>
+  ggplot(aes(value,
+    fct_reorder(name, value),
+    fill = DifficultyConcentrating
+  )) +
+  geom_col(alpha = 0.9, position = "dodge", width = 0.7) +
+  scale_fill_manual(
+    values = c("No" = "#2E86AB", "Sí" = "#E63946"),
+    name = "Dificultad para\nconcentrarse"
+  ) +
+  scale_x_continuous(expand = c(0, 0)) +
+  labs(
+    x = "Promedio",
+    y = NULL,
+    title = "Comportamientos saludables por dificultad de concentración"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    legend.position = "top",
+    legend.title = element_text(face = "bold", size = 11),
+    plot.title = element_text(face = "bold", size = 13, hjust = 0),
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.text.y = element_text(size = 10)
+  )
+```
+
+## Bloques de construcción de tidymodels
+
+![](img/Recipe.png)
+
+# 1. Recipes: herramientas de preprocesamiento
+
+## Recetas
+![](https://recipes.tidymodels.org/logo.png){.absolute top=0 right=0 width=80 height=100}
+
+- Todo modelo requiere una matriz de diseño como entrada.
+- Matriz de diseño: datos “tidy”, con una observación por fila y un predictor por columna.
+
+:::{.fragment}
+ 
+ **SIN EMBARGO**
+
+Las matrices de diseño no siempre vienen en el formato requerido:
+
+- KNN necesita predictores normalizados
+- Un modelo lineal requiere que los predictores categóricos estén codificados one-hot
+- La regresión logística *necesita* datos completos (imputación)
+
+:::
+
+## Recetas
+
+
+```{r}
+#| echo: true
+#| code-line-numbers: "2|3|4|5|6|7|9"
+
+healthy_recipe <- 
+  recipe(formula = DifficultyConcentrating ~ ., data = healthyBehaviors_df) |>
+  step_zv(all_predictors()) |> 
+  step_impute_mode(all_nominal_predictors()) |>
+  step_impute_mean(all_numeric_predictors()) |>
+  step_corr(all_numeric_predictors(), threshold = 0.7) |> 
+  step_dummy(all_nominal_predictors()) 
+
+healthy_recipe
+
+```
+
+## `healthy_recipe`
+```
+── Recipe ───────────────────────────────────────────────────────────────────────────
+
+── Inputs 
+Number of variables by role
+outcome:    1
+predictor: 19
+
+── Operations 
+• Zero variance filter on: all_predictors()
+• Mode imputation for: all_nominal_predictors()
+• Mean imputation for: all_numeric_predictors()
+• Correlation filter on: all_numeric_predictors()
+• Dummy variables from: all_nominal_predictors()
+```
+
+
+## Para modelos futuros, ¿cómo sabré qué pasos seguir?
+
+:::incremental
+
+1. Conoce tus datos y SIEMPRE excluye los ID con `update_role`
+
+2. Revisa la tabla de preprocesamiento con [esta herramienta](https://www.tmwr.org/pre-proc-table.html)
+
+3. Usa el paquete [`usemodels`](https://www.tidyverse.org/blog/2020/09/usemodels-0-0-1/)
+
+
+:::
+
+## Programación imperativa vs declarativa
+
+La receta solo ha “dibujado” un plano de lo que R debería hacer con tus datos. Aún NO has realizado ningún preprocesamiento.
+
+
+:::: {.columns}
+::: {.column width="50%"}
+**Programación imperativa**
+
+- Se ingresa un comando y se ejecuta inmediatamente
+:::
+::: {.column width="50%"}
+**Programación declarativa**
+
+- Se especifica un comando y la ejecución ocurre más adelante
+:::
+::::
+
+:::{.footer}
+[ML with Tidymodels](https://simonschoe.github.io/ml-with-tidymodels/#1 )
+:::
+
+## Hornear la receta -- programación declarativa
+![](https://recipes.tidymodels.org/logo.png){.absolute top=0 right=0 width=80 height=100}
+
+¡Este paso es crucial!
+
+Debes revisar tus datos después de la receta para asegurarte de que las transformaciones se vean bien.
+
+```{r}
+#| echo: true
+#| output-location: fragment
+
+healthy_recipe |> 
+  prep() |> 
+  bake(new_data = healthyBehaviors_df)
+
+```
+
+
+## `Recipes` en UNA imagen
+
+![](img/recipe_process.png)
+
+:::footer
+[Allison Horst](https://github.com/allisonhorst/stats-illustrations)
+:::
+
+
+# 2. `parsnip`: funciones de modelado y análisis
+
+## `Parsnip`
+![](https://parsnip.tidymodels.org/logo.png){.absolute top=0 right=0 width=80 height=90}
+Una especificación de modelo tiene tres componentes:
+
+1. **Tipo:** el tipo de modelo que se va a ajustar (p. ej., regresión lineal/logit, random forest o SVM).
+2. **Modo:** el tipo de predicción: regresión o clasificación.
+3. **Motor (engine):** el motor computacional implementado en `R`, que normalmente corresponde a una función (`lm`, `glm`), un paquete (p. ej., `rpart`, `glmnet`, `randomForest`) o un marco de cómputo (p. ej., `Stan`, `sparklyr`).
+
+
+[Revisar los modelos y motores soportados](https://www.tidymodels.org/find/parsnip/) 
+
+:::{.footer}
+[ML with Tidymodels](https://simonschoe.github.io/ml-with-tidymodels/#1 )
+:::
+
+## Definir las especificaciones ![](https://parsnip.tidymodels.org/logo.png){.absolute top=0 right=0 width=80 height=90}
+
+
+```{r}
+#| echo: true
+#| output-location: fragment
+#| code-line-numbers: "2|3|4"
+
+healthy_spec <- 
+  logistic_reg() %>% 
+  set_mode("classification") %>% 
+  set_engine("glm") 
+
+healthy_spec
+```
+
+
+## `parsnip` en UNA imagen
+
+![](https://github.com/allisonhorst/stats-illustrations/blob/main/rstats-artwork/parsnip.png?raw=true)
+
+:::footer
+[Allison Horst](https://github.com/allisonhorst/stats-illustrations)
+:::
+
+
+# 3. Workflows
+
+## Workflows (flujos de trabajo)
+![](https://workflows.tidymodels.org/logo.png){.absolute top=0 right=0 width=80 height=90}
+
+Agrupa la receta de preprocesamiento y la especificación del modelo.
+Es especialmente útil cuando tienes distintas combinaciones de recetas y especificaciones usando el paquete `workflowsets`.
+
+## Workflows (flujos de trabajo)
+
+```{r}
+#| echo: true
+#| output-location: slide
+#| code-line-numbers: "2|3|4"
+healthy_workflow <- 
+  workflow() %>% 
+  add_recipe(healthy_recipe) %>% 
+  add_model(healthy_spec) 
+
+healthy_workflow
+```
+
+
+
+## Ajustar (fit)
+Cuando llamamos a `fit()` sobre un objeto workflow, tidymodels realiza los siguientes pasos:
+
+- Ajusta la receta al conjunto de entrenamiento y produce las estimaciones “in-sample” (`prep()`).
+- Aplica la receta ajustada al conjunto de entrenamiento para procesar los predictores (`bake()`).
+- Entrena el modelo especificado sobre el conjunto transformado.
+
+```{r}
+#| echo: true
+#| output-location: fragment
+#| code-line-numbers: "1|2|4"
+
+mod_1 <- 
+  fit(healthy_workflow, data = healthyBehaviors_df) 
+
+mod_1
+
+```
+
+## Tidy
+
+```{r}
+#| echo: true
+#| output-location: slide
+#| code-line-numbers: "1|2|3|4|5|6|8"
+
+tidy_model <- 
+  mod_1 |>
+  tidy(exponentiate = TRUE,
+       conf.int = TRUE, 
+       conf.level = .95) |>
+  mutate(p.value = scales::pvalue(p.value))
+
+tidy_model
+```
+
+
+## `glance`
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2"
+#| output-location: fragment
+
+mod_1 |>
+  glance()
+```
+
+:::{.footer}
+[ML with Tidymodels](https://simonschoe.github.io/ml-with-tidymodels/#1 )
+:::
+
+## Entendiendo los tamaños de efecto
+
+```{r}
+#| echo: true
+#| output-location: slide
+
+tidy_model|>
+  filter(term != "(Intercept)") |>
+  ggplot(aes(reorder(term, estimate),
+    y = (estimate),
+    ymin = conf.low,
+    ymax = conf.high
+  )) +
+  geom_pointrange(alpha = 0.8) +
+  labs(
+    y = "Odd Ratio CI",
+    title = "Multiple Logistic Regression Model for \nDifficulty Concentrating",
+    x = ""
+  ) +
+  ggeasy::easy_center_title() +
+  geom_hline(yintercept = 1, linetype = "dashed") +
+  coord_flip() +
+  theme_minimal(base_size = 13) +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
+  theme(legend.position = "none")
+```
+
+
+
+## La predicción
+
+```{r}
+#| echo: true
+#| output-location: fragment
+#| code-line-numbers: "1|2"
+
+augment(mod_1, healthyBehaviors_df) |> 
+  select(DifficultyConcentrating, .pred_class, .pred_0, .pred_1)
+```
+
+## Matriz de confusión
+
+```{r}
+#| echo: true
+#| output-location: fragment
+#| code-line-numbers: "1|2|3"
+
+augment(mod_1, healthyBehaviors_df) |> 
+  select(DifficultyConcentrating, .pred_class, .pred_0, .pred_1) |> 
+  conf_mat(DifficultyConcentrating, .pred_class)
+```
+
+## Una regresión logística rápida con Tidymodels
+
+```{r}
+#| echo: true
+#| code-line-numbers: "2|3|4|5"
+#| output-location: slide
+
+quick_fit <- 
+  logistic_reg() |> 
+  set_mode("classification") |> 
+  set_engine("glm") |> 
+  fit(DifficultyConcentrating ~ ., data = healthyBehaviors_df)
+
+quick_fit
+
+```
+
+
+## Visualizar con `tidy`
+
+```{r}
+#| echo: true
+#| output-location: slide
+
+quick_fit |> 
+  tidy(exponentiate = TRUE, 
+       conf.int = TRUE, 
+       conf.level = .95) |>
+  mutate(p.value = scales::pvalue(p.value)) |> 
+  select(-c(`conf.low`, `conf.high`)) |> 
+  print(n=25)
+```
+
+# Ahora intentemos dividir nuestros datos y probar diferentes métodos de remuestreo
+
+
+## Los datos - `riskyBehaviors`
+
+```{r}
+#| echo: true
+#| output-location: fragment
+
+data("riskyBehaviors")
+glimpse(riskyBehaviors)
+```
+
+## Tarea
+
+- Predecir la probabilidad de que un/a adolescente lleve un arma a la escuela
+
+```{r}
+#| echo: true
+#| output-location: slide
+
+# Limpieza de datos: transformar el resultado (outcome) a binario y eliminar NAs en el resultado
+
+riskyBehaviors_analysis <- 
+riskyBehaviors |> 
+  mutate(
+    WeaponCarryingSchool = case_when(
+      WeaponCarrying == 1 ~ "No", 
+      WeaponCarrying %in% c(2, 3, 4, 5) ~ "Yes", 
+      TRUE ~ NA_character_
+  )) |> 
+  drop_na(WeaponCarryingSchool)
+
+riskyBehaviors_analysis |> 
+  ggplot(aes(x = WeaponCarryingSchool )) +
+  geom_bar() +
+  coord_flip() +
+  theme_classic()
+```
+
+
+## División: entrenamiento vs prueba
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|3|4|5|6|7|8|9"
+#| output-location: fragment
+
+
+set.seed(1990)
+
+analysis_split <- initial_split(riskyBehaviors_analysis,
+                                strata = WeaponCarryingSchool)
+
+analysis_train <- training(analysis_split)
+analysis_test <- testing(analysis_split)
+
+analysis_split
+
+```
+
+## Revisemos nuestro trabajo
+
+```{r}
+library(janitor)
+```
+
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|4"
+#| output-location: fragment
+
+
+analysis_train |> 
+  tabyl(WeaponCarryingSchool)  |> 
+  adorn_pct_formatting(0) |> 
+  adorn_totals()
+
+
+
+```
+
+:::
+
+::: {.column width="50%"}
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2|3|4"
+#| output-location: fragment
+
+analysis_test |>  
+  tabyl(WeaponCarryingSchool)  |> 
+  adorn_pct_formatting(0) |> 
+  adorn_totals()
+```
+
+:::
+::::
+
+# Remuestreo
+
+::: panel-tabset
+
+### Validación cruzada
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|3|5"
+#| output-location: fragment
+
+set.seed(1990)
+
+analysis_folds <- vfold_cv(analysis_train, 
+                           v = 5) 
+analysis_folds
+```
+
+
+### Bootstrapping
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|3|5"
+#| output-location: fragment
+
+set.seed(1990)
+
+analysis_boot <- bootstraps(analysis_train,
+                            times = 1000)
+analysis_boot
+```
+
+
+### Dejar-uno-afuera (LOO)
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|3|5"
+#| output-location: fragment
+
+set.seed(1990)
+
+analysis_loc <- loo_cv(analysis_train)
+
+analysis_loc
+
+```
+
+::: 
+
+## Resumen
+
+:::: {.columns}
+::: {.column width="70%"}
+
+1. ¿Entendemos qué es `tidymodels`?
+2. ¿Vale la pena escribir un poco más? ¿por qué?
+3. ¿Cuáles son los bloques de construcción?
+4. ¿Hay una forma rápida de usar `tidymodels`?
+5. ¿Es difícil crear los objetos de remuestreo?
+
+:::
+::: {.column width="30%"}
+![](img/wow.gif)
+:::
+::::
+
+
+
+## ¿Quieres practicar?
+
+[Click Here](https://www.tidymodels.org/learn/)
+
+![](img/practice.gif)
+

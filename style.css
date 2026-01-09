@@ -1,0 +1,6 @@
+
+.reveal a {
+    color: #E5446D;
+    text-decoration: none;
+    transition: color .15s ease;
+}

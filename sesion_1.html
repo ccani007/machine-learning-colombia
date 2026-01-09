@@ -1,0 +1,2985 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="sesion_1_files/libs/clipboard/clipboard.min.js"></script>
+<script src="sesion_1_files/libs/quarto-html/tabby.min.js"></script>
+<script src="sesion_1_files/libs/quarto-html/popper.min.js"></script>
+<script src="sesion_1_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="sesion_1_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="sesion_1_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="sesion_1_files/libs/quarto-html/quarto-syntax-highlighting-6fbc3b7d0ac83ab8a043646d6c6d94a5.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.6.33">
+
+  <meta name="author" content="Catalina Cañizares, Ph.D.&nbsp;and Francisco Cardozo Ph.D.">
+  <meta name="dcterms.date" content="2026-01-09">
+  <title>Introducción a R y Quarto</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="sesion_1_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="sesion_1_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="sesion_1_files/libs/revealjs/dist/theme/quarto-077ed0fd3b2b6c9aff5defd058debd56.css">
+  <link rel="stylesheet" href="style-copy.css">
+  <link href="sesion_1_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="sesion_1_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="sesion_1_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="sesion_1_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="sesion_1_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="sesion_1_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <link href="sesion_1_files/libs/countdown-0.4.0/countdown.css" rel="stylesheet">
+  <script src="sesion_1_files/libs/countdown-0.4.0/countdown.js"></script>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Introducción a R y Quarto</h1>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Catalina Cañizares, Ph.D.&nbsp;and Francisco Cardozo Ph.D. 
+</div>
+</div>
+</div>
+
+  <p class="date">2026-01-09</p>
+</section>
+<section class="slide level2">
+
+<blockquote>
+<p>Del análisis al Reporte: Ciencia de Datos con R y Quarto© 2025 por Catalina Canizares y Francisco Cardozo está licenciado bajo Creative Commons Atribución–NoComercial–SinDerivadas 4.0 Internacional</p>
+</blockquote>
+<p>Este material está disponible gratuitamente bajo la licencia Creative Commons Atribución–NoComercial–SinDerivadas 4.0 Internacional.</p>
+<p>Para más información sobre esta licencia, visita: <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">Licencia Creative Commons</a></p>
+</section>
+<section id="bienvenidos" class="title-slide slide level1 center">
+<h1>¡Bienvenidos! 👋</h1>
+
+</section>
+
+<section id="nosotros-somos" class="title-slide slide level1 center">
+<h1>Nosotros somos…</h1>
+<div class="columns">
+<div class="column" style="width:50%;">
+<iframe width="1000" height="700" src="https://focardozom.github.io/" title="Webpage example"></iframe>
+</div><div class="column" style="width:50%;">
+<iframe width="1000" height="700" src="https://ccani007.github.io/ccani_website/" title="Webpage example"></iframe>
+</div></div>
+</section>
+
+<section>
+<section id="agenda-de-hoy" class="title-slide slide level1 center">
+<h1>Agenda de hoy 📋</h1>
+<div>
+<ul>
+<li class="fragment">Qué es un modelo predictivo?</li>
+<li class="fragment">Repaso de cómo usar R y RStudio</li>
+<li class="fragment">Creación de nuestro primer documento en Quarto</li>
+<li class="fragment">Trabajo con datos en R</li>
+<li class="fragment">Introducción del paquete <code>tidyverse</code> y <code>tidymodels</code></li>
+</ul>
+</div>
+</section>
+<section id="durante-los-próximos-4-días-vamos-a" class="slide level2">
+<h2>Durante los próximos 4 días vamos a: 🚀</h2>
+<ul>
+<li class="fragment">📊 Repasar cómo usar R y RStudio</li>
+<li class="fragment">📝 Aprender a usar Quarto</li>
+<li class="fragment">🔧 Aprender a usar <code>tidyverse</code> para manipulación de datos</li>
+<li class="fragment">🤖 Aprender a usar <code>tidymodels</code> para machine learning
+<ul>
+<li class="fragment">Aprenderemos los siguientes modelos de Machine Learning SUPERVISADO:
+<ul>
+<li class="fragment">Regresión logística</li>
+<li class="fragment">Regresión LASSO</li>
+<li class="fragment">Modelos basados en árboles
+<ul>
+<li class="fragment">Random Forest</li>
+<li class="fragment">XGBoost</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="cómo" class="slide level2">
+<h2>¿Cómo? 💡</h2>
+<div class="fragment">
+<div>
+<ul>
+<li class="fragment"><p>Este taller será principalmente práctico: ustedes seguirán mis presentaciones y programarán conmigo.</p></li>
+<li class="fragment"><p>¡Vamos a usar datos de la vida real! 📈</p></li>
+</ul>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Encuesta rápida:</strong> ¿Qué tan familiarizado(a) estás con R?</p>
+<ul>
+<li class="fragment"><p>Principiante absoluto</p></li>
+<li class="fragment"><p>Algo de experiencia</p></li>
+<li class="fragment"><p>Intermedio</p></li>
+<li class="fragment"><p>Avanzado</p></li>
+</ul>
+</div>
+</section>
+<section id="antes-de-empezar" class="slide level2">
+<h2>Antes de empezar… ⚡</h2>
+<p>Algunas aclaraciones sobre el código de conducta: <strong>¡Iremos tan rápido como la persona más lenta en la sala!</strong> 🐢</p>
+<ul>
+<li class="fragment"><p>Esto significa: si no estás siguiendo, ¡por favor pregunta! 🙋‍♀️</p></li>
+<li class="fragment"><p>Voy a interrumpir la clase para ayudarles a solucionar problemas en sus computadores; lo haremos hablando los pasos, así si alguien está en la misma situación podrá aprender a solucionarlo.</p></li>
+<li class="fragment"><p>Si sabes cómo ayudar a tu vecino(a), ¡hazlo! 🤝</p></li>
+<li class="fragment"><p>Todas las preguntas son bienvenidas, válidas, y TODAS las personas respetarán tu voz. 💫</p></li>
+<li class="fragment"><p>No se permitirá ni tolerará troleo, bullying, ni ningún comportamiento irrespetuoso. ❌</p></li>
+</ul>
+</section>
+<section id="proyecto-del-módulo" class="slide level2 scrollable">
+<h2>Proyecto del módulo</h2>
+<div class="fragment">
+<div>
+<p>Crear un documento html usando Quarto para analizar los datos de la Youth Risk Behavior Survey (YRBS) 2023 que incluya:</p>
+<ol type="1">
+<li class="fragment">Una breve introducción al proyecto.</li>
+<li class="fragment">Una sección de resultados que muestre el desempeño del modelo y una visualización de las predicciones del modelo.</li>
+</ol>
+</div>
+</div>
+</section>
+<section id="objetivos-de-hoy" class="slide level2">
+<h2>Objetivos de hoy</h2>
+<div>
+<ul>
+<li class="fragment">Modelos predictivos vs.&nbsp;descriptivos vs.&nbsp;diferenciales vs.&nbsp;inferenciales</li>
+<li class="fragment">Reconocer la importancia de trabajar dentro de proyectos e iniciar un nuevo proyecto en RStudio (localmente).</li>
+<li class="fragment">Crear el primer documento en Quarto y entender sus componentes.</li>
+<li class="fragment">Aprender a importar datos desde distintas fuentes al archivo Quarto.</li>
+<li class="fragment">Explorar un conjunto de datos e identificar diferentes tipos de variables.</li>
+<li class="fragment">Aprender a usar <code>tidyverse</code> para manipulación de datos</li>
+<li class="fragment">Intoducir <code>tidymodels</code> para machine learning</li>
+</ul>
+</div>
+</section></section>
+<section>
+<section id="tipos-de-modelos" class="title-slide slide level1 center">
+<h1>Tipos de modelos</h1>
+<div class="panel-tabset">
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Descriptivo</a></li><li><a href="#tabset-1-2">Inferencial</a></li><li><a href="#tabset-1-3">Predictivo</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1">
+<ul>
+<li class="fragment">Describe o ilustra características de algunos datos.</li>
+<li class="fragment">Sin otro propósito que enfatizar visualmente alguna tendencia o patrón en los datos.</li>
+</ul>
+<div class="footer">
+<p><a href="https://www.tmwr.org/software-modeling.html">Tidy Modeling With R</a></p>
+</div>
+</div>
+<div id="tabset-1-2">
+<ul>
+<li class="fragment">Explora una hipótesis específica: se utilizan pruebas estadísticas.</li>
+</ul>
+<p>Un modelo inferencial parte de una conjetura o idea predefinida sobre una población y produce una conclusión estadística, como un intervalo de estimación o el rechazo de una hipótesis.</p>
+<ul>
+<li class="fragment">Por ejemplo, el objetivo de un ensayo clínico podría ser confirmar que una nueva terapia hace un mejor trabajo prolongando la vida.</li>
+</ul>
+<div class="footer">
+<p><a href="https://www.tmwr.org/software-modeling.html">Tidy Modeling With R</a></p>
+</div>
+</div>
+<div id="tabset-1-3">
+<ul>
+<li class="fragment">Produce la predicción más precisa posible.</li>
+<li class="fragment">Los valores predichos buscan la mayor fidelidad posible al valor real en los datos nuevos.</li>
+</ul>
+<div class="footer">
+<p><a href="https://www.tmwr.org/software-modeling.html">Tidy Modeling With R</a></p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="inteligencia-artificial-machine-learning-qué" class="slide level2">
+<h2>¿Inteligencia artificial? ¿Machine Learning? ¿Qué?</h2>
+<div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><img data-src="img/Aintelligence.png"></p>
+</div><div class="column" style="width:50%;">
+<ul>
+<li class="fragment"><p><strong>Inteligencia artificial</strong> es el nombre de todo un campo de conocimiento.</p></li>
+<li class="fragment"><p><strong>Machine Learning</strong> es una parte de la inteligencia artificial.</p></li>
+<li class="fragment"><p><strong>Redes neuronales</strong> son uno de los tipos de machine learning.</p></li>
+</ul>
+<div class="footer">
+<p><a href="https://vas3k.com/blog/machine_learning/">Machine Learning for Everyone</a></p>
+</div>
+</div></div>
+</div>
+</section></section>
+<section>
+<section id="introducción-a-r-y-rstudio" class="title-slide slide level1 center">
+<h1>Introducción a R y RStudio</h1>
+
+</section>
+<section id="cómo-se-siente-aprender-r" class="slide level2">
+<h2>Cómo se siente aprender R</h2>
+
+<img data-src="img/learning_r.png" class="r-stretch"></section>
+<section id="el-mejor-consejo" class="slide level2">
+<h2>El mejor consejo…</h2>
+<div>
+<ul>
+<li class="fragment"><p>El mejor consejo para trabajar en R es organizar tu trabajo dentro de proyectos.</p></li>
+<li class="fragment"><p><strong>¿Por qué?</strong></p></li>
+<li class="fragment"><p>Reproducibilidad</p></li>
+<li class="fragment"><p>Organización</p></li>
+<li class="fragment"><p>Más razones <a href="https://www.tidyverse.org/blog/2017/12/workflow-vs-script/">aquí</a></p></li>
+</ul>
+</div>
+</section>
+<section id="pasos-para-crear-el-proyecto" class="slide level2">
+<h2>Pasos para crear el proyecto</h2>
+<div class="fragment">
+<div class="r-stack">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/1.png" class="fragment quarto-figure quarto-figure-center"></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/2.png" class="fragment quarto-figure quarto-figure-center"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="pasos-para-crear-el-proyecto-1" class="slide level2">
+<h2>Pasos para crear el proyecto</h2>
+
+<img data-src="img/3.png" class="r-stretch"></section>
+<section id="pasos-para-crear-el-proyecto-2" class="slide level2">
+<h2>Pasos para crear el proyecto</h2>
+<div class="r-stack">
+<p><img data-src="img/4.png" class="fragment"></p>
+<p><img data-src="img/5.png" class="fragment"></p>
+</div>
+</section>
+<section id="pasos-para-crear-el-proyecto-3" class="slide level2">
+<h2>Pasos para crear el proyecto</h2>
+
+<img data-src="img/6.png" class="r-stretch"></section>
+<section id="ahora-que-tenemos-un-proyecto" class="slide level2">
+<h2>Ahora que tenemos un proyecto</h2>
+<ul>
+<li class="fragment">Vamos a crear un script y explorar el IDE</li>
+</ul>
+<blockquote>
+<p>(Entorno de Desarrollo Integrado)</p>
+</blockquote>
+<div class="fragment">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://media.giphy.com/media/lYjA4tfvCc8UAju1Op/giphy.gif?cid=790b76114ceilsw854km4k6b0tkgvdqv0xy5sb6e5n7rratd&amp;ep=v1_gifs_search&amp;rid=giphy.gif&amp;ct=g" class="quarto-figure quarto-figure-center"></p>
+</figure>
+</div>
+</div>
+</section>
+<section id="creando-el-script" class="slide level2">
+<h2>Creando el script</h2>
+<div class="fragment">
+<div class="r-stack">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/8.png" class="fragment quarto-figure quarto-figure-center" style="width:60.0%"></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/9.png" class="fragment quarto-figure quarto-figure-center" style="width:40.0%"></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/10.png" class="fragment quarto-figure quarto-figure-center" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="el-ide-de-rstudio" class="slide level2">
+<h2>El IDE de RStudio</h2>
+
+<img data-src="img/11.png" class="r-stretch"></section>
+<section id="tomemos-un-descanso" class="slide level2">
+<h2>Tomemos un descanso</h2>
+
+<img data-src="https://media.giphy.com/media/jWcZAS6PyQyRJn634G/giphy.gif?cid=790b76113eswejr4wbrnqrxna9owuqa5ddd949pl2k0a79gu&amp;ep=v1_gifs_search&amp;rid=giphy.gif&amp;ct=g" class="quarto-figure quarto-figure-center r-stretch"><div class="cell">
+<div class="cell-output-display">
+<div class="countdown" id="timer_a8a598ef" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown-controls"><button class="countdown-bump-down">−</button><button class="countdown-bump-up">+</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="archivos-quarto" class="title-slide slide level1 center">
+<h1>Archivos Quarto</h1>
+
+</section>
+<section id="inspeccionando-el-archivo" class="slide level2">
+<h2>Inspeccionando el archivo</h2>
+
+<img data-src="img/Rmd_disect.png" class="r-stretch"></section></section>
+<section id="yaml" class="title-slide slide level1 center" data-background-color="black">
+<h1>YAML</h1>
+
+</section>
+
+<section id="el-encabezado-de-metadatos-yaml" class="title-slide slide level1 center">
+<h1>El encabezado de metadatos: <mark>YAML</mark></h1>
+<ul>
+<li class="fragment">Las primeras líneas del documento son el encabezado del documento.<br>
+</li>
+<li class="fragment">Estas líneas le dicen a R información crucial sobre cómo construir tu reporte.<br>
+</li>
+<li class="fragment">Todo el encabezado y todas las opciones del documento dentro de él están delimitados por las tres líneas horizontales <mark> - - - </mark> arriba y abajo.</li>
+</ul>
+</section>
+
+<section>
+<section id="el-encabezado-de-metadatos-yaml-1" class="title-slide slide level1 center">
+<h1>El encabezado de metadatos: <mark>YAML</mark></h1>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><img data-src="img/YAML.png"></p>
+</div><div class="column" style="width:50%;">
+<p><strong>Actualmente nuestro encabezado es bastante básico. Incluye:</strong></p>
+<ul>
+<li class="fragment">El título del documento; title: “Hello Quarto”</li>
+<li class="fragment">Quién lo escribió: author: “Catalina Canizares”</li>
+<li class="fragment">La fecha de hoy: “2024-05-30”</li>
+<li class="fragment">El tipo de salida: format –&gt; html</li>
+<li class="fragment">Bibliografía</li>
+<li class="fragment">Tipo y formato de citación</li>
+</ul>
+</div></div>
+</section>
+<section id="diferentes-ejemplos-de-yaml" class="slide level2 scrollable">
+<h2>Diferentes ejemplos de YAML</h2>
+<div class="absolute" style="">
+<p><img data-src="img/word.png" class="fragment"></p>
+<p><img data-src="img/ppt.png" class="fragment"></p>
+<p><img data-src="img/simple_html.png" class="fragment"> <img data-src="img/vitae.png" class="fragment"></p>
+</div>
+</section></section>
+<section>
+<section id="bloques-de-código" class="title-slide slide level1 center" data-background-color="black">
+<h1>Bloques de código</h1>
+
+</section>
+<section id="anatomía-de-un-chunk" class="slide level2">
+<h2>Anatomía de un chunk</h2>
+
+<img data-src="img/chunk.png" class="r-stretch"></section>
+<section id="opciones-de-chunk" class="slide level2">
+<h2>Opciones de chunk</h2>
+
+<img data-src="img/chunk_options.png" class="quarto-figure quarto-figure-center r-stretch"><p><em>Fuente:</em> <a href="https://quarto.org/docs/computations/execution-options.html">Code Chunks</a></p>
+</section>
+<section id="más-sobre-chunks" class="slide level2">
+<h2>Más sobre chunks</h2>
+<p><strong>Crea chunks como un(a) <code>pro</code></strong><br>
+<img data-src="img/key_board.png" class="fragment"></p>
+</section>
+<section id="más-sobre-chunks-1" class="slide level2">
+<h2>Más sobre chunks</h2>
+<p><strong>Nombra tus chunks como un(a) <code>pro</code> usando <mark>kebab-case</mark></strong></p>
+
+<img data-src="img/coding_cases.png" style="width:50.0%" class="r-stretch"></section>
+<section id="ejemplo-de-chunk-de-código" class="slide level2">
+<h2>Ejemplo de chunk de código</h2>
+
+<img data-src="img/chunk_penguin.png" class="r-stretch"></section></section>
+<section>
+<section id="texto-en-markdown" class="title-slide slide level1 center" data-background-color="black">
+<h1>Texto en Markdown</h1>
+
+</section>
+<section id="texto-en-markdown-1" class="slide level2">
+<h2>Texto en Markdown</h2>
+<p>Ahora que tenemos un reporte con un encabezado y algo de código, necesitamos explicar qué está haciendo el código y por qué.</p>
+<ul>
+<li class="fragment"><p>Aquí entra el texto plano.</p></li>
+<li class="fragment"><p>Fuera de un bloque de código, escribe lo que quieras. Incluso puedes incluir imágenes y tablas.</p></li>
+</ul>
+
+<img data-src="img/text_penguin.png" class="r-stretch"></section>
+<section id="texto-en-markdown-2" class="slide level2">
+<h2>Texto en Markdown</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><img data-src="img/text_penguin.png"></p>
+</div><div class="column" style="width:50%;">
+<p><img data-src="img/result_text_penguin.png"></p>
+</div></div>
+</section>
+<section id="referencias-cruzadas" class="slide level2">
+<h2>Referencias cruzadas</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="tablas">Tablas</h3>
+<ul>
+<li class="fragment">Siempre empiezan con <mark><code>tbl-</code><mark></mark></mark></li>
+</ul>
+<p><img data-src="img/tbl.png" class="fragment"></p>
+</div><div class="column" style="width:50%;">
+<h3 id="figuras">Figuras</h3>
+<ul>
+<li class="fragment">Siempre empiezan con <mark><code>fig-</code><mark></mark></mark></li>
+</ul>
+<p><img data-src="img/fig.png" class="fragment"></p>
+</div></div>
+</section>
+<section id="formato-de-texto" class="slide level2">
+<h2>Formato de texto</h2>
+
+<img data-src="img/text.png" class="r-stretch"><p><em>Fuente</em> <a href="https://rstudio-conf-2022.github.io/get-started-quarto/materials/01-intro-quarto.html#/quarto-more-internals">Get Started with Quarto</a></p>
+</section>
+<section id="encabezados-de-texto" class="slide level2">
+<h2>Encabezados de texto</h2>
+<p><img data-src="img/headings.png"> <em>Fuente</em> <a href="https://rstudio-conf-2022.github.io/get-started-quarto/materials/01-intro-quarto.html#/quarto-more-internals">Get Started with Quarto</a></p>
+</section>
+<section id="pausa-corta" class="slide level2">
+<h2>Pausa corta</h2>
+
+<img data-src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExNWplbW5tcnF0dTVzbTc5NnMyMW9qZG1mOTExYjIzMTJ2ZW45aGJzbyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/k74OUg6bPJKy2JmyoS/giphy.gif" class="quarto-figure quarto-figure-center r-stretch"><div class="cell">
+<div class="cell-output-display">
+<div class="countdown" id="timer_6599d2d6" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown-controls"><button class="countdown-bump-down">−</button><button class="countdown-bump-up">+</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+</div>
+</div>
+</section>
+<section id="ejercicio" class="slide level2">
+<h2>Ejercicio</h2>
+
+<img data-src="img/palmer.png" class="r-stretch"></section>
+<section id="ejercicio-1" class="slide level2">
+<h2>Ejercicio</h2>
+<div>
+<ul>
+<li class="fragment"><p>Vamos al proyecto que creamos</p></li>
+<li class="fragment"><p>Modifica el YAML con tu información y nombra tu archivo</p></li>
+<li class="fragment"><p>Revisa el YAML para que podamos ver el código y los resultados.</p></li>
+</ul>
+</div>
+</section>
+<section id="ejercicio-2" class="slide level2">
+<h2>Ejercicio</h2>
+<ul>
+<li class="fragment">Crea un chunk y escribe:</li>
+</ul>
+<div class="cell" data-code-copy="true">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="fu">install.packages</span>(<span class="st">"palmerpenguins"</span>)</span>
+<span id="cb1-2"><a href=""></a><span class="fu">install.packages</span>(<span class="st">"table1"</span>)</span>
+<span id="cb1-3"><a href=""></a></span>
+<span id="cb1-4"><a href=""></a><span class="fu">library</span>(palmerpenguins)</span>
+<span id="cb1-5"><a href=""></a><span class="fu">library</span>(table1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="ejercicio-3" class="slide level2">
+<h2>Ejercicio</h2>
+<p><strong>¿Hay diferencias entre las especies de pingüinos con respecto a la longitud de sus aletas?</strong></p>
+<ul>
+<li class="fragment">Crea un chunk y carga los datos de palmerpenguins</li>
+</ul>
+<div class="cell" data-code-copy="true">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a><span class="fu">data</span>(<span class="st">"penguins"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li class="fragment">Crea otro chunk, ponle nombre, y explora los datos de la longitud de aleta para los diferentes tipos de pingüinos con este código:</li>
+</ul>
+<div class="cell" data-code-copy="true">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="fu">table1</span>(<span class="sc">~</span> flipper_length_mm <span class="sc">|</span> species, <span class="at">data =</span> penguins)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li class="fragment">Describe lo que ves en la tabla.</li>
+</ul>
+</section>
+<section id="visualicemos-nuestros-hallazgos" class="slide level2">
+<h2>Visualicemos nuestros hallazgos</h2>
+<ul>
+<li class="fragment">Crea otro chunk, y revisemos:</li>
+</ul>
+<div class="cell" data-code-copy="true">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a> <span class="fu">ggplot</span>(</span>
+<span id="cb4-2"><a href=""></a>  <span class="at">data =</span> penguins,</span>
+<span id="cb4-3"><a href=""></a>  <span class="fu">aes</span>(<span class="at">x =</span> species, <span class="at">y =</span> flipper_length_mm)) <span class="sc">+</span></span>
+<span id="cb4-4"><a href=""></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">color =</span> species), </span>
+<span id="cb4-5"><a href=""></a>               <span class="at">width =</span> <span class="fl">0.3</span>,</span>
+<span id="cb4-6"><a href=""></a>               <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb4-7"><a href=""></a>  <span class="fu">geom_jitter</span>(<span class="fu">aes</span>(<span class="at">color =</span> species),</span>
+<span id="cb4-8"><a href=""></a>              <span class="at">alpha =</span> <span class="fl">0.5</span>, </span>
+<span id="cb4-9"><a href=""></a>              <span class="at">show.legend =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb4-10"><a href=""></a>              <span class="at">position =</span> <span class="fu">position_jitter</span>(</span>
+<span id="cb4-11"><a href=""></a>                <span class="at">width =</span> <span class="fl">0.2</span>, <span class="at">seed =</span> <span class="dv">0</span>)) <span class="sc">+</span></span>
+<span id="cb4-12"><a href=""></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"darkorange"</span>, <span class="st">"purple"</span>, <span class="st">"cyan4"</span>)) <span class="sc">+</span></span>
+<span id="cb4-13"><a href=""></a>  <span class="fu">labs</span>(</span>
+<span id="cb4-14"><a href=""></a>    <span class="at">x =</span> <span class="st">"Species"</span>,</span>
+<span id="cb4-15"><a href=""></a>    <span class="at">y =</span> <span class="st">"Flipper length (mm)"</span></span>
+<span id="cb4-16"><a href=""></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="estamos-listos-para-renderizar-nuestro-reporte" class="slide level2">
+<h2>Estamos listos para renderizar nuestro reporte</h2>
+<p>Guarda tu reporte y…</p>
+
+<img data-src="img/knit.png" class="r-stretch"></section></section>
+<section>
+<section id="mira-tu-consola-mientras-se-renderiza" class="title-slide slide level1 center">
+<h1>Mira tu consola mientras se renderiza</h1>
+<p><img data-src="img/console.png"></p>
+<p><img data-src="img/report.png"></p>
+</section>
+<section id="un-poco-más-de-esa-magia-reproducible" class="slide level2">
+<h2>Un poco más de esa magia reproducible</h2>
+<p>Dentro del texto puedes incluir código ejecutable con la sintaxis:</p>
+<p><img data-src="img/inline.png"></p>
+<p>Por ejemplo:</p>
+<p>Hay 344 filas en el conjunto de datos <code>penguins</code>.</p>
+<p><strong>La verdad:</strong><br>
+<img data-src="img/inlinepenguins.png"></p>
+</section>
+<section id="más-recursos" class="slide level2">
+<h2>Más recursos</h2>
+<p><a href="https://quarto.org/">Sitio web de Quarto</a></p>
+<p><a href="https://bookdown.org/yihui/rmarkdown/">R Markdown: The Definitive Guide</a></p>
+
+<img data-src="img/logo_quarto.jpeg" class="r-stretch"></section>
+<section id="tomemos-otro-descanso" class="slide level2">
+<h2>Tomemos otro descanso</h2>
+
+<img data-src="https://media.giphy.com/media/RiWZUGcZPEKdQgrQ96/giphy.gif?cid=790b76113eswejr4wbrnqrxna9owuqa5ddd949pl2k0a79gu&amp;ep=v1_gifs_search&amp;rid=giphy.gif&amp;ct=g" class="r-stretch"></section>
+<section id="resumen" class="slide level2">
+<h2>Resumen</h2>
+<ul>
+<li class="fragment">Exploramos los conceptos fundamentales de la ciencia de datos.</li>
+<li class="fragment">Profundizamos en la historia y evolución de R.</li>
+<li class="fragment">Aprendimos a crear y gestionar proyectos en RStudio.</li>
+<li class="fragment">Ganamos práctica trabajando con archivos Quarto.</li>
+</ul>
+</section>
+<section id="leyendo-datos-en-nuestros-archivos-quarto" class="slide level2">
+<h2>Leyendo datos en nuestros archivos Quarto</h2>
+<div>
+<ul>
+<li class="fragment">R puede leer datos desde una variedad de formatos, incluyendo:
+<ul>
+<li class="fragment">Excel (por ejemplo, CSV, XLSX, TXT)</li>
+<li class="fragment">SAS</li>
+<li class="fragment">Stata</li>
+<li class="fragment">SPSS</li>
+<li class="fragment">Otros paquetes estadísticos</li>
+</ul></li>
+</ul>
+</div>
+</section>
+<section id="consigamos-los-datos" class="slide level2 scrollable">
+<h2>Consigamos los datos</h2>
+<ol type="1">
+<li class="fragment">Desde <a href="https://github.com/ccani007/fau_module/blob/main/data/yrbs_2021.xlsx">Excel</a></li>
+<li class="fragment">Desde <a href="https://github.com/ccani007/fau_module/blob/main/data/yrbs_2021.csv">.csv</a></li>
+<li class="fragment">Desde <a href="https://github.com/ccani007/fau_module/blob/main/data/yrbs_2021.sav">.sav</a></li>
+<li class="fragment">Desde R</li>
+</ol>
+</section>
+<section id="paquete-rio-una-navaja-suiza-para-datos" class="slide level2">
+<h2>Paquete <code>rio</code>: una navaja suiza para datos</h2>
+<p><br></p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="fragment">
+<div class="cell" data-code-copy="true">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a><span class="fu">install.packages</span>(<span class="st">"rio"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-code-copy="true">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a><span class="fu">library</span>(rio)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="fragment">
+<div class="cell" data-code-copy="true">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a>yrbs_2021_df <span class="ot">&lt;-</span> <span class="fu">import</span>(<span class="st">"data/yrbs_2021.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><img data-src="img/enviorment.png"></p>
+</div>
+</div></div>
+</section>
+<section id="paquete-rio-una-navaja-suiza-para-datos-1" class="slide level2">
+<h2>Paquete <code>rio</code>: una navaja suiza para datos</h2>
+<p><br></p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="fragment">
+<div class="cell" data-code-copy="true">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a>yrbs_2021_xlsx <span class="ot">&lt;-</span> <span class="fu">import</span>(<span class="st">"data/yrbs_2021.xlsx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="fragment">
+<p><img data-src="img/enviorment_2.png"></p>
+</div>
+</div></div>
+</section>
+<section id="paquete-rio-una-navaja-suiza-para-datos-2" class="slide level2">
+<h2>Paquete <code>rio</code>: una navaja suiza para datos</h2>
+<p><br></p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="fragment">
+<div class="cell" data-code-copy="true">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a>yrbs_2021_sav <span class="ot">&lt;-</span> <span class="fu">import</span>(<span class="st">"data/yrbs_2021.sav"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="fragment">
+<p><img data-src="img/enviorment_3.png"></p>
+</div>
+</div></div>
+</section>
+<section id="exportar-datos-desde-un-paquete" class="slide level2 scrollable">
+<h2>Exportar datos desde un paquete</h2>
+<ol type="1">
+<li class="fragment"></li>
+</ol>
+<div class="cell" data-code-copy="true">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a><span class="fu">install.packages</span>(<span class="st">"devtools"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="2" type="1">
+<li class="fragment"></li>
+</ol>
+<div class="cell" data-code-copy="true">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a><span class="fu">library</span>(devtools)</span>
+<span id="cb11-2"><a href=""></a></span>
+<span id="cb11-3"><a href=""></a><span class="fu">install_github</span>(<span class="st">"ccani007/dissertationData"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="3" type="1">
+<li class="fragment"></li>
+</ol>
+<div class="cell" data-code-copy="true">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a><span class="fu">library</span>(dissertationData)</span>
+<span id="cb12-2"><a href=""></a></span>
+<span id="cb12-3"><a href=""></a><span class="fu">data</span>(<span class="st">"clean_yrbs_2023"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/enviorment_4.png" class="quarto-figure quarto-figure-center"></p>
+</figure>
+</div>
+</div>
+</section>
+<section id="explora-el-conjunto-de-datos" class="slide level2 scrollable">
+<h2>Explora el conjunto de datos</h2>
+<ul>
+<li class="fragment">Veamos <mark>dos</mark> formas de explorar conjuntos de datos en R:</li>
+</ul>
+<div class="fragment">
+<ol type="1">
+<li class="fragment">La forma más simple y tradicional:</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a><span class="fu">glimpse</span>(clean_yrbs_2023)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 20,103
+Columns: 110
+$ weight                        &lt;dbl&gt; 0.8614, 0.8920, 0.5081, 1.1759, 0.8920, …
+$ stratum                       &lt;dbl&gt; 103, 103, 103, 103, 103, 103, 103, 103, …
+$ psu                           &lt;dbl&gt; 16294, 16294, 16294, 16294, 16294, 16294…
+$ Sex                           &lt;chr&gt; "Female", "Male", "Male", "Female", "Mal…
+$ Race                          &lt;chr&gt; NA, "White", "White", "White", "White", …
+$ Age                           &lt;int&gt; 14, 15, 16, 17, 14, 16, 17, 15, 15, 17, …
+$ Grade                         &lt;chr&gt; "9", "9", "11", "10", "9", "9", "11", "9…
+$ SexOrientation                &lt;chr&gt; "Gay or Lesbian", "Heterosexual", "Bisex…
+$ HispanicLatino                &lt;fct&gt; NA, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, …
+$ Height                        &lt;dbl&gt; 1.65, NA, 1.68, NA, 1.85, 1.80, 1.83, 1.…
+$ Weight                        &lt;dbl&gt; 81.65, NA, 74.84, NA, 56.70, 72.58, 74.8…
+$ SeatBeltUse                   &lt;fct&gt; 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1…
+$ DrinkingDriver                &lt;fct&gt; 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0…
+$ DrivingDrinking               &lt;fct&gt; NA, NA, 0, 0, NA, NA, NA, NA, NA, 0, NA,…
+$ TextingDriving                &lt;fct&gt; NA, NA, 1, 1, NA, NA, NA, NA, NA, NA, NA…
+$ WeaponCarryingSchool          &lt;fct&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ GunCarrying                   &lt;fct&gt; 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0…
+$ UnsafeAtSchool                &lt;fct&gt; 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0…
+$ InjuredInSchool               &lt;fct&gt; 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0…
+$ PhysicalFight                 &lt;fct&gt; 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0…
+$ SchoolPhysicalFight           &lt;fct&gt; 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0…
+$ AttackedInNeighborhood        &lt;fct&gt; 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0…
+$ ForcedSexualIntercourse       &lt;fct&gt; 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0…
+$ SexualViolence                &lt;fct&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ SexualAbuseByPartner          &lt;fct&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ PhysicalDatingViolence        &lt;fct&gt; 0, 0, 0, 0, NA, 0, 0, 0, 0, 0, NA, 0, 0,…
+$ TreatedUnfairlyRace           &lt;fct&gt; 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0…
+$ Bullying                      &lt;fct&gt; 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ CyberBullying                 &lt;fct&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ Hopelessness                  &lt;fct&gt; 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0…
+$ SuicideIdeation               &lt;fct&gt; 0, 0, 0, 0, 0, 0, 0, 0, 1, NA, 0, 1, 0, …
+$ SuicidePlan                   &lt;fct&gt; 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0…
+$ SuicideAttempts               &lt;fct&gt; 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0…
+$ SuicideInjuryMedicalAttention &lt;fct&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ EverTriedCigarette            &lt;fct&gt; 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, NA, …
+$ FirstCigaretteBefore13        &lt;fct&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NA, …
+$ CurrentlySmokingCigarette     &lt;fct&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ MoreThan10CigarettesPerDay    &lt;fct&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+$ EverTriedVaping               &lt;fct&gt; 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0…
+$ CurrentlyVaping               &lt;fct&gt; 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0…
+$ StoreSourceVaping             &lt;fct&gt; NA, NA, 0, 0, NA, NA, 0, NA, NA, NA, NA,…
+$ CurrentlySmokelessTobacco     &lt;fct&gt; 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ CurrentlySmokingCigar         &lt;fct&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ QuitTobacco                   &lt;fct&gt; NA, NA, 0, 0, 0, NA, 0, NA, NA, NA, NA, …
+$ FirstAlcoholBefore13          &lt;fct&gt; 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0…
+$ CurrentlyAlcohol              &lt;fct&gt; 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0…
+$ CurrentlyBingeDrinking        &lt;fct&gt; 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0…
+$ MoreThan10Drinks              &lt;fct&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ SomeoneSourceAlcohol          &lt;fct&gt; NA, NA, NA, 0, 0, NA, 0, NA, NA, NA, NA,…
+$ EverUsedMarijuana             &lt;fct&gt; 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1…
+$ FirstMarijuanaBefore13        &lt;fct&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ CurrentlyUsingMarijuana       &lt;fct&gt; 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1…
+$ PainMedicine                  &lt;fct&gt; 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0…
+$ EverUsedCocaine               &lt;fct&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ EverUsedInhalant              &lt;fct&gt; 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ EverUsedHeroin                &lt;fct&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ EverUsedMethamphetamine       &lt;fct&gt; NA, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+$ EverUsedEcstasy               &lt;fct&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ EverInjectedIllegalDrug       &lt;fct&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, N…
+$ EverHadSex                    &lt;fct&gt; 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, NA, …
+$ SexBefore13                   &lt;fct&gt; 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, NA, …
+$ Sex4OrMorePartners            &lt;fct&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NA, …
+$ SexuallyActive                &lt;fct&gt; 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, NA, …
+$ AlcoholOrDrugsSex             &lt;fct&gt; NA, NA, 0, 0, 0, NA, 0, NA, NA, 0, NA, N…
+$ UsedCondom                    &lt;fct&gt; NA, NA, 1, 0, 1, NA, 1, NA, NA, 1, NA, N…
+$ BirthControl                  &lt;fct&gt; NA, NA, 1, 1, 0, NA, 0, NA, NA, 1, NA, N…
+$ VeryOverweight                &lt;fct&gt; 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1…
+$ WeightLoss                    &lt;fct&gt; 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1…
+$ NoFruitJuice                  &lt;fct&gt; 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0…
+$ NoFruit                       &lt;fct&gt; 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0…
+$ NoSalad                       &lt;fct&gt; 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1…
+$ NoPotatoes                    &lt;fct&gt; 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 0…
+$ NoCarrots                     &lt;fct&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0…
+$ NoOtherVeggies                &lt;fct&gt; 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0…
+$ NoSoda                        &lt;fct&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0…
+$ NoBreakfast                   &lt;fct&gt; 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0…
+$ PhysicalActivity              &lt;fct&gt; 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0…
+$ AttendedPEClass               &lt;fct&gt; 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0…
+$ SportsTeam                    &lt;fct&gt; 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0…
+$ ConcussionSports              &lt;fct&gt; 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1…
+$ SocialMedia                   &lt;fct&gt; 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1…
+$ HIVTested                     &lt;fct&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ STDTested                     &lt;fct&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ DentistVisit                  &lt;fct&gt; 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0…
+$ NotGoodMentalHealth           &lt;fct&gt; 0, 0, 0, 0, 0, NA, 0, 0, 0, 0, 0, 0, 0, …
+$ EightOrMoreHoursSleep         &lt;fct&gt; 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0…
+$ Homelessness                  &lt;fct&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ GradesSchool                  &lt;fct&gt; NA, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, …
+$ SexualAbuseByOlderPerson      &lt;fct&gt; 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0…
+$ ParentalEmotionalAbuse        &lt;fct&gt; NA, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, …
+$ ParentalPhysicalAbuse         &lt;fct&gt; 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0…
+$ ParentalDomesticViolence      &lt;fct&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ CurrentMisusePainMedicine     &lt;fct&gt; 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ EverHallucinogenicDrugs       &lt;fct&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ AskedForConsent               &lt;fct&gt; NA, NA, 1, 1, 0, 1, 1, NA, 0, 1, NA, NA,…
+$ NoSportsDrinks                &lt;fct&gt; 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0…
+$ NoDrinksWater                 &lt;fct&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ ExcerciseMuscles              &lt;fct&gt; 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0…
+$ Sunburn                       &lt;fct&gt; 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0…
+$ AdultMeetingBasicNeeds        &lt;fct&gt; 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0…
+$ ParentSubstanceUse            &lt;fct&gt; 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2…
+$ ParentMentalIllness           &lt;fct&gt; 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2…
+$ ParentIncarceration           &lt;fct&gt; 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2…
+$ SchoolConnectedness           &lt;fct&gt; 2, 1, 1, 2, 1, 1, 2, 2, 2, 2, 1, 2, 1, 2…
+$ ParentalMonitoring            &lt;fct&gt; 2, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 2…
+$ UnfairDisciplineAtSchool      &lt;fct&gt; 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2…
+$ DifficultyConcentrating       &lt;fct&gt; 2, 1, 2, 1, 2, 2, 2, 2, 1, 2, 2, 1, NA, …
+$ EnglishProficiency            &lt;fct&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1…
+$ SexSexualContact              &lt;chr&gt; "Never had sex", "Never had sex", "Both"…
+$ Transgender                   &lt;chr&gt; "No", "No", "No", "No", "No", "No", "No"…</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="explora-el-conjunto-de-datos-1" class="slide level2 scrollable">
+<h2>Explora el conjunto de datos</h2>
+<ol start="2" type="1">
+<li class="fragment">La forma más detallada (<em>en mi opinión personal</em>):</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a><span class="co"># install.packages("skimr")</span></span>
+<span id="cb15-2"><a href=""></a><span class="fu">library</span>(skimr)</span>
+<span id="cb15-3"><a href=""></a><span class="fu">skim</span>(clean_yrbs_2023)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top">
+<caption>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Name</td>
+<td style="text-align: left;">clean_yrbs_2023</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Number of rows</td>
+<td style="text-align: left;">20103</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Number of columns</td>
+<td style="text-align: left;">110</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">_______________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Column type frequency:</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">factor</td>
+<td style="text-align: left;">98</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">________________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Group variables</td>
+<td style="text-align: left;">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: character</strong></p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 22%">
+<col style="width: 13%">
+<col style="width: 18%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 8%">
+<col style="width: 12%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">min</th>
+<th style="text-align: right;">max</th>
+<th style="text-align: right;">empty</th>
+<th style="text-align: right;">n_unique</th>
+<th style="text-align: right;">whitespace</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Sex</td>
+<td style="text-align: right;">158</td>
+<td style="text-align: right;">0.99</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Race</td>
+<td style="text-align: right;">370</td>
+<td style="text-align: right;">0.98</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Grade</td>
+<td style="text-align: right;">241</td>
+<td style="text-align: right;">0.99</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SexOrientation</td>
+<td style="text-align: right;">2003</td>
+<td style="text-align: right;">0.90</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SexSexualContact</td>
+<td style="text-align: right;">4722</td>
+<td style="text-align: right;">0.77</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Transgender</td>
+<td style="text-align: right;">1802</td>
+<td style="text-align: right;">0.91</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: factor</strong></p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 11%">
+<col style="width: 15%">
+<col style="width: 8%">
+<col style="width: 10%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: left;">ordered</th>
+<th style="text-align: right;">n_unique</th>
+<th style="text-align: left;">top_counts</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">HispanicLatino</td>
+<td style="text-align: right;">254</td>
+<td style="text-align: right;">0.99</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">2: 15852, 1: 3997</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SeatBeltUse</td>
+<td style="text-align: right;">5032</td>
+<td style="text-align: right;">0.75</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 8506, 1: 6565</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">DrinkingDriver</td>
+<td style="text-align: right;">505</td>
+<td style="text-align: right;">0.97</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 16674, 1: 2924</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">DrivingDrinking</td>
+<td style="text-align: right;">11527</td>
+<td style="text-align: right;">0.43</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 8095, 1: 481</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">TextingDriving</td>
+<td style="text-align: right;">12034</td>
+<td style="text-align: right;">0.40</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 4755, 1: 3314</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">WeaponCarryingSchool</td>
+<td style="text-align: right;">508</td>
+<td style="text-align: right;">0.97</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 18747, 1: 848</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">GunCarrying</td>
+<td style="text-align: right;">8729</td>
+<td style="text-align: right;">0.57</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 10861, 1: 513</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">UnsafeAtSchool</td>
+<td style="text-align: right;">1121</td>
+<td style="text-align: right;">0.94</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 16681, 1: 2301</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">InjuredInSchool</td>
+<td style="text-align: right;">2129</td>
+<td style="text-align: right;">0.89</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 16260, 1: 1714</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PhysicalFight</td>
+<td style="text-align: right;">8451</td>
+<td style="text-align: right;">0.58</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 9309, 1: 2343</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SchoolPhysicalFight</td>
+<td style="text-align: right;">2643</td>
+<td style="text-align: right;">0.87</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 16014, 1: 1446</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">AttackedInNeighborhood</td>
+<td style="text-align: right;">5526</td>
+<td style="text-align: right;">0.73</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 11082, 1: 3495</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ForcedSexualIntercourse</td>
+<td style="text-align: right;">2801</td>
+<td style="text-align: right;">0.86</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 15639, 1: 1663</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SexualViolence</td>
+<td style="text-align: right;">4351</td>
+<td style="text-align: right;">0.78</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 13912, 1: 1840</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SexualAbuseByPartner</td>
+<td style="text-align: right;">6662</td>
+<td style="text-align: right;">0.67</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 12550, 1: 891</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PhysicalDatingViolence</td>
+<td style="text-align: right;">8596</td>
+<td style="text-align: right;">0.57</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 10299, 1: 1208</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">TreatedUnfairlyRace</td>
+<td style="text-align: right;">1817</td>
+<td style="text-align: right;">0.91</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 12530, 1: 5756</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bullying</td>
+<td style="text-align: right;">201</td>
+<td style="text-align: right;">0.99</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 15856, 1: 4046</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CyberBullying</td>
+<td style="text-align: right;">205</td>
+<td style="text-align: right;">0.99</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 16475, 1: 3423</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Hopelessness</td>
+<td style="text-align: right;">240</td>
+<td style="text-align: right;">0.99</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 11755, 1: 8108</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SuicideIdeation</td>
+<td style="text-align: right;">436</td>
+<td style="text-align: right;">0.98</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 15453, 1: 4214</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SuicidePlan</td>
+<td style="text-align: right;">1737</td>
+<td style="text-align: right;">0.91</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 15154, 1: 3212</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SuicideAttempts</td>
+<td style="text-align: right;">767</td>
+<td style="text-align: right;">0.96</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 17341, 1: 1995</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SuicideInjuryMedicalAttention</td>
+<td style="text-align: right;">5468</td>
+<td style="text-align: right;">0.73</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 14263, 1: 372</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">EverTriedCigarette</td>
+<td style="text-align: right;">2661</td>
+<td style="text-align: right;">0.87</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 14331, 1: 3111</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">FirstCigaretteBefore13</td>
+<td style="text-align: right;">3283</td>
+<td style="text-align: right;">0.84</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 15682, 1: 1138</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CurrentlySmokingCigarette</td>
+<td style="text-align: right;">364</td>
+<td style="text-align: right;">0.98</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 18933, 1: 806</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MoreThan10CigarettesPerDay</td>
+<td style="text-align: right;">19580</td>
+<td style="text-align: right;">0.03</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 473, 1: 50</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">EverTriedVaping</td>
+<td style="text-align: right;">299</td>
+<td style="text-align: right;">0.99</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 12835, 1: 6969</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CurrentlyVaping</td>
+<td style="text-align: right;">1012</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 15705, 1: 3386</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">StoreSourceVaping</td>
+<td style="text-align: right;">17457</td>
+<td style="text-align: right;">0.13</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 2492, 1: 154</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CurrentlySmokelessTobacco</td>
+<td style="text-align: right;">1180</td>
+<td style="text-align: right;">0.94</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 18431, 1: 492</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CurrentlySmokingCigar</td>
+<td style="text-align: right;">1161</td>
+<td style="text-align: right;">0.94</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 18074, 1: 868</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">QuitTobacco</td>
+<td style="text-align: right;">15766</td>
+<td style="text-align: right;">0.22</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">1: 2326, 0: 2011</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">FirstAlcoholBefore13</td>
+<td style="text-align: right;">855</td>
+<td style="text-align: right;">0.96</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 16404, 1: 2844</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CurrentlyAlcohol</td>
+<td style="text-align: right;">901</td>
+<td style="text-align: right;">0.96</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 15050, 1: 4152</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CurrentlyBingeDrinking</td>
+<td style="text-align: right;">4662</td>
+<td style="text-align: right;">0.77</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 14010, 1: 1431</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MoreThan10Drinks</td>
+<td style="text-align: right;">5689</td>
+<td style="text-align: right;">0.72</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 14054, 1: 360</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SomeoneSourceAlcohol</td>
+<td style="text-align: right;">17077</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 1845, 1: 1181</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">EverUsedMarijuana</td>
+<td style="text-align: right;">3500</td>
+<td style="text-align: right;">0.83</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 11383, 1: 5220</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">FirstMarijuanaBefore13</td>
+<td style="text-align: right;">864</td>
+<td style="text-align: right;">0.96</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 18067, 1: 1172</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CurrentlyUsingMarijuana</td>
+<td style="text-align: right;">503</td>
+<td style="text-align: right;">0.97</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 16193, 1: 3407</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PainMedicine</td>
+<td style="text-align: right;">576</td>
+<td style="text-align: right;">0.97</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 17165, 1: 2362</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">EverUsedCocaine</td>
+<td style="text-align: right;">3256</td>
+<td style="text-align: right;">0.84</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 16411, 1: 436</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">EverUsedInhalant</td>
+<td style="text-align: right;">5877</td>
+<td style="text-align: right;">0.71</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 13344, 1: 882</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">EverUsedHeroin</td>
+<td style="text-align: right;">781</td>
+<td style="text-align: right;">0.96</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 19016, 1: 306</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">EverUsedMethamphetamine</td>
+<td style="text-align: right;">1122</td>
+<td style="text-align: right;">0.94</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 18641, 1: 340</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">EverUsedEcstasy</td>
+<td style="text-align: right;">3608</td>
+<td style="text-align: right;">0.82</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 16016, 1: 479</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">EverInjectedIllegalDrug</td>
+<td style="text-align: right;">5006</td>
+<td style="text-align: right;">0.75</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 14905, 1: 192</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">EverHadSex</td>
+<td style="text-align: right;">3982</td>
+<td style="text-align: right;">0.80</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 10701, 1: 5420</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SexBefore13</td>
+<td style="text-align: right;">1530</td>
+<td style="text-align: right;">0.92</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 17976, 1: 597</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sex4OrMorePartners</td>
+<td style="text-align: right;">2458</td>
+<td style="text-align: right;">0.88</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 16527, 1: 1118</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SexuallyActive</td>
+<td style="text-align: right;">1764</td>
+<td style="text-align: right;">0.91</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 14362, 1: 3977</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">AlcoholOrDrugsSex</td>
+<td style="text-align: right;">16526</td>
+<td style="text-align: right;">0.18</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 2918, 1: 659</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">UsedCondom</td>
+<td style="text-align: right;">16194</td>
+<td style="text-align: right;">0.19</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">1: 2023, 0: 1886</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BirthControl</td>
+<td style="text-align: right;">16614</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 2794, 1: 695</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">VeryOverweight</td>
+<td style="text-align: right;">8308</td>
+<td style="text-align: right;">0.59</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 7900, 1: 3895</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">WeightLoss</td>
+<td style="text-align: right;">6167</td>
+<td style="text-align: right;">0.69</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 7529, 1: 6407</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">NoFruitJuice</td>
+<td style="text-align: right;">3495</td>
+<td style="text-align: right;">0.83</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 10723, 1: 5885</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">NoFruit</td>
+<td style="text-align: right;">1076</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 16728, 1: 2299</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">NoSalad</td>
+<td style="text-align: right;">4767</td>
+<td style="text-align: right;">0.76</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 8497, 1: 6839</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">NoPotatoes</td>
+<td style="text-align: right;">4858</td>
+<td style="text-align: right;">0.76</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 9689, 1: 5556</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">NoCarrots</td>
+<td style="text-align: right;">4827</td>
+<td style="text-align: right;">0.76</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">1: 8451, 0: 6825</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">NoOtherVeggies</td>
+<td style="text-align: right;">4891</td>
+<td style="text-align: right;">0.76</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 12186, 1: 3026</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">NoSoda</td>
+<td style="text-align: right;">4920</td>
+<td style="text-align: right;">0.76</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 10800, 1: 4383</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">NoBreakfast</td>
+<td style="text-align: right;">5835</td>
+<td style="text-align: right;">0.71</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 11427, 1: 2841</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PhysicalActivity</td>
+<td style="text-align: right;">1227</td>
+<td style="text-align: right;">0.94</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 9814, 1: 9062</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">AttendedPEClass</td>
+<td style="text-align: right;">6227</td>
+<td style="text-align: right;">0.69</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 7283, 1: 6593</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SportsTeam</td>
+<td style="text-align: right;">7139</td>
+<td style="text-align: right;">0.64</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">1: 6697, 0: 6267</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ConcussionSports</td>
+<td style="text-align: right;">4594</td>
+<td style="text-align: right;">0.77</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 13209, 1: 2300</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SocialMedia</td>
+<td style="text-align: right;">4900</td>
+<td style="text-align: right;">0.76</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">1: 11872, 0: 3331</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">HIVTested</td>
+<td style="text-align: right;">4584</td>
+<td style="text-align: right;">0.77</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 14447, 1: 1072</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">STDTested</td>
+<td style="text-align: right;">7325</td>
+<td style="text-align: right;">0.64</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 12048, 1: 730</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">DentistVisit</td>
+<td style="text-align: right;">2179</td>
+<td style="text-align: right;">0.89</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">1: 13356, 0: 4568</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">NotGoodMentalHealth</td>
+<td style="text-align: right;">4398</td>
+<td style="text-align: right;">0.78</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 10897, 1: 4808</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">EightOrMoreHoursSleep</td>
+<td style="text-align: right;">2662</td>
+<td style="text-align: right;">0.87</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 13435, 1: 4006</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Homelessness</td>
+<td style="text-align: right;">5562</td>
+<td style="text-align: right;">0.72</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 14043, 1: 498</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">GradesSchool</td>
+<td style="text-align: right;">3568</td>
+<td style="text-align: right;">0.82</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">1: 11679, 0: 4856</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SexualAbuseByOlderPerson</td>
+<td style="text-align: right;">6280</td>
+<td style="text-align: right;">0.69</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 12648, 1: 1175</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ParentalEmotionalAbuse</td>
+<td style="text-align: right;">6183</td>
+<td style="text-align: right;">0.69</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 12129, 1: 1791</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ParentalPhysicalAbuse</td>
+<td style="text-align: right;">6186</td>
+<td style="text-align: right;">0.69</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 13524, 1: 393</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ParentalDomesticViolence</td>
+<td style="text-align: right;">6350</td>
+<td style="text-align: right;">0.68</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 13396, 1: 357</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CurrentMisusePainMedicine</td>
+<td style="text-align: right;">7722</td>
+<td style="text-align: right;">0.62</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 11731, 1: 650</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">EverHallucinogenicDrugs</td>
+<td style="text-align: right;">8932</td>
+<td style="text-align: right;">0.56</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 10441, 1: 730</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">AskedForConsent</td>
+<td style="text-align: right;">14611</td>
+<td style="text-align: right;">0.27</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">1: 4417, 0: 1075</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">NoSportsDrinks</td>
+<td style="text-align: right;">8194</td>
+<td style="text-align: right;">0.59</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 6550, 1: 5359</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">NoDrinksWater</td>
+<td style="text-align: right;">6519</td>
+<td style="text-align: right;">0.68</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0: 13145, 1: 439</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ExcerciseMuscles</td>
+<td style="text-align: right;">8906</td>
+<td style="text-align: right;">0.56</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">1: 5679, 0: 5518</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sunburn</td>
+<td style="text-align: right;">9315</td>
+<td style="text-align: right;">0.54</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">1: 5868, 0: 4920</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">AdultMeetingBasicNeeds</td>
+<td style="text-align: right;">4353</td>
+<td style="text-align: right;">0.78</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">1: 13575, 0: 2175</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ParentSubstanceUse</td>
+<td style="text-align: right;">6876</td>
+<td style="text-align: right;">0.66</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">2: 9398, 1: 3829</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ParentMentalIllness</td>
+<td style="text-align: right;">6798</td>
+<td style="text-align: right;">0.66</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">2: 8999, 1: 4306</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ParentIncarceration</td>
+<td style="text-align: right;">6761</td>
+<td style="text-align: right;">0.66</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">2: 10982, 1: 2360</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SchoolConnectedness</td>
+<td style="text-align: right;">8926</td>
+<td style="text-align: right;">0.56</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">1: 6016, 2: 5161</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ParentalMonitoring</td>
+<td style="text-align: right;">9253</td>
+<td style="text-align: right;">0.54</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">1: 9038, 2: 1812</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">UnfairDisciplineAtSchool</td>
+<td style="text-align: right;">9520</td>
+<td style="text-align: right;">0.53</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">2: 8412, 1: 2171</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">DifficultyConcentrating</td>
+<td style="text-align: right;">9157</td>
+<td style="text-align: right;">0.54</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">2: 5685, 1: 5261</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">EnglishProficiency</td>
+<td style="text-align: right;">9308</td>
+<td style="text-align: right;">0.54</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">1: 10550, 2: 245</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 8%">
+<col style="width: 12%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 7%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 5%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">sd</th>
+<th style="text-align: right;">p0</th>
+<th style="text-align: right;">p25</th>
+<th style="text-align: right;">p50</th>
+<th style="text-align: right;">p75</th>
+<th style="text-align: right;">p100</th>
+<th style="text-align: left;">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">weight</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1.27</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.41</td>
+<td style="text-align: right;">1.36</td>
+<td style="text-align: right;">22.54</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">stratum</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">228.37</td>
+<td style="text-align: right;">73.29</td>
+<td style="text-align: right;">101.00</td>
+<td style="text-align: right;">201.00</td>
+<td style="text-align: right;">212.00</td>
+<td style="text-align: right;">300.00</td>
+<td style="text-align: right;">300.00</td>
+<td style="text-align: left;">▃▁▆▁▇</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">psu</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">414571.69</td>
+<td style="text-align: right;">235438.55</td>
+<td style="text-align: right;">16294.00</td>
+<td style="text-align: right;">214944.00</td>
+<td style="text-align: right;">401089.00</td>
+<td style="text-align: right;">573255.00</td>
+<td style="text-align: right;">788430.00</td>
+<td style="text-align: left;">▆▃▇▇▆</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Age</td>
+<td style="text-align: right;">98</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">15.89</td>
+<td style="text-align: right;">1.22</td>
+<td style="text-align: right;">12.00</td>
+<td style="text-align: right;">15.00</td>
+<td style="text-align: right;">16.00</td>
+<td style="text-align: right;">17.00</td>
+<td style="text-align: right;">18.00</td>
+<td style="text-align: left;">▁▃▇▆▇</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Height</td>
+<td style="text-align: right;">2289</td>
+<td style="text-align: right;">0.89</td>
+<td style="text-align: right;">1.70</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">1.32</td>
+<td style="text-align: right;">1.63</td>
+<td style="text-align: right;">1.70</td>
+<td style="text-align: right;">1.78</td>
+<td style="text-align: right;">2.03</td>
+<td style="text-align: left;">▁▅▇▆▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Weight</td>
+<td style="text-align: right;">2289</td>
+<td style="text-align: right;">0.89</td>
+<td style="text-align: right;">68.68</td>
+<td style="text-align: right;">18.47</td>
+<td style="text-align: right;">31.30</td>
+<td style="text-align: right;">55.79</td>
+<td style="text-align: right;">64.41</td>
+<td style="text-align: right;">77.11</td>
+<td style="text-align: right;">180.99</td>
+<td style="text-align: left;">▆▇▂▁▁</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="tipos-de-variables" class="slide level2">
+<h2>Tipos de variables</h2>
+
+<img data-src="img/types_of_variables.drawio.svg" class="r-stretch"></section>
+<section id="cómo-verlo-en-los-datos" class="slide level2">
+<h2>¿Cómo verlo en los datos?</h2>
+
+<img data-src="img/glimpse_types.png" class="r-stretch"></section>
+<section id="ahora-te-toca-a-ti" class="slide level2 scrollable">
+<h2>¡Ahora te toca a ti!</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="fragment">
+<p>En tus proyectos:</p>
+<ol type="1">
+<li class="fragment">¡Abramos Posit Cloud y creemos nuestros proyectos!</li>
+</ol>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="fragment">
+<p><img data-src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYnppYXN1M3VwZGR2dWwwaWVwN2l0b3VueWdrNDFoY2h2MDhtMjk2ciZlcD12MV9naWZzX3NlYXJjaCZjdD1n/XIqCQx02E1U9W/giphy.gif"></p>
+</div>
+</div></div>
+</section></section>
+<section>
+<section id="introducción-a-tidyverse" class="title-slide slide level1 center">
+<h1>Introducción a <code>tidyverse</code></h1>
+
+</section>
+<section id="tidyverse" class="slide level2">
+<h2><img data-src="img/tidyverse.png" class="quarto-figure quarto-figure-center" style="width:5.0%"> Tidyverse</h2>
+<ul>
+<li class="fragment">Una colección de paquetes de R 📦s desarrollados por H. Wickham y colaboradores en Posit.</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/wickham.png" class="quarto-figure quarto-figure-center"></p>
+</figure>
+</div>
+</section></section>
+<section>
+<section id="tidyverse-es-una-colección-de-paquetes-de-r" class="title-slide slide level1 center">
+<h1><strong>Tidyverse</strong> es una colección de paquetes de R 📦</h1>
+<ul>
+<li class="fragment"><p><a href="https://ggplot2.tidyverse.org/"><code>ggplot2</code> - visualización</a></p></li>
+<li class="fragment"><p><a href="https://dplyr.tidyverse.org/"><code>dplyr</code>, <code>tidyr</code> - manipulación de datos</a></p></li>
+<li class="fragment"><p><code>purrr</code> - programación avanzada (funciones y “loops”)</p></li>
+<li class="fragment"><p><a href="https://readr.tidyverse.org/"><code>readr</code> - importar datos</a></p></li>
+<li class="fragment"><p><a href="https://tibble.tidyverse.org/"><code>tibble</code> - formato mejorado de <code>data.frame</code></a></p></li>
+<li class="fragment"><p><a href="https://forcats.tidyverse.org/"><code>forcats</code> - trabajar con factores</a></p></li>
+<li class="fragment"><p><a href="https://stringr.tidyverse.org/"><code>stringr</code> - trabajar con cadenas de caracteres</a></p></li>
+</ul>
+</section>
+<section id="tidyverse-1" class="slide level2">
+<h2><strong>Tidyverse</strong></h2>
+<div>
+<ul>
+<li class="fragment"><p>Un marco para gestionar datos que busca hacer mucho más fáciles los pasos de limpieza y preparación</p></li>
+<li class="fragment"><p>Características principales de un conjunto de datos “tidy”:</p>
+<ul>
+<li class="fragment">Cada variable es una columna</li>
+<li class="fragment">Cada observación es una fila</li>
+<li class="fragment">Cada valor está en una celda distinta</li>
+</ul></li>
+</ul>
+</div>
+</section>
+<section id="tidy-data" class="slide level2">
+<h2>Tidy Data</h2>
+
+<img data-src="img/tidydata.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="cuándo-limpiamos-los-datos" class="slide level2">
+<h2>¿Cuándo limpiamos los datos?</h2>
+
+<img data-src="img/data-science-workflow.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="flujo-de-trabajo-en-ciencia-de-datos-con-tidyverse" class="slide level2">
+<h2>Flujo de trabajo en ciencia de datos con <strong>Tidyverse</strong></h2>
+
+<img data-src="img/data-sciencie-workflow-packages.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="el-operador-pipe-y-luego" class="slide level2">
+<h2>El operador pipe %&gt;% <em>(y luego)</em></h2>
+
+<img data-src="img/pipe_1.png" class="r-stretch"></section>
+<section id="el-operador-pipe-y-luego-1" class="slide level2">
+<h2>El operador pipe %&gt;% <em>(y luego)</em></h2>
+
+<img data-src="img/pipe_2.png" class="r-stretch"></section>
+<section id="el-operador-pipe-y-luego-2" class="slide level2">
+<h2>El operador pipe %&gt;% <em>(y luego)</em></h2>
+
+<img data-src="img/pipe_3.png" class="r-stretch"></section>
+<section id="el-operador-pipe-y-luego-3" class="slide level2">
+<h2>El operador pipe %&gt;% <em>(y luego)</em></h2>
+
+<img data-src="img/pipe_4.png" class="r-stretch"></section>
+<section id="el-operador-pipe-y-luego-4" class="slide level2">
+<h2>El operador pipe %&gt;% <em>(y luego)</em></h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<ul>
+<li class="fragment">Este <code>|&gt;</code> también es un pipe</li>
+</ul>
+<p>-Atajo de teclado:</p>
+<ul>
+<li class="fragment">En Mac: command + shift + m</li>
+<li class="fragment">En Windows: ctrl + shift + m</li>
+</ul>
+</div><div class="column" style="width:40%;">
+<p><img data-src="img/pipe.png"></p>
+</div></div>
+</section>
+<section id="dato-curioso" class="slide level2">
+<h2>Dato curioso</h2>
+<div>
+<ul>
+<li class="fragment">El <code>%&gt;%</code> viene de un paquete llamado <code>magrittr</code></li>
+<li class="fragment">Una referencia clara al famoso cuadro “The Treachery of Images” del pintor belga René Magritte.</li>
+</ul>
+<div class="r-stack">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/the-pipe.png" class="fragment quarto-figure quarto-figure-center" style="width:50.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="diferencia-entre-r-base-y-tidyverse" class="slide level2">
+<h2>Diferencia entre R base y <code>tidyverse</code></h2>
+<ul>
+<li class="fragment">Datos de Star Wars del paquete <code>dplyr</code></li>
+</ul>
+<div class="fragment">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://media.giphy.com/media/dzWhPd9Zfry79cwBhn/giphy.gif?cid=ecf05e474nhidaye4mx2l8spp8ufuuwbpcy8anedf33yz50d&amp;ep=v1_gifs_related&amp;rid=giphy.gif&amp;ct=g" class="quarto-figure quarto-figure-center" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</section>
+<section id="explorando-el-conjunto-de-datos-de-star-wars" class="slide level2 scrollable">
+<h2>Explorando el conjunto de datos de Star Wars</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a>starwars</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 87 × 14
+   name     height  mass hair_color skin_color eye_color birth_year sex   gender
+   &lt;chr&gt;     &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
+ 1 Luke Sk…    172    77 blond      fair       blue            19   male  mascu…
+ 2 C-3PO       167    75 &lt;NA&gt;       gold       yellow         112   none  mascu…
+ 3 R2-D2        96    32 &lt;NA&gt;       white, bl… red             33   none  mascu…
+ 4 Darth V…    202   136 none       white      yellow          41.9 male  mascu…
+ 5 Leia Or…    150    49 brown      light      brown           19   fema… femin…
+ 6 Owen La…    178   120 brown, gr… light      blue            52   male  mascu…
+ 7 Beru Wh…    165    75 brown      light      blue            47   fema… femin…
+ 8 R5-D4        97    32 &lt;NA&gt;       white, red red             NA   none  mascu…
+ 9 Biggs D…    183    84 black      light      brown           24   male  mascu…
+10 Obi-Wan…    182    77 auburn, w… fair       blue-gray       57   male  mascu…
+# ℹ 77 more rows
+# ℹ 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,
+#   vehicles &lt;list&gt;, starships &lt;list&gt;</code></pre>
+</div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a><span class="fu">skim</span>(starwars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
+<div class="cell-output-display">
+<table class="caption-top">
+<caption>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Name</td>
+<td style="text-align: left;">starwars</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Number of rows</td>
+<td style="text-align: left;">87</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Number of columns</td>
+<td style="text-align: left;">14</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">_______________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Column type frequency:</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">list</td>
+<td style="text-align: left;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">________________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Group variables</td>
+<td style="text-align: left;">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: character</strong></p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 19%">
+<col style="width: 13%">
+<col style="width: 19%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 8%">
+<col style="width: 12%">
+<col style="width: 15%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">min</th>
+<th style="text-align: right;">max</th>
+<th style="text-align: right;">empty</th>
+<th style="text-align: right;">n_unique</th>
+<th style="text-align: right;">whitespace</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">name</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">87</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">hair_color</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0.94</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">skin_color</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">eye_color</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sex</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">gender</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">homeworld</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0.89</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">species</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">37</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: list</strong></p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 14%">
+<col style="width: 20%">
+<col style="width: 13%">
+<col style="width: 15%">
+<col style="width: 15%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">n_unique</th>
+<th style="text-align: right;">min_length</th>
+<th style="text-align: right;">max_length</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">films</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">7</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">vehicles</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">starships</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">5</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table class="caption-top" style="width:100%;">
+<colgroup>
+<col style="width: 17%">
+<col style="width: 12%">
+<col style="width: 17%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 3%">
+<col style="width: 7%">
+<col style="width: 4%">
+<col style="width: 7%">
+<col style="width: 6%">
+<col style="width: 7%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">sd</th>
+<th style="text-align: right;">p0</th>
+<th style="text-align: right;">p25</th>
+<th style="text-align: right;">p50</th>
+<th style="text-align: right;">p75</th>
+<th style="text-align: right;">p100</th>
+<th style="text-align: left;">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">height</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0.93</td>
+<td style="text-align: right;">174.60</td>
+<td style="text-align: right;">34.77</td>
+<td style="text-align: right;">66</td>
+<td style="text-align: right;">167.0</td>
+<td style="text-align: right;">180</td>
+<td style="text-align: right;">191.0</td>
+<td style="text-align: right;">264</td>
+<td style="text-align: left;">▂▁▇▅▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">mass</td>
+<td style="text-align: right;">28</td>
+<td style="text-align: right;">0.68</td>
+<td style="text-align: right;">97.31</td>
+<td style="text-align: right;">169.46</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">55.6</td>
+<td style="text-align: right;">79</td>
+<td style="text-align: right;">84.5</td>
+<td style="text-align: right;">1358</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">birth_year</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">87.57</td>
+<td style="text-align: right;">154.69</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">35.0</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">72.0</td>
+<td style="text-align: right;">896</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="diferencia-entre-r-base-y-tidyverse-1" class="slide level2">
+<h2>Diferencia entre R base y <code>tidyverse</code></h2>
+<p>Calculemos el IMC (índice de masa corporal) para cada personaje del conjunto de datos</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="r-base">R base 🤢</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href=""></a>starwars<span class="sc">$</span>bmi <span class="ot">&lt;-</span> starwars<span class="sc">$</span>mass<span class="sc">/</span>(starwars<span class="sc">$</span>height<span class="sc">/</span><span class="dv">100</span>)<span class="sc">^</span><span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
+
+</div>
+</div><div class="column" style="width:50%;">
+<h3 id="tidyverse-2">tidyverse 😎</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20" data-code-line-numbers="1|2|3|4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a>starwars_bmi <span class="ot">&lt;-</span> </span>
+<span id="cb20-2"><a href=""></a>  starwars <span class="sc">%&gt;%</span> </span>
+<span id="cb20-3"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">bmi =</span> mass<span class="sc">/</span>((height<span class="sc">/</span><span class="dv">100</span>)<span class="sc">^</span><span class="dv">2</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-4"><a href=""></a>  <span class="fu">select</span>(bmi, <span class="fu">everything</span>()) <span class="co"># To see the created variable first</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div></div>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href=""></a>starwars_bmi</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 87 × 15
+     bmi name      height  mass hair_color skin_color eye_color birth_year sex  
+   &lt;dbl&gt; &lt;chr&gt;      &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt;
+ 1  26.0 Luke Sky…    172    77 blond      fair       blue            19   male 
+ 2  26.9 C-3PO        167    75 &lt;NA&gt;       gold       yellow         112   none 
+ 3  34.7 R2-D2         96    32 &lt;NA&gt;       white, bl… red             33   none 
+ 4  33.3 Darth Va…    202   136 none       white      yellow          41.9 male 
+ 5  21.8 Leia Org…    150    49 brown      light      brown           19   fema…
+ 6  37.9 Owen Lars    178   120 brown, gr… light      blue            52   male 
+ 7  27.5 Beru Whi…    165    75 brown      light      blue            47   fema…
+ 8  34.0 R5-D4         97    32 &lt;NA&gt;       white, red red             NA   none 
+ 9  25.1 Biggs Da…    183    84 black      light      brown           24   male 
+10  23.2 Obi-Wan …    182    77 auburn, w… fair       blue-gray       57   male 
+# ℹ 77 more rows
+# ℹ 6 more variables: gender &lt;chr&gt;, homeworld &lt;chr&gt;, species &lt;chr&gt;,
+#   films &lt;list&gt;, vehicles &lt;list&gt;, starships &lt;list&gt;</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="nos-vemos-la-próxima" class="slide level2">
+<h2>¡Nos vemos la próxima!</h2>
+
+<img data-src="https://media.giphy.com/media/jUr8EBC1eLq1oFbcBF/giphy.gif?cid=ecf05e47sepiwsspevvk5rf5cdz1wa7imclkeexbjghm0wdc&amp;ep=v1_gifs_search&amp;rid=giphy.gif&amp;ct=g" class="r-stretch"></section>
+<section id="referencias" class="slide level2">
+<h2>Referencias</h2>
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="sesion_1_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="sesion_1_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="sesion_1_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="sesion_1_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="sesion_1_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="sesion_1_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="sesion_1_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="sesion_1_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="sesion_1_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="sesion_1_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="sesion_1_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1600,
+
+        height: 900,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
+        }
+      }
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
+        }
+      }
+      toggleBodyColorPrimary();  
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
+      });
+      const isCodeAnnotation = (el) => {
+        for (const clz of el.classList) {
+          if (clz.startsWith('code-annotation-')) {                     
+            return true;
+          }
+        }
+        return false;
+      }
+      const onCopySuccess = function(e) {
+        // button target
+        const button = e.trigger;
+        // don't keep focus
+        button.blur();
+        // flash "checked"
+        button.classList.add('code-copy-button-checked');
+        var currentTitle = button.getAttribute("title");
+        button.setAttribute("title", "Copied!");
+        let tooltip;
+        if (window.bootstrap) {
+          button.setAttribute("data-bs-toggle", "tooltip");
+          button.setAttribute("data-bs-placement", "left");
+          button.setAttribute("data-bs-title", "Copied!");
+          tooltip = new bootstrap.Tooltip(button, 
+            { trigger: "manual", 
+              customClass: "code-copy-button-tooltip",
+              offset: [0, -8]});
+          tooltip.show();    
+        }
+        setTimeout(function() {
+          if (tooltip) {
+            tooltip.hide();
+            button.removeAttribute("data-bs-title");
+            button.removeAttribute("data-bs-toggle");
+            button.removeAttribute("data-bs-placement");
+          }
+          button.setAttribute("title", currentTitle);
+          button.classList.remove('code-copy-button-checked');
+        }, 1000);
+        // clear code selection
+        e.clearSelection();
+      }
+      const getTextToCopy = function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+      }
+      const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+        text: getTextToCopy
+      });
+      clipboard.on('success', onCopySuccess);
+      if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+        // For code content inside modals, clipBoardJS needs to be initialized with a container option
+        // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+        const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+          text: getTextToCopy,
+          container: window.document.getElementById('quarto-embedded-source-code-modal')
+        });
+        clipboardModal.on('success', onCopySuccess);
+      }
+        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+        var mailtoRegex = new RegExp(/^mailto:/);
+          var filterRegex = new RegExp('/' + window.location.host + '/');
+        var isInternal = (href) => {
+            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+        }
+        // Inspect non-navigation links and adorn them if external
+     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+        for (var i=0; i<links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+            // undo the damage that might have been done by quarto-nav.js in the case of
+            // links that we want to consider external
+            if (link.dataset.originalHref !== undefined) {
+              link.href = link.dataset.originalHref;
+            }
+          }
+        }
+      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+        const config = {
+          allowHTML: true,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start',
+        };
+        if (contentFn) {
+          config.content = contentFn;
+        }
+        if (onTriggerFn) {
+          config.onTrigger = onTriggerFn;
+        }
+        if (onUntriggerFn) {
+          config.onUntrigger = onUntriggerFn;
+        }
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
+      }
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note) {
+            return note.innerHTML;
+          } else {
+            return "";
+          }
+        });
+      }
+      const findCites = (el) => {
+        const parentEl = el.parentElement;
+        if (parentEl) {
+          const cites = parentEl.dataset.cites;
+          if (cites) {
+            return {
+              el,
+              cites: cites.split(' ')
+            };
+          } else {
+            return findCites(el.parentElement)
+          }
+        } else {
+          return undefined;
+        }
+      };
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const citeInfo = findCites(ref);
+        if (citeInfo) {
+          tippyHover(citeInfo.el, function() {
+            var popup = window.document.createElement('div');
+            citeInfo.cites.forEach(function(cite) {
+              var citeDiv = window.document.createElement('div');
+              citeDiv.classList.add('hanging-indent');
+              citeDiv.classList.add('csl-entry');
+              var biblioDiv = window.document.getElementById('ref-' + cite);
+              if (biblioDiv) {
+                citeDiv.innerHTML = biblioDiv.innerHTML;
+              }
+              popup.appendChild(citeDiv);
+            });
+            return popup.innerHTML;
+          });
+        }
+      }
+    });
+    </script>
+    
+
+</body></html>

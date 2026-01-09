@@ -1,0 +1,33 @@
+/* Set the background color for the entire slide deck and default text color */
+.reveal {
+    background-color: #fdf7f9;
+    color: black;
+  }
+  
+  /* Style code blocks */
+  .reveal pre code {
+    border: 2px solid #ff69b4;
+    border-radius: 8px;
+    background-color: #fdf7f9;
+    color: black;
+    padding: 1em;
+  }
+  
+  /* Inline code */
+  .reveal code {
+    background-color: #fdf7f9;
+    color: #ff69b4;
+    padding: 0.1em 0.3em;
+    border-radius: 4px;
+  }
+  
+  /* Headings */
+  .reveal h1, .reveal h2, .reveal h3 {
+    color: #ff69b4;
+  }
+  
+  /* Links */
+  .reveal a {
+    color: #ff69b4;
+  }
+  
