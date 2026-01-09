@@ -18,8 +18,8 @@ Este repositorio contiene todos los materiales para nuestro taller intensivo don
 
 | Sesión | Tema | Slides |
 |--------|------|--------|
-| **Sesión 1** | Introducción a Machine Learning | [🔗 Ver slides](enlace-aqui) |
-| **Sesión 2** | Introducción a Tidymodels | [🔗 Ver slides](enlace-aqui) |
+| **Sesión 1** | Introducción a Machine Learning | [🔗 Ver slides](https://catalina-canizares.quarto.pub/sesion-1/#/title-slide) |
+| **Sesión 2** | Introducción a Tidymodels | [🔗 Ver slides](https://catalina-canizares.quarto.pub/sesion-2/#/title-slide) |
 | **Sesión 3** | LASSO y Regularización | [🔗 Ver slides](enlace-aqui) |
 | **Sesión 4** | K-Nearest Neighbors (KNN) | [🔗 Ver slides](enlace-aqui) |
 | **Sesión 5** | Árboles de Decisión | [🔗 Ver slides](enlace-aqui) |
@@ -32,10 +32,7 @@ Este taller utiliza los siguientes paquetes de R:
 ```r
 # Ecosistema tidymodels
 library(tidymodels)
-library(recipes)
-library(parsnip)
-library(workflows)
-library(rsample)
+
 
 # Manipulación y visualización de datos
 library(tidyverse)
@@ -63,7 +60,7 @@ library(MLearnYRBSS)
    ```r
    install.packages("tidymodels")
    install.packages("tidyverse")
-   install.packages("MLearnYRBSS")
+   pak::pak("MLearnYRBSS")
    ```
 
 3. **Explora los materiales:**

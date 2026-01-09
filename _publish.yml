@@ -1,0 +1,10 @@
+- source: sesion_2.qmd
+  quarto-pub:
+    - id: 9cba00d6-948d-4060-a305-aa20758e4cd3
+      url: https://catalina-canizares.quarto.pub/introducción-al-aprendizaje-automático
+    - id: 535585cd-e052-44e8-b0ff-5e037b104fb5
+      url: https://catalina-canizares.quarto.pub/sesion-2
+- source: sesion_1.qmd
+  quarto-pub:
+    - id: fcb02342-8820-447c-912d-7c95eb55af1e
+      url: https://catalina-canizares.quarto.pub/sesion-1
