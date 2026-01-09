@@ -578,9 +578,9 @@ Hay `r nrow(penguins)` filas en el conjunto de datos `penguins`.
 
 ## Consigamos los datos
 
-1. Desde [Excel](https://github.com/ccani007/fau_module/blob/main/data/yrbs_2021.xlsx)
-2. Desde [.csv](https://github.com/ccani007/fau_module/blob/main/data/yrbs_2021.csv)
-3. Desde [.sav](https://github.com/ccani007/fau_module/blob/main/data/yrbs_2021.sav)
+1. Desde [Excel](https://github.com/ccani007/machine-learning-colombia/blob/main/data/yrbs_2021.xlsx)
+2. Desde [.csv](http://github.com/ccani007/machine-learning-colombia/blob/main/data/yrbs_2021.csv)
+3. Desde [.sav](https://github.com/ccani007/machine-learning-colombia/blob/main/data/yrbs_2021.sav)
 3. Desde R
 
 ## Paquete `rio`: una navaja suiza para datos
