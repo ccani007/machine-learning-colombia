@@ -20,10 +20,9 @@ Este repositorio contiene todos los materiales para nuestro taller intensivo don
 |--------|------|--------|
 | **Sesión 1** | Introducción a Machine Learning | [🔗 Ver slides](https://catalina-canizares.quarto.pub/sesion-1/#/title-slide) |
 | **Sesión 2** | Introducción a Tidymodels | [🔗 Ver slides](https://catalina-canizares.quarto.pub/sesion-2/#/title-slide) |
-| **Sesión 3** | LASSO y Regularización | [🔗 Ver slides](enlace-aqui) |
-| **Sesión 4** | K-Nearest Neighbors (KNN) | [🔗 Ver slides](enlace-aqui) |
-| **Sesión 5** | Árboles de Decisión | [🔗 Ver slides](enlace-aqui) |
-| **Sesión 6** | Random Forest y XGBoost | [🔗 Ver slides](enlace-aqui) |
+| **Sesión 3** | LASSO y Regularización | [🔗 Ver slides](https://quartopub.com/) |
+| **Sesión 4** | Árboles de Decisión | [🔗 Ver slides](https://catalina-canizares.quarto.pub/arboles-en-espanol/#/title-slide) |
+| **Sesión 5?** | Random Forest y XGBoost | [🔗 En construcción](enlace-aqui) |
 
 ## 🛠️ Tecnologías y Paquetes
 
