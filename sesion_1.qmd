@@ -145,6 +145,7 @@ Crear un documento html usando Quarto para analizar los datos de la Youth Risk B
 
 ### Descriptivo
 
+- Resumen de los datos
 - Describe o ilustra características de algunos datos.
 - Sin otro propósito que enfatizar visualmente alguna tendencia o patrón en los datos.
 
@@ -157,7 +158,7 @@ Crear un documento html usando Quarto para analizar los datos de la Youth Risk B
 
 Un modelo inferencial parte de una conjetura o idea predefinida sobre una población y produce una conclusión estadística, como un intervalo de estimación o el rechazo de una hipótesis.
 
-- Por ejemplo, el objetivo de un ensayo clínico podría ser confirmar que una nueva terapia hace un mejor trabajo prolongando la vida.
+- Por ejemplo, el objetivo de un ensayo clínico podría ser evaluar si una nuevo medicamento prolonga la vida.
 
 :::footer
 [Tidy Modeling With R](https://www.tmwr.org/software-modeling.html)
@@ -448,12 +449,10 @@ countdown(minutes = 5)
 #| eval: false
 #| code-copy: true
 
-install.packages("palmerpenguins")
 install.packages("table1")
 
-library(palmerpenguins)
 library(table1)
-
+library(tidyverse)
 
 ```
 
