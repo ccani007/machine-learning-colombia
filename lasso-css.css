@@ -1,0 +1,76 @@
+/* ==========================================
+   Quarto revealjs – Cowboy style (minimal)
+   Fondo + texto café + bullets serpiente
+   ========================================== */
+
+/* ---- Color base del texto (café vaquero) ---- */
+.reveal{
+    color: #4a2c18 !important;   /* café oscuro */
+  }
+  
+  .reveal h1,
+  .reveal h2,
+  .reveal h3,
+  .reveal h4,
+  .reveal h5,
+  .reveal h6,
+  .reveal p,
+  .reveal li{
+    color: #4a2c18 !important;
+  }
+  
+  /* ---- Fondo de las slides ---- */
+  .reveal .slides section{
+    background:
+      radial-gradient(
+        1200px 520px at 15% 10%,
+        rgba(255,255,255,0.9),
+        rgba(255,255,255,0) 60%
+      ),
+      radial-gradient(
+        900px 420px at 80% 16%,
+        rgba(255,255,255,0.82),
+        rgba(255,255,255,0) 55%
+      ),
+      linear-gradient(
+        180deg,
+        #bfe7ff 0%,
+        #dff3ff 26%,
+        #fff6e3 58%,
+        #fff6e3 100%
+      ) !important;
+  }
+  
+  /* ---- Links estilo cuero ---- */
+  .reveal a{
+    color: #6b3f26 !important;
+  }
+  
+  /* ==========================================
+     BULLET POINTS COMO SERPIENTES 🐍
+     ========================================== */
+  
+  /* Quitamos bullets normales */
+  .reveal ul{
+    list-style: none !important;
+    padding-left: 1.4em !important;
+  }
+  
+  /* Serpiente como pseudo-elemento */
+  .reveal ul li{
+    position: relative;
+  }
+  
+  .reveal ul li::before{
+    content: "🐍";
+    position: absolute;
+    left: -1.4em;
+    top: 0.05em;
+    font-size: 0.9em;
+  }
+  
+  /* Ajuste fino para sublistas */
+  .reveal ul ul{
+    margin-top: 0.3em;
+  }
+  

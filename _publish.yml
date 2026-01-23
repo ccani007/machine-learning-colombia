@@ -4,7 +4,17 @@
       url: https://catalina-canizares.quarto.pub/introducción-al-aprendizaje-automático
     - id: 535585cd-e052-44e8-b0ff-5e037b104fb5
       url: https://catalina-canizares.quarto.pub/sesion-2
+    - id: b036b6ef-c55e-4839-b325-19bfac015b5c
+      url: https://catalina-canizares.quarto.pub/lasso-uniandes
 - source: sesion_1.qmd
   quarto-pub:
     - id: fcb02342-8820-447c-912d-7c95eb55af1e
       url: https://catalina-canizares.quarto.pub/sesion-1
+- source: session_3_lasso.qmd
+  quarto-pub:
+    - id: 55db50fa-ea6c-44e5-a0d9-6c6a96ab2e73
+      url: https://catalina-canizares.quarto.pub/lasso-en-espanol
+- source: session_4_DecisionTrees.qmd
+  quarto-pub:
+    - id: dfa5152e-266f-4bd7-acb2-2e504adc3dc0
+      url: https://catalina-canizares.quarto.pub/arboles-en-espanol

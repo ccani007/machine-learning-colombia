@@ -1,8 +1,10 @@
 ---
-title: "Regularization Techniques: Ridge, Lasso, and Elastic Net Using `tidymodels`"
-author: "Catalina Cañizares, Ph.D. and Raymond Balise Ph.D."
+title: "Técnicas de Regularización: Ridge, Lasso y Elastic Net usando `tidymodels`"
+author: "Catalina Cañizares, Ph.D. y Francisco Cardozo Ph.D."
 format:
   revealjs:
+    theme: simple
+    css: lasso-css.css
     scrollable: true
     slide-number: true
     transition: "fade"
@@ -12,56 +14,40 @@ editor_options:
   chunk_output_type: console
 ---
 
-## About This Material
+## Acerca de Este Material
 
-> Regularization Techniques: Ridge, Lasso, and Elastic Net Using `tidymodels` © 2024 by Catalina Canizares and Raymond Balise is licensed under Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International 
+> Técnicas de Regularización: Ridge, Lasso y Elastic Net usando `tidymodels` © 2024 por Catalina Canizares y Francisco Cardozo está licenciado bajo Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International 
 
-This material is freely available under the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License. 
+Este material está disponible libremente bajo la Licencia Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International. 
 
-For more information on this license, please visit: [Creative Commons License](https://creativecommons.org/licenses/by-nc-nd/4.0/)
-
-
+Para más información sobre esta licencia, por favor visite: [Licencia Creative Commons](https://creativecommons.org/licenses/by-nc-nd/4.0/)
 
 
 
-## Review of what we have covered
+## Reducción (Shrinkage)
 
 ```{r}
 library(tidyverse)
 library(tidymodels)
 library(skimr)
-
 ```
 
-
-:::: {.columns}
-::: {.column width="50%"}
-[I click here...you wait...](https://play.kahoot.it/v2/?quizId=090bbc1e-c963-4f36-9cfb-45f81949c1f3)
-
-:::
-::: {.column width="50%"}
-![](https://media.giphy.com/media/kDCargqZQ88Jq/giphy.gif?cid=ecf05e47cql4isfzdq2udvl3cqfh225u0ab93sm4u87alq33&ep=v1_gifs_search&rid=giphy.gif&ct=g)
-:::
-:::
-
-
-## Shrinkage
-- Shrinkage is a technique that "shrinks" or reduces the coefficients of predictor variables towards zero.
-- Shrinkage methods strike a balance between capturing the relationships in the data and avoiding overfitting.
-- Shrinking the coefficient estimates can significantly reduce variance.
-- The two best-known techniques for shrinking the regression coefficients towards zero are ridge regression and the lasso.
+- La reducción es una técnica que "reduce" o disminuye los coeficientes de las variables predictoras a cero.
+- Los métodos de reducción logran un equilibrio entre capturar las relaciones en los datos y evitar el sobreajuste.
+- Reducir las estimaciones de los coeficientes puede disminuir significativamente la varianza.
+- Las dos técnicas más conocidas para reducir los coeficientes de regresión hacia cero son la regresión ridge y el lasso.
 
 :::footer
 [ISLRv2](https://hastie.su.domains/ISLR2/ISLRv2_website.pdf)
 :::
 
-## Residual Sum of Squares (RSS)
+## Suma Residual de Cuadrados (RSS)
 
 :::: {.columns}
 ::: {.column width="50%"}
 
-The RSS measures the amount of error remaining between the regression function and the data set after the model has been run.   
-A smaller RSS represents a regression function that is well-fit to the data.
+El RSS mide la cantidad de error que queda entre la función de regresión y el conjunto de datos después de ejecutar el modelo.   
+Un RSS más pequeño representa una función de regresión que se ajusta bien a los datos.
 
 
 $$
@@ -80,16 +66,16 @@ $$
 [ISLRv2](https://hastie.su.domains/ISLR2/ISLRv2_website.pdf)
 :::
 
-# Ridge Regression
+# Regresión Ridge
 
 ## Ridge
-- Ridge regression is a regularization technique that adds a penalty term ($\lambda$) to the RSS.
+- La regresión ridge es una técnica de regularización que agrega un término de penalización ($\lambda$) al RSS.
 
-- It shrinks the regression coefficients towards zero, reducing their impact on the model.
+- Reduce los coeficientes de regresión hacia cero, disminuyendo su impacto en el modelo.
 
-- It is also known as the L2 regularization
+- También se conoce como regularización L2
 
-- The formula for Ridge regression is:
+- La fórmula para la regresión Ridge es:
 $$
 \sum_{i=1}^n\bigg( y_i - \beta_0 - \sum_{j=1}^p \beta_j x_{ij}\bigg)^2 + \lambda \sum_{j=1}^p \beta_j^2 
 $$
@@ -106,8 +92,8 @@ $$
 
 :::
 ::: {.column width="50%"}
-When $\lambda$ is extremely large, then all of the ridge coefficient estimates
-are basically zero; this corresponds to the null model that contains no predictors. 
+Cuando $\lambda$ es extremadamente grande, todas las estimaciones de los coeficientes ridge
+son básicamente cero; esto corresponde al modelo nulo que no contiene predictores. 
 :::
 :::
 
@@ -119,11 +105,11 @@ are basically zero; this corresponds to the null model that contains no predicto
 
 ## Lasso
 
-- Lasso (Least Absolute Shrinkage and Selection Operator) is another regularization technique that adds a penalty term ($\lambda$) to the RSS
+- Lasso (Operador de Reducción y Selección de Mínimos Absolutos) es otra técnica de regularización que agrega un término de penalización ($\lambda$) al RSS
 
-- It has a built-in feature selection property, as it can shrink coefficients to exactly zero.
+- Tiene una propiedad incorporada de selección de características, ya que puede reducir los coeficientes exactamente a cero.
 
-- It is also known as the L1 regularization
+- También se conoce como regularización L1
 
 
 $$
@@ -142,9 +128,9 @@ $$
 
 :::
 ::: {.column width="50%"}
-When λ = 0, then the lasso simply gives the least squares fit, and when $\lambda$ becomes sufficiently
-large, the lasso gives the null model in which all coefficient estimates equal
-zero. 
+Cuando λ = 0, el lasso simplemente da el ajuste de mínimos cuadrados, y cuando $\lambda$ se vuelve suficientemente
+grande, el lasso da el modelo nulo en el que todas las estimaciones de coeficientes son iguales
+a cero. 
 :::
 :::
 
@@ -152,18 +138,18 @@ zero.
 [ISLRv2](https://hastie.su.domains/ISLR2/ISLRv2_website.pdf)
 :::
 
-## Compare Ridge vs. Lasso
+## Comparar Ridge vs. Lasso
 
 :::: {.columns}
 ::: {.column width="50%"}
 ![](img/lasso_graph.png)
 
-Depending on the value of $\lambda$, the lasso can produce a model involving any number of variables.
+Dependiendo del valor de $\lambda$, el lasso puede producir un modelo que involucre cualquier número de variables.
 
 :::
 ::: {.column width="50%"}
 ![](img/ridge_graph.png)
-Ridge will always include all of the variables in the model, although the magnitude of the coefficient estimates will depend on $\lambda$
+Ridge siempre incluirá todas las variables en el modelo, aunque la magnitud de las estimaciones de los coeficientes dependerá de $\lambda$
 :::
 :::
 
@@ -171,18 +157,18 @@ Ridge will always include all of the variables in the model, although the magnit
 [ISLRv2](https://hastie.su.domains/ISLR2/ISLRv2_website.pdf)
 :::
 
-## The Variable Selection Property of the Lasso
+## La Propiedad de Selección de Variables del Lasso
 
 ![](img/Contours .png)
 
--The fact that some lasso coefficients are shrunken entirely to zero explains why the lasso performs feature selection
+-El hecho de que algunos coeficientes del lasso se reduzcan completamente a cero explica por qué el lasso realiza selección de características
 
 ::: {.notes}
-The least square estimate is marked as beta hat,
-The restrictive regions are in grey, the diamond region is for the lasso, the circle region is for the ridge.
-The ellipses centered around βˆ represents a contour of RSS
-As the ellipses expand, the RSS increases.
-The lasso and ridge estimates are the first points at which an ellipse contracts the grey region.
+La estimación de mínimos cuadrados está marcada como beta sombrero,
+Las regiones restrictivas están en gris, la región de diamante es para el lasso, la región de círculo es para el ridge.
+Las elipses centradas alrededor de βˆ representan un contorno de RSS
+A medida que las elipses se expanden, el RSS aumenta.
+Las estimaciones de lasso y ridge son los primeros puntos en los que una elipse contrae la región gris.
 :::
 
 :::footer
@@ -191,9 +177,9 @@ The lasso and ridge estimates are the first points at which an ellipse contracts
 
 ## Elastic Net
 
-- Is a generalization of lasso and ridge regression
-- It combines the two penalties. 
-- The formula for Elastic Net:
+- Es una generalización de la regresión lasso y ridge
+- Combina las dos penalizaciones. 
+- La fórmula para Elastic Net:
 
 $$
 \sum_{i=1}^n\bigg( y_i - \beta_0 - \sum_{j=1}^p \beta_j x_{ij}\bigg)^2 + \lambda \sum_{j=1}^p \beta_j^2  + \lambda \sum_{j=1}^p | \beta_j| 
@@ -205,27 +191,27 @@ $$
 
 ## Elastic Net
 
-The advantage of the elastic net is that it **keeps the feature selection** quality from the lasso penalty as well as the **effectiveness of the ridge penalty**. 
+La ventaja del elastic net es que **mantiene la calidad de selección de características** de la penalización lasso así como la **efectividad de la penalización ridge**. 
 
 :::footer
 [Practitioner’s Guide to Data Science](https://scientistcafe.com/ids/elastic-net.html)
 :::
 
-## How do we choose the best $\lambda$?
+## ¿Cómo elegimos el mejor $\lambda$?
 
-1. Using resampling methods
- - Check the perfomance using RMSE or ROC- AUC
-2. We can check from no shrinkage to so much that we don't have predictors left (lasso)
+1. Usando métodos de remuestreo
+ - Verificar el rendimiento usando RMSE o ROC-AUC
+2. Podemos verificar desde sin reducción hasta tanto que no nos queden predictores (lasso)
 
-# Lasso with `tidymodels`
+# Lasso con `tidymodels`
 ![](img/woody_amazed.gif)
 
-## Task 
+## Tarea 
 
 :::: {.columns}
 ::: {.column width="50%"}
 
-Determine the key predictors from a comprehensive set of 42 risky behaviors, encompassing alcohol and drug use, as well as reckless activities, with the primary objective of accurately predicting the probability of engaging in **texting and driving**. 
+Determinar los predictores clave de un conjunto integral de 42 comportamientos de riesgo, que incluyen el consumo de alcohol y drogas, así como actividades imprudentes, con el objetivo principal de predecir con precisión la probabilidad de participar en **enviar mensajes de texto y conducir**. 
 
 :::
 ::: {.column width="50%"}
@@ -237,7 +223,7 @@ Determine the key predictors from a comprehensive set of 42 risky behaviors, enc
 :::
 :::
 
-## The Data - `riskyBehaviors`
+## Los Datos - `riskyBehaviors`
 
 ```{r}
 #| echo: true
@@ -246,38 +232,48 @@ data("riskyBehaviors")
 
 ```
 
-## Data Cleaning
+## Limpieza de Datos
 ```{r}
 #| echo: true
 #| code-line-numbers: "1|2|3|4|5|6|7|8|9|10|11|12"
-riskyBehaviors_analysis <- 
-riskyBehaviors |> 
-  mutate(
-    TextingDriving = case_when(
-      TextingDriving == 1 ~ 0, 
-      TextingDriving %in% c(2, 3, 4, 5) ~ 1, 
-      TRUE ~ NA
-  )) |> 
-  mutate(TextingDriving = factor(TextingDriving)) |> 
-  drop_na(TextingDriving) |> 
-  select(-SourceVaping, -SourceAlcohol, -SexOrientation, -DrivingDrinking,
-         -SexualAbuse, -SexualAbuseByPartner, -Grade, -Age) 
+riskyBehaviors_analysis <-
+    riskyBehaviors |>
+    mutate(
+        TextingDriving = case_when(
+            TextingDriving == 1 ~ 0,
+            TextingDriving %in% c(2, 3, 4, 5) ~ 1,
+            TRUE ~ NA
+        )
+    ) |>
+    mutate(TextingDriving = factor(TextingDriving)) |>
+    drop_na(TextingDriving) |>
+    select(
+        -SourceVaping,
+        -SourceAlcohol,
+        -SexOrientation,
+        -DrivingDrinking,
+        -SexualAbuse,
+        -SexualAbuseByPartner,
+        -Grade,
+        -Age
+    )
 
 ```
 
 
-## Split Training - Testing 
+## División Entrenamiento - Prueba 
 
 ```{r}
 #| echo: true
 #| code-line-numbers: "1|3|4|6|7|9"
 #| output-location: fragment
 
-
 set.seed(1990)
 
-analysis_split <- initial_split(riskyBehaviors_analysis,
-                                stratum = TextingDriving)
+analysis_split <- initial_split(
+    riskyBehaviors_analysis,
+    strata = TextingDriving
+)
 
 analysis_train <- training(analysis_split)
 analysis_test <- testing(analysis_split)
@@ -286,7 +282,7 @@ analysis_split
 
 ```
 
-## Lets Check Our Work
+## Verifiquemos Nuestro Trabajo
 
 ```{r}
 library(janitor)
@@ -301,12 +297,10 @@ library(janitor)
 #| code-line-numbers: "1|2|3|4"
 #| output-location: fragment
 
-
-analysis_train |> 
-  tabyl(TextingDriving)  |> 
-  adorn_pct_formatting(0) |> 
-  adorn_totals()
-
+analysis_train |>
+    tabyl(TextingDriving) |>
+    adorn_pct_formatting(0) |>
+    adorn_totals()
 
 
 ```
@@ -320,17 +314,17 @@ analysis_train |>
 #| code-line-numbers: "1|2|3|4"
 #| output-location: fragment
 
-analysis_test |>  
-  tabyl(TextingDriving)  |> 
-  adorn_pct_formatting(0) |> 
-  adorn_totals()
+analysis_test |>
+    tabyl(TextingDriving) |>
+    adorn_pct_formatting(0) |>
+    adorn_totals()
 ```
 
 :::
 :::
 
 
-## Crossvalidation 
+## Validación Cruzada 
 
 ```{r}
 #| echo: true
@@ -339,31 +333,31 @@ analysis_test |>
 
 set.seed(1990)
 
-analysis_folds <- vfold_cv(analysis_train, v = 5) 
+analysis_folds <- vfold_cv(analysis_train, v = 5)
 analysis_folds
 ```
 
 
-## Recipe
+## Receta
 
 ```{r}
 #| echo: true
 #| code-line-numbers: "1|2|3|4|5|6|7|9"
 #| output-location: fragment
 
-texting_rec <- 
-  recipe(TextingDriving ~ ., data = analysis_train) |> 
-  step_zv(all_predictors()) |> 
-  step_impute_mode(all_nominal_predictors()) |> 
-  step_impute_mean(all_numeric_predictors()) |> 
-  step_normalize(all_numeric_predictors()) |> 
-  step_dummy(all_nominal_predictors()) 
+texting_rec <-
+    recipe(TextingDriving ~ ., data = analysis_train) |>
+    step_zv(all_predictors()) |>
+    step_impute_mode(all_nominal_predictors()) |>
+    step_impute_mean(all_numeric_predictors()) |>
+    step_normalize(all_numeric_predictors()) |>
+    step_dummy(all_nominal_predictors())
 
-texting_rec 
+texting_rec
 
 ```
 
-## Specification
+## Especificación
 
 
 ```{r}
@@ -372,13 +366,12 @@ texting_rec
 #| output-location: fragment
 
 texting_spec <-
-  logistic_reg(penalty = tune(), 
-               mixture = 1) |> 
-# mixture = 1 specifies a pure lasso model,
-# mixture = 0 specifies a ridge regression model, and
-# 0 < mixture < 1 specifies an elastic net model, interpolating lasso and ridge.
-# https://parsnip.tidymodels.org/reference/glmnet-details.html
-  set_engine('glmnet')
+    logistic_reg(penalty = tune(), mixture = 1) |>
+    # mixture = 1 especifica un modelo lasso puro,
+    # mixture = 0 especifica un modelo de regresión ridge, y
+    # 0 < mixture < 1 especifica un modelo elastic net, interpolando lasso y ridge.
+    # https://parsnip.tidymodels.org/reference/glmnet-details.html
+    set_engine('glmnet')
 
 texting_spec
 
@@ -386,29 +379,29 @@ texting_spec
 
 
 
-## Workflow
+## Flujo de Trabajo
 
 ```{r}
 #| echo: true
 #| code-line-numbers: "1|2|3|4|6"
 #| output-location: fragment
-texting_wf <- 
-  workflow() |> 
-  add_recipe(texting_rec) |> 
-  add_model(texting_spec)
+texting_wf <-
+    workflow() |>
+    add_recipe(texting_rec) |>
+    add_model(texting_spec)
 
 texting_wf
 ```
 
 
-## The Grid
+## La Cuadrícula
 
 
 :::{.columns}
 :::{.column width="50%"} 
 
-- A Grid search systematically explores different penalty values (e.g., 0.001, 0.01, 0.1, 1, 10).
-- Model performance is evaluated for each combination of penalty values.
+- Una búsqueda en cuadrícula explora sistemáticamente diferentes valores de penalización (por ejemplo, 0.001, 0.01, 0.1, 1, 10).
+- El rendimiento del modelo se evalúa para cada combinación de valores de penalización.
 :::
 
 :::{.column width="50%"}
@@ -417,7 +410,7 @@ texting_wf
 :::
 
 
-## The Grid
+## La Cuadrícula
 ![](https://dials.tidymodels.org/logo.png){.absolute top=0 right=0 width=80 height=90}
 
 ::: panel-tabset 
@@ -428,7 +421,7 @@ texting_wf
 #| echo: true
 #| code-line-numbers: "1|2|3"
 #| output-location: fragment
-# Used for Dr. Balise Class
+# Usado para la clase del Dr. Balise
 glmnet_grid <- data.frame(penalty = 10^seq(-6, -1, length.out = 20))
 glmnet_grid
 
@@ -440,7 +433,7 @@ glmnet_grid
 #| echo: true
 #| code-line-numbers: "1|2|3"
 #| output-location: fragment
-# I made it up
+# Lo inventé
 penalty_grid <- grid_regular(penalty(range = c(-4, 4)), levels = 50)
 penalty_grid
 ```
@@ -451,13 +444,14 @@ penalty_grid
 #| echo: true
 #| code-line-numbers: "1|2|3"
 #| output-location: fragment
-# What I would recommend 
+# Lo que recomendaría
 lambda_grid <- grid_regular(penalty(), levels = 50)
 lambda_grid
 ```
+
 :::
 
-## How to determine the grid?
+## ¿Cómo determinar la cuadrícula?
 
 ![](img/grid_search_3.png){.absolute}
 
@@ -465,7 +459,7 @@ lambda_grid
 [Link to Article](https://pubmed.ncbi.nlm.nih.gov/20808728/)
 :::
 
-## How to determine the grid?
+## ¿Cómo determinar la cuadrícula?
 
 ![](img/grid_search_2.png){.absolute}
 
@@ -473,7 +467,7 @@ lambda_grid
 [ISLR tidymodels labs](https://emilhvitfeldt.github.io/ISLR-tidymodels-labs/06-regularization.html)
 :::
 
-## Tune the Grid Using the Workflow 
+## Ajustar la Cuadrícula Usando el Flujo de Trabajo 
 ![](https://tune.tidymodels.org/logo.png){.absolute top=0 right=0 width=80 height=90}
 <br>
 <br>
@@ -497,7 +491,7 @@ lasso_tune <-
 doParallel::stopImplicitCluster()
 ```
 
-## Collect the Metrics
+## Recolectar las Métricas
 ![](https://tune.tidymodels.org/logo.png){.absolute top=0 right=0 width=80 height=90}
 <br>
 <br>
@@ -511,7 +505,7 @@ lasso_tune |>
   collect_metrics()
 ```
 
-## Visualize the Metrics
+## Visualizar las Métricas
 
 ::: panel-tabset 
 
@@ -541,7 +535,7 @@ lasso_tune |>
 
 :::
 
-## Choosing our final parameter
+## Eligiendo nuestro parámetro final
 ![](https://tune.tidymodels.org/logo.png){.absolute top=0 right=0 width=80 height=90}
 <br>
 <br>
@@ -551,13 +545,13 @@ lasso_tune |>
 #| output-location: fragment
 
 best <- lasso_tune |> 
-  select_best("roc_auc")
+  select_best(metric = "roc_auc")
 
 best
 
 ```
 
-## Finalize the Workflow
+## Finalizar el Flujo de Trabajo
 
 ```{r}
 #| echo: true
@@ -570,7 +564,7 @@ final_wf <- finalize_workflow(texting_wf, best)
 final_wf
 ```
 
-## Lets Fit!!
+## ¡Ajustemos el Modelo!
 
 :::{.columns}
 :::{.column width="70%"} 
@@ -593,7 +587,7 @@ texting_fit
 :::
 :::
 
-## Review fit on the training data
+## Revisar el ajuste en los datos de entrenamiento
 
 
 ```{r}
@@ -608,7 +602,7 @@ texting_pred
 
 ```
 
-## ROC plot and AUC value
+## Gráfico ROC y valor AUC
 
 :::{.columns}
 :::{.column width="50%"} 
@@ -628,20 +622,22 @@ roc_plot_training
 ```
 :::
 
+
 :::{.column width="50%"} 
 
 ```{r}
 #| echo: true
 #| code-line-numbers: "1|2"
 #| output-location: fragment
-texting_pred |> 
-  roc_auc(truth = TextingDriving,.pred_1, event_level = "second") 
+texting_pred |>
+    roc_auc(truth = TextingDriving, .pred_1, event_level = "second")
 
 ```
+
 :::
 :::
 
-## Ckeck the estimates 
+## Verificar las estimaciones 
 
 ```{r}
 #| echo: true
@@ -655,7 +651,7 @@ texting_fit |>
 ```
 
 
-## Lets look the metrics on the resamples
+## Veamos las métricas en los remuestreos
 
 ```{r}
 #| echo: true
@@ -669,7 +665,7 @@ texting_fit_resamples
 ```
 
 
-## Exploring the results
+## Explorando los resultados
 
 ```{r}
 #| echo: true
@@ -679,7 +675,7 @@ collect_metrics(texting_fit_resamples)
 ```
 
 
-## Lets fit on the **TEST** Data 
+## Ajustemos en los Datos de **PRUEBA** 
 
 
 ```{r}
@@ -697,7 +693,7 @@ texting_last_fit
 ```
 
 
-## Collect the Metrics
+## Recolectar las Métricas
 ![](https://tune.tidymodels.org/logo.png){.absolute top=0 right=0 width=80 height=90}
 <br>
 <br>
@@ -710,7 +706,7 @@ collect_metrics(texting_last_fit)
 
 ```
 
-## Review Prediction on the Test Data with `yardstick`
+## Revisar Predicciones en los Datos de Prueba con `yardstick`
 
 ```{r}
 #| echo: true
@@ -727,7 +723,7 @@ the_prediction
 
 ```
 
-## Review Prediction on the Test Data with `yardstick`
+## Revisar Predicciones en los Datos de Prueba con `yardstick`
 
 ```{r}
 #| echo: true
@@ -742,14 +738,14 @@ multi_metric(the_prediction,
 ```
 
 
-## Confusion Matrix on the Test Data
+## Matriz de Confusión en los Datos de Prueba
 ```{r}
 the_prediction %>% 
   conf_mat(TextingDriving, .pred_class) |> 
   autoplot(type = "heatmap")
 ```
 
-## ROC curve on the Test Data
+## Curva ROC en los Datos de Prueba
 ```{r}
 
 the_prediction |> 
@@ -759,7 +755,7 @@ the_prediction |>
 ```
 
 
-## Variable Importance Plot 
+## Gráfico de Importancia de Variables 
 
 ```{r}
 #| echo: true
@@ -780,26 +776,26 @@ texting_last_fit |>
   theme(legend.position = "none")
 ```
 
-## We did it! 
+## ¡Lo logramos! 
 
 ![](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMTh3aWhnbWl5c3RkYm54OHlidjdsd2dsdnhtZDh0YzFrbjV2enBybiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/nVXzt7FSJlX7W/giphy.gif)
 
-## Review Questions
+## Preguntas de Revisión
 
 ::: {.fragment}
-1. Is the Residual Sum of Squares a relevant concept for L1 and L2 penalties? why?
+1. ¿Es la Suma Residual de Cuadrados un concepto relevante para las penalizaciones L1 y L2? ¿por qué?
 :::
 
 ::: {.fragment}
-2. L2 regularization would be better of if we called it the squared regularization?
+2. ¿La regularización L2 sería mejor si la llamáramos regularización al cuadrado?
 :::
 
 ::: {.fragment}
-3. If I want to reduce the dimensionality of a dataset I would use the _______ penalty?
+3. Si quiero reducir la dimensionalidad de un conjunto de datos usaría la penalización _______?
 :::
 
 ::: {.fragment}
-4. If I want `tidymodels` to perform a ridge regression what should I change in this code?
+4. Si quiero que `tidymodels` realice una regresión ridge, ¿qué debo cambiar en este código?
 
 ```{r}
 #| echo: true
@@ -808,7 +804,8 @@ review_spec <-
                mixture = tune()) |> 
   set_engine('glmnet')
 
-```
+`
+``
 :::
 
 ::: {.fragment}
